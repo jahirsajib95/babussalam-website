@@ -7,13 +7,13 @@
 const SITE_DATA = {
 
     // ===== ১. প্রতিষ্ঠানের মূল তথ্য =====
-    siteName: "জামিয়া দারুল উলুম বাবুস সালাম",
-    siteNameEnglish: "Jamia Darul Ulum Babus Salam",
+    siteName: "জামিয়া বাবুস সালাম",
+    siteNameEnglish: "Jamia Babus Salam",
     tagline: "ইলমে দ্বীনের আলোয় আলোকিত জীবন",
     arabicMotto: "بسم الله الرحمن الرحيم",
     established: "১৯৯৫",
-    address: "গ্রাম: বাবুস সালাম, উপজেলা: দাউদকান্দি, জেলা: কুমিল্লা",
-    phone: "০১৭XXXXXXXX",
+    address: "হাজ্বক্যাম্প, গোলচত্বর, বিমানবন্দর, ঢাকা-১২৩০",
+    phone: "০১৭১৭ ২৫৭৫৫৭",
     email: "info@babussalam.edu",
     facebook: "https://facebook.com/babussalam",
     youtube: "https://youtube.com/@babussalam",
@@ -22,7 +22,7 @@ const SITE_DATA = {
     // ===== ২. ব্রেকিং নিউজ (মার্কি) =====
     // 👉 নতুন সংবাদ যোগ করতে নিচের তালিকায় নতুন লাইন লিখুন
     breakingNews: [
-        "📢 নতুন ভর্তি চলছে ২০২৫ — যোগাযোগ: ০১৭XXXXXXXX",
+        "📢 নতুন ভর্তি চলছে ২০২৫ — যোগাযোগ: ০১৭১৭২৫৭৫৫৭",
         "🎓 বার্ষিক পরীক্ষার ফলাফল প্রকাশিত",
         "🕌 বাবুস সালাম কাফেলায় যোগ দিন — বিস্তারিত ওয়েবসাইটে"
     ],
