@@ -4,82 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>নোটিশ — জামিয়া বাবুস সালাম</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
-    <!-- ===== হেডার (অটো লোড) ===== -->
-    <div id="header-placeholder"></div>
+<div id="header-placeholder"></div>
 
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- 🎨 পেজ হেডার (এই পেজের নিজস্ব টাইটেল)          -->
-    <!-- ═══════════════════════════════════════════════ -->
-    <section class="page-header">
-        <h2>📢 নোটিশ বোর্ড</h2>
-        <p class="breadcrumb"><a href="../index.html">🏠 মূলপাতা</a> / নোটিশ</p>
-    </section>
 
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- 📝 এই পেজের কন্টেন্ট ও ডাটা এখানে বসান         -->
-    <!-- 👇 আপনি নিচের অংশ ইচ্ছামতো এডিট করবেন           -->
-    <!-- ═══════════════════════════════════════════════ -->
-    <div class="page-content">
+<!-- ══ পেজ টাইটেল ══ -->
+<section class="page-header">
+    <h2>📢 নোটিশ বোর্ড</h2>
+    <p class="breadcrumb"><a href="../index.html">🏠 মূলপাতা</a> / নোটিশ</p>
+</section>
 
-        <!-- ট্যাব ফিল্টার (ইচ্ছা হলে রাখুন) -->
-        <div class="notice-tabs">
-            <button class="notice-tab active">সব নোটিশ</button>
-            <button class="notice-tab">🔴 জরুরি</button>
-            <button class="notice-tab">🟡 পরীক্ষা</button>
-            <button class="notice-tab">🟢 সাধারণ</button>
-        </div>
+<!-- ══ পেজ কন্টেন্ট ══ -->
+<div class="page-content">
 
-        <!-- ═══ নোটিশ ১ ═══ -->
-        <div class="notice-card urgent">
-            <span class="notice-badge urgent">🔴 জরুরি</span>
-            <h4>নতুন ভর্তি বিজ্ঞপ্তি ২০২৫</h4>
-            <p class="notice-date">📅 ১৫ জানুয়ারি, ২০২৫</p>
-            <p class="notice-excerpt">
-                আগামী ১ ফেব্রুয়ারি থেকে সকল বিভাগে ভর্তি কার্যক্রম শুরু হবে। 
-                আগ্রহী অভিভাবকগণ যোগাযোগ করুন। প্রয়োজনীয় কাগজপত্র: জন্ম নিবন্ধন, 
-                পূর্ববর্তী সনদ, পাসপোর্ট সাইজ ছবি ৪ কপি।
-            </p>
-        </div>
-
-        <!-- ═══ নোটিশ ২ ═══ -->
-        <div class="notice-card exam">
-            <span class="notice-badge exam">🟡 পরীক্ষা</span>
-            <h4>বার্ষিক পরীক্ষার সময়সূচি প্রকাশ</h4>
-            <p class="notice-date">📅 ১০ জানুয়ারি, ২০২৫</p>
-            <p class="notice-excerpt">
-                ২০২৫ সালের বার্ষিক পরীক্ষা আগামী ১ মার্চ থেকে শুরু হবে। 
-                সকল ছাত্রদের নির্ধারিত সময়ে পরীক্ষা কেন্দ্রে উপস্থিত হতে হবে।
-            </p>
-        </div>
-
-        <!-- ═══ নোটিশ ৩ ═══ -->
-        <div class="notice-card">
-            <span class="notice-badge general">🟢 সাধারণ</span>
-            <h4>শীতকালীন ছুটির বিজ্ঞপ্তি</h4>
-            <p class="notice-date">📅 ৫ জানুয়ারি, ২০২৫</p>
-            <p class="notice-excerpt">
-                আগামী ২০ জানুয়ারি থেকে ৩১ জানুয়ারি পর্যন্ত শীতকালীন ছুটি থাকবে। 
-                সকল ছাত্রদের ছুটির পর নির্ধারিত তারিখে ক্লাসে উপস্থিত হতে হবে।
-            </p>
-        </div>
-
-        <!-- ═══ নতুন নোটিশ যোগ করতে উপরের যেকোনো ব্লক কপি করে পেস্ট করুন ═══ -->
-
+    <!-- ফিল্টার ট্যাব -->
+    <div class="notice-tabs">
+        <button class="notice-tab active" onclick="filterNotice('all', this)">সব নোটিশ</button>
+        <button class="notice-tab" onclick="filterNotice('urgent', this)">🔴 জরুরি</button>
+        <button class="notice-tab" onclick="filterNotice('exam', this)">🟡 পরীক্ষা</button>
+        <button class="notice-tab" onclick="filterNotice('general', this)">🟢 সাধারণ</button>
     </div>
 
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- 🎨 পেজের কন্টেন্ট এখানে শেষ                    -->
-    <!-- ═══════════════════════════════════════════════ -->
 
-    <!-- ===== ফুটার (অটো লোড) ===== -->
-    <div id="footer-placeholder"></div>
+    <!-- ══════════ নোটিশ ১ ══════════ -->
+    <div class="notice-card urgent" data-notice-type="urgent">
+        <span class="notice-badge urgent">🔴 জরুরি</span>
+        <h4>নতুন ভর্তি বিজ্ঞপ্তি ২০২৫</h4>
+        <p class="notice-date">📅 ১৫ জানুয়ারি, ২০২৫</p>
+        <p class="notice-excerpt">
+            আগামী ১ ফেব্রুয়ারি থেকে সকল বিভাগে ভর্তি কার্যক্রম শুরু হবে।
+            আগ্রহী অভিভাবকগণ অফিসে যোগাযোগ করুন। প্রয়োজনীয় কাগজপত্র:
+            জন্ম নিবন্ধন, পূর্ববর্তী সনদ ও পাসপোর্ট সাইজ ছবি ৪ কপি।
+        </p>
+    </div>
 
-    <script src="../main.js"></script>
+
+    <!-- ══════════ নোটিশ ২ ══════════ -->
+    <div class="notice-card exam" data-notice-type="exam">
+        <span class="notice-badge exam">🟡 পরীক্ষা</span>
+        <h4>বার্ষিক পরীক্ষার সময়সূচি প্রকাশ</h4>
+        <p class="notice-date">📅 ১০ জানুয়ারি, ২০২৫</p>
+        <p class="notice-excerpt">
+            ২০২৫ সালের বার্ষিক পরীক্ষা আগামী ১ মার্চ থেকে শুরু হবে।
+            সকল ছাত্রদের নির্ধারিত সময়ে পরীক্ষা কেন্দ্রে উপস্থিত থাকতে হবে।
+        </p>
+    </div>
+
+
+    <!-- ══════════ নোটিশ ৩ ══════════ -->
+    <div class="notice-card" data-notice-type="general">
+        <span class="notice-badge general">🟢 সাধারণ</span>
+        <h4>শীতকালীন ছুটির বিজ্ঞপ্তি</h4>
+        <p class="notice-date">📅 ৫ জানুয়ারি, ২০২৫</p>
+        <p class="notice-excerpt">
+            আগামী ২০ জানুয়ারি থেকে ৩১ জানুয়ারি পর্যন্ত শীতকালীন ছুটি থাকবে।
+            ছুটি শেষে নির্ধারিত তারিখে ক্লাসে উপস্থিত হতে হবে।
+        </p>
+    </div>
+
+
+    <!-- ══════════ নোটিশ ৪ ══════════ -->
+    <div class="notice-card" data-notice-type="general">
+        <span class="notice-badge general">🟢 সাধারণ</span>
+        <h4>মাসিক অভিভাবক সমাবেশ</h4>
+        <p class="notice-date">📅 ১ জানুয়ারি, ২০২৫</p>
+        <p class="notice-excerpt">
+            আগামী ১৫ ফেব্রুয়ারি বেলা ১০টায় মাসিক অভিভাবক সমাবেশ অনুষ্ঠিত হবে।
+            সকল অভিভাবকের উপস্থিতি একান্ত কাম্য।
+        </p>
+    </div>
+
+
+    <!-- 👇 নতুন নোটিশ যোগ করতে উপরের যেকোনো ব্লক কপি করে এখানে পেস্ট করুন -->
+
+
+</div>
+
+
+<div id="footer-placeholder"></div>
+
+<script src="../main.js"></script>
 </body>
 </html>
