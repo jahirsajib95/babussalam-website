@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>শিক্ষক, কর্মকর্তা-কর্মচারী — জামিয়া বাবুস সালাম</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- এই পেজের নিজস্ব স্টাইল -->
+    <style>
+        /* ══ সেক্টর/বিভাগ হেডার ══ */
+        .sector-header {
+            background: linear-gradient(135deg, #0F5132, #0a3622);
+            color: #FFFFFF;
+            padding: 18px 22px;
+            border-radius: 14px;
+            margin: 32px 0 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sector-header:first-of-type {
+            margin-top: 0;
+        }
+        .sector-header .sector-icon {
+            font-size: 30px;
+            background: rgba(255,215,0,0.2);
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .sector-header .sector-info h3 {
+            color: #FFD700;
+            font-size: 19px;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+        .sector-header .sector-info p {
+            font-size: 13px;
+            opacity: 0.85;
+            margin: 2px 0 0;
+            text-align: left;
+        }
+
+        /* ══ শিক্ষক কার্ড গ্রিড ══ */
+        .teachers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* ══ শিক্ষক কার্ড ══ */
+        .teacher-card {
+            background: #FFFFFF;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #DEE2E6;
+            transition: all 0.35s;
+            display: flex;
+            flex-direction: column;
+        }
+        .teacher-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(15,81,50,0.15);
+            border-color: #198754;
+        }
+
+        /* ছবি অংশ */
+        .teacher-photo {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+        }
+        .teacher-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .teacher-card:hover .teacher-photo img {
+            transform: scale(1.08);
+        }
+
+        /* পদবি ব্যাজ (ছবির উপর) */
+        .teacher-badge {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(15,81,50,0.92), transparent);
+            color: #FFD700;
+            padding: 25px 14px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* তথ্য অংশ */
+        .teacher-info {
+            padding: 16px 18px 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .teacher-info h4 {
+            color: #0F5132;
+            font-size: 17px;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .teacher-info .designation {
+            color: #198754;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .teacher-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 7px;
+            font-size: 13px;
+            color: #495057;
+        }
+        .teacher-detail .detail-icon {
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ফোন বাটন */
+        .teacher-phone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 12px;
+        }
+        .phone-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: #E8F5E9;
+            color: #0F5132;
+            padding: 9px 18px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #C8E6C9;
+            width: 100%;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .phone-btn:hover {
+            background: #0F5132;
+            color: #FFFFFF;
+            border-color: #0F5132;
+        }
+
+        /* ══ সার্চ বক্স ══ */
+        .search-box {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            border: 2px solid #DEE2E6;
+            border-radius: 50px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: #0F5132;
+        }
+        .search-box .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        /* ══ মোট সংখ্যা ══ */
+        .total-count {
+            text-align: center;
+            padding: 18px;
+            background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        .total-count .count-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .total-count .count-item {
+            text-align: center;
+        }
+        .total-count .count-item h3 {
+            color: #0F5132;
+            font-size: 26px;
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+        .total-count .count-item p {
+            font-size: 12px;
+            color: #6C757D;
+            margin: 0;
+        }
+
+        /* মোবাইল */
+        @media (max-width: 600px) {
+            .teachers-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .teacher-card {
+                flex-direction: row;
+                height: auto;
+            }
+            .teacher-photo {
+                width: 110px;
+                height: auto;
+                min-height: 140px;
+                flex-shrink: 0;
+            }
+            .teacher-badge {
+                display: none;
+            }
+            .teacher-info h4 {
+                font-size: 15px;
+            }
+            .sector-header .sector-icon {
+                width: 42px; height: 42px; font-size: 22px;
+            }
+            .sector-header .sector-info h3 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+
+<!-- ══ পেজ টাইটেল ══ -->
+<section class="page-header">
+    <h2>👨‍🏫 শিক্ষক, কর্মকর্তা-কর্মচারী</h2>
+    <p class="breadcrumb">
+        <a href="../index.html">🏠 মূলপাতা</a> / প্রাতিষ্ঠানিক / শিক্ষক, কর্মকর্তা-কর্মচারী
+    </p>
+</section>
+
+
+<!-- ══ পেজ কন্টেন্ট ══ -->
+<div class="page-content">
+
+
+    <!-- ══ মোট পরিসংখ্যান ══ -->
+    <div class="total-count">
+        <div class="count-grid">
+            <!-- 👇 সংখ্যা চেঞ্জ করুন -->
+            <div class="count-item"><h3>১৫</h3><p>কিতাব শিক্ষক</p></div>
+            <div class="count-item"><h3>৮</h3><p>নূরানী শিক্ষক</p></div>
+            <div class="count-item"><h3>৬</h3><p>নাযেরা শিক্ষক</p></div>
+            <div class="count-item"><h3>১০</h3><p>স্টাফ ও কর্মচারী</p></div>
+        </div>
+    </div>
+
+
+    <!-- ══ সার্চ বক্স ══ -->
+    <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" 
+               id="searchTeacher" 
+               placeholder="শিক্ষকের নাম লিখে খুঁজুন..." 
+               oninput="searchTeachers()">
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════
+         সেক্টর ১: পরিচালনা ও প্রশাসন
+    ═══════════════════════════════════════════ -->
+    <div class="sector-header">
+        <div class="sector-icon">🏛️</div>
+        <div class="sector-info">
+            <h3>পরিচালনা ও প্রশাসন</h3>
+            <p>জামিয়ার মূল পরিচালনা পর্ষদ</p>
+        </div>
+    </div>
+
+    <div class="teachers-grid">
+
+        <!-- ═══ ব্যক্তি ১: মুহতামিম ═══ -->
+        <div class="teacher-card" data-name="মাওলানা আনিসুর রহমান">
+            <div class="teacher-photo">
+                <!-- 👇 ছবির পাথ চেঞ্জ করুন -->
+                <img src="../images/teachers/muhtamim.jpg" 
+                     alt="মাওলানা আনিসুর রহমান"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">মুহতামিম</div>
+            </div>
+            <div class="teacher-info">
+                <!-- 👇 নাম চেঞ্জ করুন -->
+                <h4>হযরত মাওলানা আনিসুর রহমান</h4>
+                <!-- 👇 পদবি চেঞ্জ করুন -->
+                <span class="designation">মুহতামিম (প্রতিষ্ঠাতা পরিচালক)</span>
+                <!-- 👇 তথ্য চেঞ্জ করুন -->
+                <div class="teacher-detail">
+                    <span class="detail-icon">🎓</span>
+                    <span>দাওরায়ে হাদিস, তাখাসসুস ফিল ফিকহ</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🏛️</span>
+                    <span>দারুল উলুম দেওবন্দ থেকে সনদপ্রাপ্ত</span>
+                </div>
+                <div class="teacher-phone">
+                    <!-- 👇 ফোন নম্বর চেঞ্জ করুন -->
+                    <a href="tel:+8801712345678" class="phone-btn">
+                        📞 ০১৭১-২৩৪৫৬৭৮
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ ব্যক্তি ২: নায়েবে মুহতামিম ═══ -->
+        <div class="teacher-card" data-name="মাওলানা মুহাম্মদ ইউসুফ">
+            <div class="teacher-photo">
+                <img src="../images/teachers/yusuf-ahmed.jpg" 
+                     alt="মাওলানা মুহাম্মদ ইউসুফ"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">নায়েবে মুহতামিম</div>
+            </div>
+            <div class="teacher-info">
+                <h4>মাওলানা মুহাম্মদ ইউসুফ</h4>
+                <span class="designation">নায়েবে মুহতামিম (সহকারী পরিচালক)</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🎓</span>
+                    <span>দাওরায়ে হাদিস</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">📚</span>
+                    <span>তাফসির ও হাদিস বিভাগ</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801812345678" class="phone-btn">
+                        📞 ০১৮১-২৩৪৫৬৭৮
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════
+         সেক্টর ২: কিতাব বিভাগের শিক্ষকমণ্ডলী
+    ═══════════════════════════════════════════ -->
+    <div class="sector-header">
+        <div class="sector-icon">📚</div>
+        <div class="sector-info">
+            <h3>কিতাব বিভাগ</h3>
+            <p>দাওরায়ে হাদিস, ইফতা ও কিতাব বিভাগের শিক্ষকমণ্ডলী</p>
+        </div>
+    </div>
+
+    <div class="teachers-grid">
+
+        <!-- ═══ শিক্ষক ১ ═══ -->
+        <div class="teacher-card" data-name="মাওলানা আহমদ হাসান">
+            <div class="teacher-photo">
+                <img src="../images/teachers/ahmad-hasan.jpg" 
+                     alt="মাওলানা আহমদ হাসান"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">সিনিয়র শিক্ষক</div>
+            </div>
+            <div class="teacher-info">
+                <h4>মাওলানা আহমদ হাসান</h4>
+                <span class="designation">সিনিয়র মুহাদ্দিস</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🎓</span>
+                    <span>দাওরায়ে হাদিস, তাখাসসুস ফিল হাদিস</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">📖</span>
+                    <span>বুখারী শরীফ ও মুসলিম শরীফ পাঠদান</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801612345678" class="phone-btn">
+                        📞 ০১৬১-২৩৪৫৬৭৮
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ শিক্ষক ২ ═══ -->
+        <div class="teacher-card" data-name="মাওলানা খালিদ সাইফুল্লাহ">
+            <div class="teacher-photo">
+                <img src="../images/teachers/khalid-saif.jpg" 
+                     alt="মাওলানা খালিদ সাইফুল্লাহ"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">শিক্ষক</div>
+            </div>
+            <div class="teacher-info">
+                <h4>মাওলানা খালিদ সাইফুল্লাহ</h4>
+                <span class="designation">মুহাদ্দিস ও মুদাররিস</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🎓</span>
+                    <span>দাওরায়ে হাদিস, বি.এ</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">📖</span>
+                    <span>নাহু-সরফ ও ফিকহ বিভাগ</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801912345678" class="phone-btn">
+                        📞 ০১৯১-২৩৪৫৬৭৮
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ শিক্ষক ৩ ═══ -->
+        <div class="teacher-card" data-name="মাওলানা আব্দুল বাসিত">
+            <div class="teacher-photo">
+                <img src="../images/teachers/abdul-basit.jpg" 
+                     alt="মাওলানা আব্দুল বাসিত"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">শিক্ষক</div>
+            </div>
+            <div class="teacher-info">
+                <h4>মাওলানা আব্দুল বাসিত</h4>
+                <span class="designation">মুদাররিস</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🎓</span>
+                    <span>দাওরায়ে হাদিস</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">📖</span>
+                    <span>আরবি সাহিত্য ও বালাগাত পাঠদান</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801512345678" class="phone-btn">
+                        📞 ০১৫১-২৩৪৫৬৭৮
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 👇 নতুন কিতাব শিক্ষক যোগ করতে উপরের একটি ব্লক কপি করে এখানে পেস্ট করুন -->
+
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════
+         সেক্টর ৩: নূরানী বিভাগের শিক্ষকমণ্ডলী
+    ═══════════════════════════════════════════ -->
+    <div class="sector-header">
+        <div class="sector-icon">📗</div>
+        <div class="sector-info">
+            <h3>নূরানী বিভাগ</h3>
+            <p>কায়দা, আমপারা ও প্রাথমিক দ্বীনিয়াত শিক্ষকমণ্ডলী</p>
+        </div>
+    </div>
+
+    <div class="teachers-grid">
+
+        <!-- ═══ নূরানী শিক্ষক ১ ═══ -->
+        <div class="teacher-card" data-name="ক্বারী আব্দুল্লাহ আল মামুন">
+            <div class="teacher-photo">
+                <img src="../images/teachers/abdullah-mamun.jpg" 
+                     alt="ক্বারী আব্দুল্লাহ আল মামুন"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">প্রধান শিক্ষক</div>
+            </div>
+            <div class="teacher-info">
+                <h4>ক্বারী আব্দুল্লাহ আল মামুন</h4>
+                <span class="designation">নূরানী বিভাগ প্রধান</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🎓</span>
+                    <span>হিফজুল কুরআন, কিরাআত সনদপ্রাপ্ত</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">📖</span>
+                    <span>কায়দা, নূরানী পদ্ধতি ও তাজবীদ</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801312345678" class="phone-btn">
+                        📞 ০১৩১-২৩৪৫৬৭৮
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ নূরানী শিক্ষক ২ ═══ -->
+        <div class="teacher-card" data-name="হাফেজ মোঃ রফিকুল ইসলাম">
+            <div class="teacher-photo">
+                <img src="../images/teachers/rafiqul-islam.jpg" 
+                     alt="হাফেজ মোঃ রফিকুল ইসলাম"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">শিক্ষক</div>
+            </div>
+            <div class="teacher-info">
+                <h4>হাফেজ মোঃ রফিকুল ইসলাম</h4>
+                <span class="designation">নূরানী শিক্ষক</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🎓</span>
+                    <span>হিফজুল কুরআন, আলিম পাশ</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">📖</span>
+                    <span>আমপারা ও দো'আ-কালাম পাঠদান</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801412345678" class="phone-btn">
+                        📞 ০১৪১-২৩৪৫৬৭৮
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 👇 নতুন নূরানী শিক্ষক যোগ করতে উপরের ব্লক কপি করে পেস্ট করুন -->
+
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════
+         সেক্টর ৪: নাযেরা (হিফজ) বিভাগের শিক্ষকমণ্ডলী
+    ═══════════════════════════════════════════ -->
+    <div class="sector-header">
+        <div class="sector-icon">📖</div>
+        <div class="sector-info">
+            <h3>নাযেরা (হিফজ) বিভাগ</h3>
+            <p>কুরআনুল কারীম নাযেরা ও হিফজ বিভাগের শিক্ষকমণ্ডলী</p>
+        </div>
+    </div>
+
+    <div class="teachers-grid">
+
+        <!-- ═══ নাযেরা শিক্ষক ১ ═══ -->
+        <div class="teacher-card" data-name="হাফেজ ক্বারী ইব্রাহীম খলীল">
+            <div class="teacher-photo">
+                <img src="../images/teachers/ibrahim-khalil.jpg" 
+                     alt="হাফেজ ক্বারী ইব্রাহীম খলীল"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">হিফজ বিভাগ প্রধান</div>
+            </div>
+            <div class="teacher-info">
+                <h4>হাফেজ ক্বারী ইব্রাহীম খলীল</h4>
+                <span class="designation">হিফজ বিভাগ প্রধান</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🎓</span>
+                    <span>হিফজুল কুরআন, দাওরায়ে হাদিস</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">📖</span>
+                    <span>কুরআন হিফজ তত্ত্বাবধান ও মুরাজাআ</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🏆</span>
+                    <span>অভিজ্ঞতা: ১৫+ বছর</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801312345679" class="phone-btn">
+                        📞 ০১৩১-২৩৪৫৬৭৯
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ নাযেরা শিক্ষক ২ ═══ -->
+        <div class="teacher-card" data-name="হাফেজ মুহাম্মদ তারেক">
+            <div class="teacher-photo">
+                <img src="../images/teachers/muhammad-tarek.jpg" 
+                     alt="হাফেজ মুহাম্মদ তারেক"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">শিক্ষক</div>
+            </div>
+            <div class="teacher-info">
+                <h4>হাফেজ মুহাম্মদ তারেক</h4>
+                <span class="designation">নাযেরা ও হিফজ শিক্ষক</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🎓</span>
+                    <span>হিফজুল কুরআন, তাজবীদ সনদপ্রাপ্ত</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">📖</span>
+                    <span>নাযেরা কুরআন ও সবক তত্ত্বাবধান</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801712345679" class="phone-btn">
+                        📞 ০১৭১-২৩৪৫৬৭৯
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 👇 নতুন নাযেরা শিক্ষক যোগ করতে উপরের ব্লক কপি করে পেস্ট করুন -->
+
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════
+         সেক্টর ৫: স্টাফ ও কর্মচারী
+    ═══════════════════════════════════════════ -->
+    <div class="sector-header">
+        <div class="sector-icon">👥</div>
+        <div class="sector-info">
+            <h3>স্টাফ ও কর্মচারী</h3>
+            <p>প্রশাসনিক কর্মকর্তা, অফিস স্টাফ ও সেবাকর্মী</p>
+        </div>
+    </div>
+
+    <div class="teachers-grid">
+
+        <!-- ═══ স্টাফ ১ ═══ -->
+        <div class="teacher-card" data-name="মোঃ শফিকুল ইসলাম">
+            <div class="teacher-photo">
+                <img src="../images/teachers/shafiqul-islam.jpg" 
+                     alt="মোঃ শফিকুল ইসলাম"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">অফিস ম্যানেজার</div>
+            </div>
+            <div class="teacher-info">
+                <h4>মোঃ শফিকুল ইসলাম</h4>
+                <span class="designation">অফিস ম্যানেজার</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">💼</span>
+                    <span>প্রশাসনিক ব্যবস্থাপনা ও হিসাব</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🏢</span>
+                    <span>ভর্তি, সনদ ও অফিসিয়াল কাজ</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801812345679" class="phone-btn">
+                        📞 ০১৮১-২৩৪৫৬৭৯
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ স্টাফ ২ ═══ -->
+        <div class="teacher-card" data-name="মোঃ আনোয়ার হোসেন">
+            <div class="teacher-photo">
+                <img src="../images/teachers/anowar-hosen.jpg" 
+                     alt="মোঃ আনোয়ার হোসেন"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">খাদেম</div>
+            </div>
+            <div class="teacher-info">
+                <h4>মোঃ আনোয়ার হোসেন</h4>
+                <span class="designation">প্রধান খাদেম (কেয়ারটেকার)</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🏠</span>
+                    <span>ছাত্রাবাস ব্যবস্থাপনা</span>
+                </div>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🍽️</span>
+                    <span>খাবার ও রান্নাঘর তদারকি</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801612345679" class="phone-btn">
+                        📞 ০১৬১-২৩৪৫৬৭৯
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ স্টাফ ৩ ═══ -->
+        <div class="teacher-card" data-name="মোঃ জহিরুল ইসলাম">
+            <div class="teacher-photo">
+                <img src="../images/teachers/johirul-islam.jpg" 
+                     alt="মোঃ জহিরুল ইসলাম"
+                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                <div class="teacher-badge">গার্ড</div>
+            </div>
+            <div class="teacher-info">
+                <h4>মোঃ জহিরুল ইসলাম</h4>
+                <span class="designation">নিরাপত্তা প্রহরী</span>
+                <div class="teacher-detail">
+                    <span class="detail-icon">🛡️</span>
+                    <span>ক্যাম্পাস নিরাপত্তা ও তদারকি</span>
+                </div>
+                <div class="teacher-phone">
+                    <a href="tel:+8801912345679" class="phone-btn">
+                        📞 ০১৯১-২৩৪৫৬৭৯
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 👇 নতুন স্টাফ/কর্মচারী যোগ করতে উপরের ব্লক কপি করে পেস্ট করুন -->
+
+    </div>
+
+
+</div>
+<!-- পেজ কন্টেন্ট শেষ -->
+
+
+<div id="footer-placeholder"></div>
+
+<script src="../main.js"></script>
+
+<!-- ══ সার্চ ফাংশন ══ -->
+<script>
+    function searchTeachers() {
+        var query = document.getElementById('searchTeacher').value.toLowerCase();
+        var cards = document.querySelectorAll('.teacher-card');
+        var sectors = document.querySelectorAll('.sector-header');
+        var grids = document.querySelectorAll('.teachers-grid');
+
+        for (var i = 0; i < cards.length; i++) {
+            var name = cards[i].getAttribute('data-name').toLowerCase();
+            var text = cards[i].innerText.toLowerCase();
+            if (name.indexOf(query) !== -1 || text.indexOf(query) !== -1) {
+                cards[i].style.display = '';
+            } else {
+                cards[i].style.display = 'none';
+            }
+        }
+
+        // খালি সার্চে সব দেখাও
+        if (query === '') {
+            for (var j = 0; j < sectors.length; j++) sectors[j].style.display = '';
+        } else {
+            // সেক্টর হেডার লুকাও যদি সব কার্ড হিডেন
+            for (var k = 0; k < grids.length; k++) {
+                var visible = grids[k].querySelectorAll('.teacher-card:not([style*="display: none"])');
+                if (sectors[k]) {
+                    sectors[k].style.display = visible.length > 0 ? '' : 'none';
+                }
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
