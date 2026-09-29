@@ -500,4 +500,8 @@ img { max-width: 100%; height: auto; }
     .quick-grid { grid-template-columns: repeat(2, 1fr); }
     .logo-text h1 { font-size: 13px; }
     .logo-section img { width: 38px; height: 38px; }
+<<<<<<< HEAD
 }
+=======
+    }
+>>>>>>> b7ad885bb19c761d364c32f356d87a25e6ce9561
