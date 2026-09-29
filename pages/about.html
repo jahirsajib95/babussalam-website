@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমাদের পরিচিতি — জামিয়া বাবুস সালাম</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- এই পেজের নিজস্ব অতিরিক্ত স্টাইল -->
+    <style>
+        .intro-box {
+            background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
+            border-left: 5px solid #0F5132;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            font-size: 15px;
+            line-height: 2;
+        }
+
+        .highlight-quote {
+            background: linear-gradient(135deg, #0F5132, #0a3622);
+            color: #FFFFFF;
+            padding: 28px 24px;
+            border-radius: 14px;
+            text-align: center;
+            margin: 28px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .highlight-quote::before {
+            content: '"';
+            position: absolute;
+            top: -10px; left: 14px;
+            font-size: 120px;
+            color: rgba(255,215,0,0.15);
+            font-family: Georgia, serif;
+        }
+        .highlight-quote p {
+            font-size: 17px;
+            line-height: 1.9;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin: 0;
+        }
+        .highlight-quote .source {
+            font-size: 13px;
+            color: #FFD700;
+            margin-top: 12px;
+            display: block;
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin: 18px 0;
+        }
+        .location-card {
+            background: #F8F9FA;
+            border: 1px solid #DEE2E6;
+            border-radius: 10px;
+            padding: 18px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .location-card:hover {
+            border-color: #198754;
+            box-shadow: 0 4px 15px rgba(15,81,50,0.1);
+        }
+        .location-card .loc-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .location-card h4 {
+            color: #0F5132;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .location-card p {
+            font-size: 13px;
+            color: #6C757D;
+            margin: 0;
+            text-align: center;
+        }
+
+        .naming-section {
+            background: #FFF8E1;
+            border: 2px solid #FFD700;
+            border-radius: 14px;
+            padding: 24px;
+            margin: 28px 0;
+        }
+        .naming-section h3 {
+            color: #FF8F00;
+            border-bottom-color: #FFF8E1;
+        }
+
+        .history-timeline {
+            position: relative;
+            padding-left: 28px;
+            margin: 18px 0;
+        }
+        .history-timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px; top: 0; bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #0F5132, #198754, #FFD700);
+            border-radius: 3px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 22px;
+            padding-left: 16px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px; top: 8px;
+            width: 14px; height: 14px;
+            background: #0F5132;
+            border: 3px solid #FFD700;
+            border-radius: 50%;
+        }
+        .timeline-item h4 {
+            color: #0F5132;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+        .timeline-item p {
+            font-size: 14px;
+            line-height: 1.9;
+            text-align: justify;
+            margin: 0;
+        }
+
+        .struggle-box {
+            background: linear-gradient(135deg, #FFF3F3, #FFF8F8);
+            border-left: 5px solid #DC3545;
+            padding: 22px;
+            border-radius: 12px;
+            margin: 18px 0;
+        }
+        .struggle-box h4 {
+            color: #DC3545;
+            margin-bottom: 8px;
+        }
+
+        .victory-box {
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            border-left: 5px solid #198754;
+            padding: 22px;
+            border-radius: 12px;
+            margin: 18px 0;
+        }
+        .victory-box h4 {
+            color: #0F5132;
+            margin-bottom: 8px;
+        }
+
+        .appeal-box {
+            background: linear-gradient(135deg, #0F5132, #0a3622);
+            color: #FFFFFF;
+            padding: 28px;
+            border-radius: 14px;
+            text-align: center;
+            margin: 28px 0;
+        }
+        .appeal-box h3 {
+            color: #FFD700;
+            border: none;
+            margin: 0 0 12px 0;
+            padding: 0;
+            font-size: 20px;
+        }
+        .appeal-box p {
+            font-size: 15px;
+            line-height: 1.9;
+            margin: 0 0 16px 0;
+            text-align: center;
+        }
+        .appeal-box .btn {
+            background: #FFD700;
+            color: #0a3622;
+        }
+
+        .stats-mini {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+            margin: 18px 0;
+            text-align: center;
+        }
+        .stats-mini .sitem {
+            background: #F8F9FA;
+            border-radius: 10px;
+            padding: 16px 8px;
+            border: 1px solid #DEE2E6;
+        }
+        .stats-mini .sitem h3 {
+            color: #0F5132;
+            font-size: 24px;
+            border: none;
+            margin: 0 0 2px 0;
+            padding: 0;
+        }
+        .stats-mini .sitem p {
+            font-size: 12px;
+            color: #6C757D;
+            margin: 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+
+<!-- ══ পেজ টাইটেল ══ -->
+<section class="page-header">
+    <h2>🕌 আমাদের পরিচিতি</h2>
+    <p class="breadcrumb"><a href="../index.html">🏠 মূলপাতা</a> / আমাদের পরিচিতি</p>
+</section>
+
+<!-- ══ পেজ কন্টেন্ট ══ -->
+<div class="page-content">
+
+
+    <!-- ══════════════════════════════════════════════
+         সেকশন ১: জামিয়ার পরিচিতি
+    ══════════════════════════════════════════════ -->
+    <h3>🕌 জামিয়া বাবুস সালাম-এর পরিচিতি</h3>
+
+    <div class="intro-box">
+        <p>
+            কুরআন ও সুন্নাহর সুমহান শিক্ষার মাধ্যমে মানবজাতির আত্মিক পরিশুদ্ধি, চারিত্রিক উন্নয়ন 
+            এবং পরকালীন অনন্ত মুক্তির পথ সুগম করতে যুগে যুগে নবী-রাসূলগণ প্রেরিত হয়েছেন। 
+            তাঁদের তিরোধানের পর এই পবিত্র আমানত নিষ্ঠার সাথে বহন করে চলেছেন তাঁদেরই সুযোগ্য 
+            উত্তরসূরী হক্কানী উলামায়ে কেরাম ও সালাফে সালেহীন।
+        </p>
+    </div>
+
+    <div class="highlight-quote">
+        <p>
+            সেই অবিচ্ছিন্ন আসমানী শিক্ষা ধারার ধারাবাহিকতায় এবং দারুল উলুম দেওবন্দের মহান আদর্শে 
+            উজ্জীবিত হয়ে রাজধানী ঢাকার প্রাণকেন্দ্রে প্রতিষ্ঠিত হয়েছে <strong>"জামি'য়া বাবুস সালাম"</strong>
+        </p>
+        <span class="source">— প্রতিষ্ঠাকাল: ১২ মার্চ ১৯৯৬ ঈসায়ী</span>
+    </div>
+
+    <p>
+        দীর্ঘ দুই যুগেরও বেশি সময় ধরে প্রতিষ্ঠানটি হাজার হাজার যোগ্য আলেম, দাঈ, মুফাসসির, 
+        মুহাদ্দিস ও হাফেজে কুরআন তৈরির মাধ্যমে দেশ-বিদেশের আনাচে-কানাচে দ্বীনের নূর ছড়িয়ে দিচ্ছে।
+    </p>
+
+    <!-- মিনি পরিসংখ্যান -->
+    <div class="stats-mini">
+        <div class="sitem">
+            <h3>২৮+</h3>
+            <p>বছরের পথচলা</p>
+        </div>
+        <div class="sitem">
+            <h3>১০০০+</h3>
+            <p>ফারেগ আলেম</p>
+        </div>
+        <div class="sitem">
+            <h3>৫০০+</h3>
+            <p>বর্তমান ছাত্র</p>
+        </div>
+        <div class="sitem">
+            <h3>১০+</h3>
+            <p>বিভাগ</p>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════
+         সেকশন ২: ভৌগোলিক অবস্থান
+    ══════════════════════════════════════════════ -->
+    <h3>📍 ভৌগোলিক অবস্থান ও মনোরম পরিবেশ</h3>
+
+    <p>
+        বাংলার প্রধান প্রবেশদ্বার ও রাজধানী ঢাকার প্রাণকেন্দ্র হযরত শাহজালাল (রহ.) আন্তর্জাতিক 
+        বিমানবন্দরকে বুকে জড়িয়ে বিশাল দেহপল্লবী নিয়ে সগৌরবে দণ্ডায়মান <strong>"জামি'য়া বাবুস সালাম"</strong>।
+    </p>
+
+    <div class="location-grid">
+        <div class="location-card">
+            <span class="loc-icon">🏢</span>
+            <h4>পূর্ব পাশে</h4>
+            <p>র‍্যাব হেডকোয়ার্টার (নির্মাণাধীন) এবং সরকারি হজ ক্যাম্প</p>
+        </div>
+        <div class="location-card">
+            <span class="loc-icon">🚂</span>
+            <h4>উত্তর-পূর্বে</h4>
+            <p>বিমানবন্দর রেলওয়ে স্টেশন এবং ঢাকা-আশুলিয়া এলিভেটেড এক্সপ্রেসওয়ে</p>
+        </div>
+        <div class="location-card">
+            <span class="loc-icon">✈️</span>
+            <h4>নিকটবর্তী</h4>
+            <p>হযরত শাহজালাল (রহ.) আন্তর্জাতিক বিমানবন্দর</p>
+        </div>
+    </div>
+
+    <p>
+        যোগাযোগের দিক থেকে অত্যন্ত সুবিধাজনক স্থানে অবস্থিত হওয়ায় সারা দেশের ছাত্র 
+        ও ধর্মপ্রাণ শুভানুধ্যায়ীদের জন্য এটি এক উন্মুক্ত দ্বীনি মিলনমেলা।
+    </p>
+
+
+    <!-- ══════════════════════════════════════════════
+         সেকশন ৩: নামকরণের তাৎপর্য
+    ══════════════════════════════════════════════ -->
+    <div class="naming-section">
+        <h3>🌙 নামকরণের তাৎপর্য</h3>
+
+        <p>
+            চিরশান্তি, ক্ষমা ও বিশ্বজনীন কল্যাণের ধারক-বাহক মহানবী হযরত মুহাম্মদ সাল্লাল্লাহু 
+            আলাইহি ওয়াসাল্লাম-এর নিজ পবিত্র হাতে নির্মিত ঐতিহাসিক <strong>"মসজিদে নববী"</strong>—যেখান 
+            থেকে অহর্নিশ বর্ষিত হচ্ছে রহমতের অমীয় ধারা। মসজিদে নববীর অন্যতম একটি বরকতময় 
+            প্রধান প্রবেশদ্বারের নাম <strong>"বাবূস সালাম"</strong> (শান্তির তোরণ)।
+        </p>
+
+        <div class="highlight-quote" style="background: linear-gradient(135deg, #FF8F00, #E65100);">
+            <p>
+                যে ফটকে পড়েছে নবী করীম ﷺ-এর মোবারক কদমের পরশ, যে তোরণের সুশীতল ছায়ায় 
+                সাহাবায়ে কেরাম (রাযি.) তাঁদের হৃদয়কে প্রশান্ত করেছেন—উম্মতের জন্য আজও বয়ে চলা 
+                সেই শান্তির পরশ এবং বরকতের চিরন্তন প্রত্যাশায় এই প্রতিষ্ঠানের নামকরণ করা হয়েছে 
+                <strong>"জামি'য়া বাবুস সালাম"</strong>
+            </p>
+            <span class="source">بَابُ السَّلَام — শান্তির তোরণ</span>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════
+         সেকশন ৪: সংগ্রামী ইতিহাস
+    ══════════════════════════════════════════════ -->
+    <h3>📜 আমাদের সংগ্রামী ইতিহাস</h3>
+
+    <div class="history-timeline">
+
+        <!-- টাইমলাইন ১ -->
+        <div class="timeline-item">
+            <h4>🌱 গোড়াপত্তন (১৯৯৬)</h4>
+            <p>
+                একটি মহীরুহাকৃতির বৃক্ষের সূচনা যেমন একটি ক্ষুদ্র বীজ থেকে হয় ঠিক তেমনি 
+                জামিয়া বাবুস সালাম-এর বুনিয়াদ মাওলানা আনিসুর রহমান দ্বারা গোড়াপত্তন হয়। 
+                অত্র প্রতিষ্ঠানের মুহতামিম মাওলানা আনিসুর রহমান দীর্ঘদিন যাবৎ হৃদয়ের মণিকোঠায় 
+                একটি দ্বীনি মারকায গড়ার স্বপ্ন লালন করেছিলেন। সেই লালিত স্বপ্নকে 
+                <strong>১৯৯৬ সালের ১২ই মার্চ</strong> বাবুস সালাম প্রতিষ্ঠার মাধ্যমে মহান আল্লাহর 
+                অশেষ কৃপায় বাস্তবায়িত করেন।
+            </p>
+        </div>
+
+        <!-- টাইমলাইন ২ -->
+        <div class="timeline-item">
+            <h4>🚀 পথচলা শুরু</h4>
+            <p>
+                সেই থেকে শুরু হয় জামিয়া বাবুস সালাম-এর পথ চলা। দেশের অপরাপর দ্বীনি 
+                প্রতিষ্ঠানের ন্যায় সহজ-সরলভাবে প্রতিষ্ঠিত হয়নি এই প্রতিষ্ঠানটি, বরং তার 
+                পশ্চাতে রয়েছে এক রক্তাক্ত ইতিহাস।
+            </p>
+        </div>
+
+        <!-- টাইমলাইন ৩ -->
+        <div class="timeline-item">
+            <h4>🎓 বিভাগসমূহ প্রতিষ্ঠা</h4>
+            <p>
+                শত প্রতিকূলতা, ঘাত-প্রতিঘাত, দুর্যোগ ও দুর্যোগময়তা এবং শত বাধা-বিপত্তি 
+                পেরিয়ে মক্তব, হিফজ, ইফতা বিভাগসহ দাওরায়ে হাদিসের মোবারক দরস চালু 
+                করতে সক্ষম হয়।
+            </p>
+        </div>
+
+        <!-- টাইমলাইন ৪ -->
+        <div class="timeline-item">
+            <h4>🏛️ বর্তমান অবস্থান (২৮ বছর)</h4>
+            <p>
+                হাঁটি-হাঁটি পা-পা করে মাত্র ২৭ বছরে পা রেখেছে। বর্তমানে জামিয়া 
+                <strong>২৮ বছরে</strong> পদার্পণ করেছে এবং সুনামের সাথে দ্বীনি খেদমত অব্যাহত রেখেছে।
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- বাধা-বিপত্তি -->
+    <div class="struggle-box">
+        <h4>⚔️ বাধা-বিপত্তি ও ষড়যন্ত্র</h4>
+        <p>
+            প্রতিষ্ঠানটি শুরুলগ্ন থেকে স্বার্থান্বেষী মহলের লোলুপদৃষ্টির রোষানলে পড়ে। 
+            শুধুমাত্র একটি মহল নয়, বরং একাধিক মহল। তাদের হীনস্বার্থ চরিতার্থ করার 
+            জন্য বাধার প্রাচীর বানিয়েছিল বারবার।
+        </p>
+    </div>
+
+    <!-- আল্লাহর সাহায্য -->
+    <div class="victory-box">
+        <h4>🌿 আল্লাহর সাহায্য ও বিজয়</h4>
+        <p>
+            কিন্তু আল্লাহর অশেষ মেহেরবানীতে প্রতিষ্ঠানের মুহতামিম তাওয়াক্কুল ও ধৈর্যের 
+            মূর্তপ্রতীক মাওলানা আনিসুর রহমান ঈমানদীপ্ত চেতনা আর বলিষ্ঠ ভূমিকা এবং 
+            ছাত্র-উস্তাদদের গভীর ভক্তির রোমাঞ্চকারিতে বাতিলের সকল চক্রান্ত ধূলিসাৎ হয়।
+        </p>
+        <p>
+            স্বার্থান্বেষী মহলের সকল প্রচেষ্টাকে রুখতে এবং জামিয়ার অগ্রযাত্রাকে ধরে রাখতে 
+            ছাত্র-শিক্ষকসহ সকল শুভাকাঙ্ক্ষী জীবনবাজি রাখেন। <strong>আলহামদুলিল্লাহ!</strong> সেথোকে 
+            আজও সবধরনের বাধা-বিপত্তি ও ষড়যন্ত্রের হাত ডিঙিয়ে "বাবুস সালাম" শির উঁচু 
+            করে আপন লক্ষ্য পানে ছুটে চলছে।
+        </p>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════
+         সেকশন ৫: আহ্বান
+    ══════════════════════════════════════════════ -->
+    <div class="appeal-box">
+        <h3>🤲 আপনার সহযোগিতা কামনা</h3>
+        <p>
+            কিন্তু কুচক্রী মহলের অপতৎপরতা আজও থেমে নেই। তাই প্রতিষ্ঠানের অস্তিত্বকে 
+            টিকিয়ে রাখা ও সুচারুরূপে পরিচালনায় সহযোগিতা করার জন্য সকল শ্রেণির 
+            উদার মানুষের প্রতি উদাত্ত আহ্বান জানাচ্ছি।
+        </p>
+        <a href="donate.html" class="btn" style="background:#FFD700; color:#0a3622; font-size:15px; padding:12px 28px;">
+            💰 অনুদান দিয়ে সহযোগিতা করুন
+        </a>
+    </div>
+
+
+</div>
+<!-- পেজ কন্টেন্ট শেষ -->
+
+
+<div id="footer-placeholder"></div>
+
+<script src="../main.js"></script>
+</body>
+</html>
