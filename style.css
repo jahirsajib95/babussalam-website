@@ -1,7 +1,11 @@
 /* ═══════════════════════════════════════════
-   জামিয়া বাবুস সালাম — মূল স্টাইলশিট
+   গুগল ফন্ট লোড — Noto Sans Bengali
    ═══════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap');
 
+/* ═══════════════════════════════════════════
+   বেসিক রিসেট ও ভেরিয়েবল
+   ═══════════════════════════════════════════ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
@@ -16,16 +20,19 @@
     --border: #DEE2E6;
     --shadow: 0 2px 15px rgba(0,0,0,0.08);
     --radius: 12px;
+
+    /* ═══ Noto Sans Bengali ফন্ট ভেরিয়েবল ═══ */
+    --font-bengali: 'Noto Sans Bengali', sans-serif;
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-    font-family: 'Hind Siliguri', 'Noto Sans Bengali', Arial, sans-serif;
+    font-family: var(--font-bengali);
     background: var(--light);
     color: var(--dark);
     line-height: 1.8;
-    font-size: 16px;
+    font-size: 15px; /* Noto Sans ফন্টের সাইজ একটু বড় হওয়ায় ১৫পিএক্স পারফেক্ট */
 }
 
 a { text-decoration: none; color: var(--primary); transition: all 0.3s; }
@@ -500,4 +507,58 @@ img { max-width: 100%; height: auto; }
     .quick-grid { grid-template-columns: repeat(2, 1fr); }
     .logo-text h1 { font-size: 13px; }
     .logo-section img { width: 38px; height: 38px; }
+}
+
+/* ═══ হেডিং ফন্ট — সোলায়মানলিপি ═══ */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+}
+
+/* ═══ মেনু ও বাটন ফন্ট ═══ */
+.nav-menu,
+.nav-section-title,
+.nav-link-single,
+.nav-submenu a,
+.btn,
+.btn-submit,
+.notice-tab,
+.filter-btn,
+.quick-card .card-title,
+.footer-col h4,
+.footer-col a,
+.footer-col p {
+    font-family: var(--font-heading);
+}
+
+/* ═══ নোটিশ ও কার্ড ফন্ট ═══ */
+.notice-card h4,
+.notice-card .notice-excerpt,
+.info-card h4,
+.info-card p,
+.teacher-info h4,
+.teacher-info .designation,
+.download-card .file-info h4,
+.link-item .link-text,
+.donate-card h4 {
+    font-family: var(--font-body);
+}
+
+/* ═══════════════════════════════════════════
+   সমগ্র সাইটে Noto Sans Bengali ফন্ট সেটআপ
+   ═══════════════════════════════════════════ */
+h1, h2, h3, h4, h5, h6,
+input, textarea, select, button,
+.nav-menu,
+.nav-section-title,
+.nav-link-single,
+.nav-submenu a,
+.btn,
+.btn-submit,
+.notice-tab,
+.filter-btn,
+.quick-card .card-title,
+.footer-col h4,
+.footer-col a,
+.footer-col p {
+    font-family: var(--font-bengali) !important;
 }
