@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বিধি ও আইন - জামিয়া ইসলামিয়া</title>
+    
+    <!-- গুগল ফন্ট: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- আপনার মূল স্টাইলশীট লিংক -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- অ্যাকর্ডিয়ন এবং পেজের জন্য অতিরিক্ত কাস্টম স্টাইল -->
+    <style>
+        :root {
+            --primary: #0F5132;
+            --accent: #FFD700;
+            --primary-dark: #0a3622;
+            --primary-light: #198754;
+            --text-dark: #2d3748;
+            --bg-light: #f8faf9;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            color: var(--text-dark);
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ক্যাটাগরি সেকশন মার্জিন */
+        .policy-category-block {
+            margin-bottom: 35px;
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.35rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .category-title .cat-badge {
+            background-color: var(--primary);
+            color: var(--accent);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* সুন্দর এক্সপ্যান্ডেবল অ্যাকর্ডিয়ন ডিজাইন */
+        .rule-accordion {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .rule-accordion[open] {
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(15, 81, 50, 0.08);
+        }
+
+        /* অ্যাকর্ডিয়ন হেডারের স্টাইল */
+        .rule-summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 1.08rem;
+            color: var(--primary-dark);
+            background-color: var(--bg-light);
+            transition: background-color 0.25s ease, color 0.25s ease;
+            user-select: none;
+        }
+
+        .rule-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .rule-summary:hover {
+            background-color: #eef6f1;
+            color: var(--primary);
+        }
+
+        /* যখন কোনোটি ওপেন থাকবে তখন হেডারের স্টাইল */
+        .rule-accordion[open] > .rule-summary {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        /* ক্লিক ইন্ডিকেটর আইকন (তীর চিহ্ন) */
+        .accordion-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .rule-accordion[open] .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .rule-accordion[open] .accordion-icon svg path {
+            stroke: var(--accent);
+        }
+
+        /* নিয়মের ভেতরের বিস্তারিত কন্টেন্ট */
+        .rule-content {
+            padding: 20px 22px;
+            background-color: #ffffff;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .rule-content p {
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .rule-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .rule-list li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        /* বহিষ্কার সংক্রান্ত লাল সতর্কবার্তা কার্ড */
+        .warning-box {
+            background-color: #fff5f5;
+            border-left: 4px solid #dc3545;
+            padding: 15px 18px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .warning-box p {
+            color: #b02a37;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .warning-list {
+            padding-left: 20px;
+            color: #842029;
+            margin: 0;
+        }
+
+        .warning-list li {
+            margin-bottom: 6px;
+        }
+
+        /* রেসপনসিভ অ্যাডজাস্টমেন্ট */
+        @media (max-width: 768px) {
+            .rule-summary {
+                padding: 12px 15px;
+                font-size: 1rem;
+            }
+            .rule-content {
+                padding: 15px;
+            }
+            .category-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার ইনক্লুড প্লেসহোল্ডার (main.js দিয়ে লোড হবে) -->
+    <div id="header-placeholder"></div>
+
+    <!-- পেজ ব্যানার সেকশন -->
+    <section class="page-header">
+        <h2>বিধি ও আইন</h2>
+        <div class="breadcrumb">
+            <a href="../index.html">মূলপাতা</a> / <span>বিধি ও আইন</span>
+        </div>
+    </section>
+
+    <!-- মূল কন্টেন্ট এরিয়া -->
+    <main class="page-content">
+
+        <!-- পেজ পরিচিতি ও ভূমিকা বক্স -->
+        <div class="intro-box" style="margin-bottom: 30px;">
+            <h3 style="margin-top:0; border-bottom:none;">জামিয়ার শৃংখলা ও নিয়মনীতি প্রসঙ্গে</h3>
+            <p>
+                জামিয়া ইসলামিয়া একটি আদর্শ দ্বীনি শিক্ষাপ্রতিষ্ঠান। ইলমে ওহীর নূর হাসিল এবং আত্মশুদ্ধির মহান উদ্দেশ্যকে সফল করতে প্রাতিষ্ঠানিক নিয়মানুবর্তিতা ও সুশৃঙ্খল পরিবেশ রক্ষা করা প্রত্যেক তালিবে ইলমের উপর অবশ্য কর্তব্য। নিচে বর্ণিত বিধিমালার যেকোনো একটি শিরোনামে ক্লিক করে তার বিস্তারিত নিয়ম জেনে নিন।
+            </p>
+        </div>
+
+        <div class="highlight-quote" style="margin-bottom: 35px;">
+            "আদব ও শৃঙ্খলা হলো ইলম অর্জনের প্রধান সোপান। যিনি আদব রক্ষা করেন, তিনি উদ্দেশ্য হাসিলে সফল হন।"
+        </div>
+
+        <!-- ==============================================
+             ১. শিক্ষা বিষয়ক আইন-কানুন
+        ================================================== -->
+        <div class="policy-category-block">
+            <div class="category-title">
+                <span class="cat-badge">১</span>
+                <span>শিক্ষা বিষয়ক আইন-কানুন</span>
+            </div>
+
+            <!-- ১.১ কুতুবখানা সংক্রান্ত নিয়ম -->
+            <!-- আপনি ভেতরের লেখা পরিবর্তন করতে নিচের অংশ এডিট করুন -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>📖 কুতুবখানা সংক্রান্ত কিছু অবশ্য পালনীয় নিয়ম</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>কুতুবখানা থেকে কিতাব গ্রহণের জন্য নির্ধারিত লাইব্রেরি কার্ড বা অনুমতিপত্র থাকা আবশ্যক।</li>
+                        <li>কিতাব হাতে পাওয়ার পর যত্নসহকারে ব্যবহার করতে হবে; কোনো প্রকার দাগাদাগি, আন্ডারলাইন বা পাতা ছেঁড়া সম্পূর্ণ নিষেধ।</li>
+                        <li>ধার্যকৃত সময়ের মধ্যে কিতাব ফেরত দিতে হবে। অতিরিক্ত সময় রাখতে চাইলে কুতুবখানার দায়িত্বশীলের পূর্বানুমোদন নিতে হবে।</li>
+                        <li>কোনো কিতাব হারিয়ে গেলে বা মারাত্মক ক্ষতিগ্রস্ত হলে শিক্ষার্থীকে তার পূর্ণ মূল্য বা সমমানের কিতাব ক্ষতিপূরণ হিসেবে প্রদান করতে হবে।</li>
+                        <li>কুতুবখানার ভেতরে সর্বদা নীরবতা বজায় রাখতে হবে; সেখানে পারস্পরিক উচ্চৈঃস্বরে আলোচনা করা নিষিদ্ধ।</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- ১.২ পরীক্ষা সংক্রান্ত নিয়ম-কানুন -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>📝 পরীক্ষা সংক্রান্ত নিয়ম-কানুন</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>পরীক্ষা শুরুর অন্তত ১৫ মিনিট পূর্বে নির্ধারিত আসন গ্রহণ করতে হবে।</li>
+                        <li>অসুস্থতা বা শরয়ী ওজর ছাড়া কোনো পরীক্ষায় অনুপস্থিত থাকা যাবে না। অনুপস্থিতির ক্ষেত্রে যথাযথ কর্তৃপক্ষের পূর্বানুমোদন জরুরি।</li>
+                        <li>পরীক্ষার হলে কোনো প্রকার বই-পুস্তক, খাতা, অননুমোদিত কাগজ বা ইলেকট্রনিক ডিভাইস বহন সম্পূর্ণ নিষিদ্ধ।</li>
+                        <li>পরীক্ষায় অসদুপায় অবলম্বন বা নকল করা কঠোর অপরাধ বলে গণ্য হবে। এমনটি প্রমাণিত হলে সংশ্লিষ্ট বিষয়ের পরীক্ষা তৎক্ষণাৎ বাতিল এবং জামিয়া থেকে সাময়িক বা স্থায়ী বহিষ্কার করা হতে পারে।</li>
+                        <li>পরীক্ষকের অনুমতি ব্যতীত পরীক্ষার হল ত্যাগ করা যাবে না।</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- ১.৩ ছাত্র-পাঠাগার সংশ্লিষ্ট নিয়ম-কানুন -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>📚 ছাত্র-পাঠাগার সংশ্লিষ্ট নিয়ম-কানুন</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>ছাত্র-পাঠাগার মূলত ছাত্রদের আত্মোন্নয়ন ও জ্ঞানচর্চার উন্মুক্ত স্থান; এর নিয়মতান্ত্রিক সদস্য হয়ে বই সংগ্রহ করতে হবে।</li>
+                        <li>একবারে একটির বেশি বই ইস্যু করা যাবে না এবং নির্ধারিত মেয়াদের অতিরিক্ত সময় নিজের কাছে রাখা যাবে না।</li>
+                        <li>পাঠাগারের বই ছাত্রাবাসের বাইরে নেওয়া বা অন্য কোনো সহপাঠীর নিকট হস্তান্তর করা সম্পূর্ণ নিষিদ্ধ।</li>
+                        <li>পাঠাগারের পড়ার কক্ষে প্রবেশের সময় নিজস্ব জুতা বা স্যান্ডেল নির্ধারিত তাকে পরিপাটিভাবে রাখতে হবে।</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+
+        <!-- ==============================================
+             ২. আমল, আদব ও আখলাক সংশিষ্ট করনীয়-বর্জনীয়
+        ================================================== -->
+        <div class="policy-category-block">
+            <div class="category-title">
+                <span class="cat-badge">২</span>
+                <span>আমল, আদব ও আখলাক সংশিষ্ট করনীয়-বর্জনীয়</span>
+            </div>
+
+            <!-- ২.১ জামিয়া ও আসাতিযায়ে কিরাম সংক্রান্ত পালনীয় বিষয় -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>🤝 জামিয়া ও আসাতিযায়ে কিরাম সংক্রান্ত পালনীয় বিষয়</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>আসাতাজায়ে কিরামের প্রতি সর্বদা সর্বোচ্চ ভক্তি, তাযীম ও শ্রদ্ধা বজায় রাখতে হবে।</li>
+                        <li>উস্তাদদের নির্দেশিত যেকোনো শিক্ষণীয় খেদমত ও উপদেশ আন্তরিকতার সাথে মেনে চলা সৌভাগ্যের কারণ মনে করতে হবে।</li>
+                        <li>উস্তাদের সামনে কথা বলার সময় দৃষ্টি অবনত রাখা এবং বিনীত ভাব প্রকাশ করা তালিবে ইলমের অন্যতম ভূষণ।</li>
+                        <li>জামিয়ার সকল অবকাঠামো, আসবাবপত্র ও পরিবেশের সম্মান রক্ষা করা ঈমানী দায়িত্বের অংশ।</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- ২.২ নামায ও জামাআতের এহতেমাম -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>🕌 নামায ও জামাআতের এহতেমাম</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>পাঁচ ওয়াক্ত নামায তাকবীরে উলার সাথে মসজিদে জামাআতে আদায় করা প্রত্যেক ছাত্রের জন্য আবশ্যক (ওয়াজিবতুল্য)।</li>
+                        <li>আযান হওয়ার সাথে সাথেই সকল পাঠ্য বা ব্যক্তিগত কাজ স্থগিত রেখে ওযু ও প্রস্তুতির জন্য মসজিদে উপস্থিত হতে হবে।</li>
+                        <li>তাহাজ্জুদ, ইশরাক, চাশত ও আওয়াবীন নামাযের ব্যাপারে যথাসাধ্য যত্নবান হতে হবে।</li>
+                        <li>জামাআত ব্যতীত একাকী নামায আদায় করা কিংবা অলসতাবশত জামাআত ছুটে যাওয়া চরম শৃঙ্খলাভঙ্গ হিসেবে বিবেচিত হবে।</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- ২.৩ একজন তালিবে ইলমের আদর্শ -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>✨ একজন তালিবে ইলমের আদর্শ</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <p>একজন প্রকৃত তালিবে ইলম বা দ্বীনি শিক্ষার্থীর জীবন হবে সুন্নাহর রঙে রঙিন। তার ভেতর নিম্নোক্ত গুণাবলী থাকা আবশ্যক:</p>
+                    <ul class="rule-list">
+                        <li><strong>সত্যবাদিতা ও সততা:</strong> সর্বাবস্থায় সত্য কথা বলা এবং আমানত রক্ষা করা।</li>
+                        <li><strong>জিহ্বার হেফাজত:</strong> গীবত, শেকায়েত, কটু কথা, অনর্থক বাক্যব্যয় ও মিথ্যা পরিহার করা।</li>
+                        <li><strong>বিনয় ও ধৈর্য:</strong> অহংকারমুক্ত থাকা এবং সহপাঠী ও ছোটদের প্রতি দয়া ও বড়দের প্রতি শ্রদ্ধা প্রকাশ করা।</li>
+                        <li><strong>সময়ের মূল্যায়ন:</strong> রাত-দিনের প্রতিটি মুহূর্তকে ইলম হাসিল ও ইবাদতের পেছনে কাজে লাগানো।</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+
+        <!-- ==============================================
+             ৩. আবাসিক ও বোর্ডিং বিষয়ক নীতিমালা
+        ================================================== -->
+        <div class="policy-category-block">
+            <div class="category-title">
+                <span class="cat-badge">৩</span>
+                <span>আবাসিক ও বোর্ডিং বিষয়ক নীতিমালা</span>
+            </div>
+
+            <!-- ৩.১ দারুল ইকামা/আবাসন বিষয়ক কানুন -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>🏢 দারুল ইকামা/আবাসন বিষয়ক কানুন</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>কর্তৃপক্ষ কর্তৃক নির্ধারিত সিট বা বিছানায় অবস্থান করতে হবে; নাযেমে দারুল ইক্বামার অনুমতি ব্যতীত সিট পরিবর্তন করা যাবে না।</li>
+                        <li>রাত ১০:০০ টার মধ্যে ছাত্রাবাসের মূল বাতি বন্ধ করে বিশ্রামে যেতে হবে; রাতে অযথা জাগ্রত থেকে ঘুমে ব্যাঘাত সৃষ্টি করা যাবে না।</li>
+                        <li>ছাত্রাবাসে কোনো বহিরাগত বা অনাবাসিক মেহমানকে কর্তৃপক্ষের লিখিত অনুমতি ব্যতীত রাত্রিযাপন করাতে দেওয়া সম্পূর্ণ নিষেধ।</li>
+                        <li>নিজ নিজ কামরা ও সংলগ্ন বারান্দা সর্বদা ঝাড়ু দিয়ে পরিচ্ছন্ন রাখা কামরাবাসীদের যৌথ দায়িত্ব।</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- ৩.২ বোর্ডিং সম্পর্কে ছাত্রদের পালনীয় বিষয় -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>🍽️ বোর্ডিং সম্পর্কে ছাত্রদের পালনীয় বিষয়</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>খাবার গ্রহণের সময় দস্তরখানে শৃঙ্খলা বজায় রাখতে হবে এবং সুন্নাত তরিকায় খাবার গ্রহণ করতে হবে।</li>
+                        <li>এক লোকমা খাবার বা এক ফোঁটা পানীয় অপচয় করা যাবে না; যতটুকু প্রয়োজন ঠিক ততটুকুই গ্রহণ করতে হবে।</li>
+                        <li>খাবার শেষে নিজ নিজ থালা-বাসন পরিষ্কার করে নির্ধারিত স্থানে সাজিয়ে রাখতে হবে।</li>
+                        <li>নির্ধারিত খাবার সময়ের পর বোর্ডিং কর্মীদের কাছে খাবার চেয়ে বিরক্ত করা নিষেধ।</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- ৩.৩ ছাত্রদের জন্য বোর্ডিং সময়সূচি -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>⏰ ছাত্রদের জন্য বোর্ডিং সময়সূচি</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <p>ছাত্রদের নিম্নোক্ত নির্ধারিত সময়সূচি অনুযায়ী খাবার গ্রহণ নিশ্চিত করতে হবে:</p>
+                    
+                    <!-- সময়সূচির টেবিল (table-wrap ক্লাসের ভেতরে) -->
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>বেলার নাম</th>
+                                    <th>শুরুর সময়</th>
+                                    <th>সমাপ্তির সময়</th>
+                                    <th>মন্তব্য</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>সকালের নাস্তা</strong></td>
+                                    <td>ফজরের পর (সকাল ৬:৩০)</td>
+                                    <td>সকাল ৭:১৫</td>
+                                    <td>ক্লাসের পূর্বে নাস্তা সম্পন্ন করা আবশ্যক</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>দুপুরের খাবার</strong></td>
+                                    <td>যোহরের নামাযের পর (দুপুর ১:৪৫)</td>
+                                    <td>দুপুর ২:৩০</td>
+                                    <td>কায়লুলার (বিশ্রামের) আগে খাবার শেষ করতে হবে</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>নৈশভোজ (রাতের খাবার)</strong></td>
+                                    <td>এশার নামাযের পর (রাত ৮:৪৫)</td>
+                                    <td>রাত ৯:৩০</td>
+                                    <td>মুতালাআ বা পড়ার জন্য প্রস্তুত হতে হবে</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+
+        <!-- ==============================================
+             ৪. ব্যক্তিগত শৃঙ্খলা ও পরিচ্ছন্নতা
+        ================================================== -->
+        <div class="policy-category-block">
+            <div class="category-title">
+                <span class="cat-badge">৪</span>
+                <span>ব্যক্তিগত শৃঙ্খলা ও পরিচ্ছন্নতা</span>
+            </div>
+
+            <!-- ৪.১ পোশাক-পরিচ্ছদ -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>🥼 পোশাক-পরিচ্ছদ সংক্রান্ত নীতিমালা</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>সর্বদা শরীয়তসম্মত শালীন ও সুন্নতি পোশাক পরিধান করতে হবে (সাদা বা মার্জিত রঙের কুর্তা/জুব্বা, সুন্নতি পায়জামা ও গোল টুপি)।</li>
+                        <li>কোনো প্রকার আঁটসাঁট, রঙচঙে, পশ্চিমা স্টাইলের টি-শার্ট, জিন্স বা অশালীন পোশাক ক্যাম্পাসে সম্পূর্ণ নিষিদ্ধ।</li>
+                        <li>পোশাক সর্বদা পরিষ্কার ও পরিপাটি রাখতে হবে। দুর্গন্ধযুক্ত কাপড় পরে জামাআতে বা ক্লাসে বসা নিষেধ।</li>
+                        <li>মাথার চুল সুন্নাত অনুযায়ী এক সমান ছোট রাখতে হবে; কোনো প্রকার ফ্যাশনেবল বা দৃষ্টিকটু হেয়ারকাট কঠোরভাবে নিষিদ্ধ। নখ নিয়মিত কাটতে হবে।</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+
+        <!-- ==============================================
+             ৫. প্রযুক্তি, সামাজিক আচরণ ও শৃঙ্খলা
+        ================================================== -->
+        <div class="policy-category-block">
+            <div class="category-title">
+                <span class="cat-badge">৫</span>
+                <span>প্রযুক্তি, সামাজিক আচরণ ও শৃঙ্খলা</span>
+            </div>
+
+            <!-- ৫.১ মোবাইল ও ডিভাইস সংক্রান্ত নীতিমালা -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>📱 মোবাইল, ল্যাপটপ, স্মার্ট ঘড়ি ও ইলেকট্রিক ডিভাইস সংক্রান্ত নীতিমালা</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>সাধারণ শিক্ষার্থীদের জন্য জামিয়া চত্বরে কোনো ধরনের স্মার্টফোন, ট্যাবলেট, স্মার্টওয়াচ বা ইন্টারনেট সংযোগকারী ডিভাইস রাখা সম্পূর্ণ নিষিদ্ধ।</li>
+                        <li>অভিভাবকের সাথে যোগাযোগের প্রয়োজন হলে জামিয়ার অফিস ফোন বা তদারককারী উস্তাদের মাধ্যমে যোগাযোগ করতে হবে।</li>
+                        <li>উচ্চতর মারহালার (ফযীলত বা তাকমীল) ছাত্রদের বিশেষ একাডেমিক প্রয়োজনে ল্যাপটপ ব্যবহারের দরকার হলে কর্তৃপক্ষের লিখিত অনুমতি গ্রহণ বাধ্যতামূলক।</li>
+                        <li>অননুমোদিত কোনো ডিভাইস কারো কাছে পাওয়া গেলে তা তৎক্ষণাৎ স্থায়ীভাবে বাজেয়াপ্ত করা হবে এবং সংশ্লিষ্ট ছাত্রের বিরুদ্ধে শাস্তিমূলক ব্যবস্থা নেওয়া হবে।</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- ৫.২ সহপাঠী সংশ্লিষ্ট নীতিমালা -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>👥 সহপাঠী সংশ্লিষ্ট নীতিমালা</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>সহপাঠীদের সাথে ভ্রাতৃত্বপূর্ণ, সহমর্মী ও সৌহার্দ্যপূর্ণ আচরণ করতে হবে।</li>
+                        <li>একে অপরকে কোনো খারাপ বা আপত্তিকর নামে ডাকা, উপহাস করা কিংবা গালিগালাজ করা কবিরা গুনাহ ও জামিয়ার আইনে কঠোরভাবে নিষিদ্ধ।</li>
+                        <li>পারস্পরিক কোনো মতানৈক্য দেখা দিলে নিজেরা তর্কে না জড়িয়ে দায়িত্বশীল শিক্ষকের শরণাপন্ন হতে হবে।</li>
+                        <li>সহপাঠীর কোনো জিনিসপত্র অনুমতি ছাড়া ব্যবহার করা যাবে না।</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- ৫.৩ জামিয়া থেকে বহিষ্কারের ৫টি কারণ -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>⚠️ জামিয়া থেকে সরাসরি বহিষ্কারের ৫টি কারণ</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <div class="warning-box">
+                        <p>নিম্নোক্ত পাঁচটি মারাত্মক অপরাধের যেকোনো একটি প্রমাণিত হলে সংশ্লিষ্ট ছাত্রকে জামিয়া থেকে কোনো প্রকার পূর্ব সতর্কবার্তা ছাড়াই তাৎক্ষণিক বহিষ্কার করা হবে:</p>
+                        <ol class="warning-list">
+                            <li>উস্তাদ, জামিয়া প্রশাসন বা কর্মচারীদের সাথে চরম বেয়াদবি, দুর্ব্যবহার বা অবাধ্যতা প্রদর্শন করা।</li>
+                            <li>শরীয়তবিরোধী যেকোনো কবিরা গুনাহ, অনৈতিক কর্মকাণ্ড বা ফৌজদারি অপরাধে লিপ্ত হওয়া।</li>
+                            <li>কর্তৃপক্ষের কঠোর নিষেধাজ্ঞা সত্ত্বেও গোপনে স্মার্টফোন, নিষিদ্ধ ডিভাইস বা ইন্টারনেটের অপব্যবহার করা।</li>
+                            <li>কর্তৃপক্ষের অনুমতি ছাড়া দীর্ঘ সময় পলাতক থাকা কিংবা লাগাতার জামাত ও ক্লাসে অনুপস্থিত থাকা।</li>
+                            <li>সহপাঠীদের সাথে মারামারি, কোনো প্রকার দলাদলি, রাজনৈতিক কর্মকাণ্ড বা অভ্যন্তরীণ শান্তিশৃঙ্খলা বিনষ্টে নেতৃত্ব দেওয়া।</li>
+                        </ol>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+
+        <!-- ==============================================
+             ৬. ছুটি ও সাধারণ বিধান
+        ================================================== -->
+        <div class="policy-category-block">
+            <div class="category-title">
+                <span class="cat-badge">৬</span>
+                <span>ছুটি ও সাধারণ বিধান</span>
+            </div>
+
+            <!-- ৬.১ ছুটি সংক্রান্ত নীতিমালা -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>📅 ছুটি সংক্রান্ত নীতিমালা</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>ছুটি পাওয়ার জন্য অভিভাবকের সরাসরি আবেদন অথবা অনুমোদিত কারণ সাপেক্ষে 'নাযেমে দারুল ইক্বামা' বরাবর আবেদনপত্র দাখিল করতে হবে।</li>
+                        <li>গুরুতর অসুস্থতা বা পিতা-মাতার জরুরি প্রয়োজন ছাড়া সাধারণ কারণে কোনো ছুটি মঞ্জুর করা হবে না।</li>
+                        <li>ছুটি মঞ্জুর হলে 'ছুটিপত্র' গ্রহণ করে ক্যাম্পাসের গেট ত্যাগ করতে হবে এবং ফিরে আসার সাথে সাথে তা জমা দিতে হবে।</li>
+                        <li>ছুটি শেষ হওয়ার সাথে সাথেই নির্ধারিত দিন ও সময়ে ক্লাসে উপস্থিত হতে হবে। বিলম্বের ক্ষেত্রে প্রতিদিনের জন্য প্রশাসনিক জরিমানা প্রযোজ্য হবে।</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- ৬.২ বিবিধ নীতিমালা -->
+            <details class="rule-accordion" name="jamia-rules">
+                <summary class="rule-summary">
+                    <span>📌 বিবিধ নীতিমালা</span>
+                    <span class="accordion-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#0F5132" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                </summary>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>জামিয়ার পরিবেশ, প্রশাসনিক সিদ্ধান্ত বা যেকোনো অভ্যন্তরীণ বিষয় নিয়ে সামাজিক যোগাযোগ মাধ্যমে পোস্ট দেওয়া বা বিতর্ক সৃষ্টি করা সম্পূর্ণরূপে নিষিদ্ধ।</li>
+                        <li>কর্তৃপক্ষের পূর্বানুমতি ব্যতিরেকে কোনো বাহ্যিক প্রকাশনা, দেয়ালিকা, বিতর্ক প্রতিযোগিতা কিংবা সংগঠনের সাথে যুক্ত হওয়া যাবে না।</li>
+                        <li>জামিয়া আঙিনায় সাইকেল বা মোটরসাইকেল দ্রুত চালানো নিষেধ।</li>
+                        <li>সময়ের প্রয়োজনে জামিয়া কর্তৃপক্ষ যেকোনো নিয়ম সংশোধন, সংযোজন বা পরিবর্তনের পূর্ণ অধিকার সংরক্ষণ করে।</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+    </main>
+
+    <!-- ফুটার ইনক্লুড প্লেসহোল্ডার (main.js দিয়ে লোড হবে) -->
+    <div id="footer-placeholder"></div>
+
+    <!-- মূল স্ক্রিপ্ট ফাইল -->
+    <script src="../main.js"></script>
+
+    <!-- একসাথে যেন কেবল একটাই এক্সপ্যান্ড হয় তার জন্য স্ক্রিপ্ট -->
+    <script>
+        // সকল অ্যাকর্ডিয়ন এলিমেন্ট সিলেক্ট করা
+        const accordions = document.querySelectorAll('.rule-accordion');
+
+        accordions.forEach((targetDetail) => {
+            targetDetail.addEventListener('toggle', () => {
+                // যদি এটি ওপেন হয়, তবে বাকি সবগুলো ক্লোজ করে দেওয়া হবে
+                if (targetDetail.open) {
+                    accordions.forEach((detail) => {
+                        if (detail !== targetDetail && detail.open) {
+                            detail.removeAttribute('open');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
