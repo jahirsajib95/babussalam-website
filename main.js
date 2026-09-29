@@ -169,8 +169,4 @@ function filterNotice(type, btn) {
             cards[j].style.display = 'none';
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> b7ad885bb19c761d364c32f356d87a25e6ce9561
