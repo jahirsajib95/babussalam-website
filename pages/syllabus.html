@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সিলেবাস | জামিয়া দারুল উলুম বাবুস সালাম</title>
+    <!-- মূল স্টাইলশীট -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- শুধুমাত্র এই পেজের বিশেষ ডিজাইনের জন্য কাস্টম CSS -->
+    <style>
+        /* চলতি সিলেবাসের হাইলাইট বক্স */
+        .featured-syllabus {
+            background: var(--light);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+
+        .syllabus-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .syllabus-badge {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* গুগল ড্রাইভ প্রিভিউ ফ্রেমের কন্টেইনার */
+        .drive-preview-container {
+            position: relative;
+            width: 100%;
+            height: 650px;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .drive-preview-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* অ্যাকশন বাটন গ্রুপ */
+        .syllabus-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* আর্কাইভ / পূর্ববর্তী বছরের কার্ড স্টাইল */
+        .archive-box {
+            margin-top: 40px;
+        }
+
+        .archive-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .archive-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-light);
+        }
+
+        .archive-info h4 {
+            margin: 0 0 5px 0;
+            color: var(--primary);
+        }
+
+        .archive-info p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* মোবাইলের জন্য প্রিভিউ সাইজ অপ্টিমাইজেশন */
+        @media (max-width: 768px) {
+            .drive-preview-container {
+                height: 420px;
+            }
+            .syllabus-header-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .syllabus-actions {
+                width: 100%;
+            }
+            .syllabus-actions .btn {
+                flex: 1;
+                text-align: center;
+                justify-content: center;
+            }
+            .archive-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
+    <div id="header-placeholder"></div>
+
+    <!-- পেজ ব্যানার ও ব্রেডক্রাম্ব -->
+    <section class="page-header">
+        <h2>সিলেবাস</h2>
+        <div class="breadcrumb">
+            <a href="../index.html">মূলপাতা</a> /
+            <span>একাডেমিক</span> /
+            <span>সিলেবাস</span>
+        </div>
+    </section>
+
+    <!-- মূল কন্টেন্ট শুরু -->
+    <main class="page-content">
+
+        <!-- পেজের সাধারণ ভূমিকা -->
+        <div style="text-align: center; margin-bottom: 30px;">
+            <p>জামিয়া দারুল উলুম বাবুস সালাম-এর বর্তমান ও বিগত শিক্ষাবর্ষসমূহের পূর্ণাঙ্গ সিলেবাস নিচে দেওয়া হলো। সরাসরি প্রিভিউ দেখুন অথবা ডাউনলোড করে সংরক্ষণ করুন।</p>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- 🔴 সবার উপরে থাকবে সর্বশেষ সিলেবাস (এখানে 2025/26 দেওয়া আছে) -->
+        <!-- নতুন বছর আসলে এই সম্পূর্ণ বক্সটি এডিট করবেন অথবা কপি করে উপরে রাখবেন -->
+        <!-- ================================================================= -->
+        <section class="featured-syllabus">
+            <div class="syllabus-header-row">
+                <div>
+                    <span class="syllabus-badge">✨ সর্বশেষ সংযোজন</span>
+                    <!-- 👇 শিক্ষাবর্ষ পরিবর্তন করতে এই লেখাটি পরিবর্তন করুন -->
+                    <h3 style="margin: 10px 0 0 0; border: none; padding: 0;">সিলেবাস ২০২৫–২০২৬ (2025/26)</h3>
+                </div>
+
+                <div class="syllabus-actions">
+                    <!-- 👇 গুগল ড্রাইভে সরাসরি দেখার লিংক (view?usp=sharing ফরম্যাট) -->
+                    <a href="https://drive.google.com/file/d/1AsKkKCLbewV-uTNthIZTcugd3J2u2Wem/view?usp=sharing" target="_blank" class="btn btn-outline" style="color: var(--primary); border-color: var(--primary);">
+                        👁️ ফুলস্ক্রিন দেখুন
+                    </a>
+
+                    <!-- 👇 সরাসরি ডাউনলোড করার গুগল ড্রাইভ লিংক -->
+                    <a href="https://drive.google.com/file/d/1AsKkKCLbewV-uTNthIZTcugd3J2u2Wem/view?usp=sharing" target="_blank" class="btn btn-primary">
+                        ⬇️ ডাউনলোড করুন
+                    </a>
+                </div>
+            </div>
+
+            <!-- গুগল ড্রাইভ প্রিভিউ ফ্রেম -->
+            <!-- ⚠️ নির্দেশনা: নিচের iframe-এর 'src'-এ আপনার ড্রাইভ ফাইলের আইডি বসিয়ে শেষে /preview লিখবেন -->
+            <div class="drive-preview-container">
+                <iframe 
+                    src="https://drive.google.com/file/d/1AsKkKCLbewV-uTNthIZTcugd3J2u2Wem/preview" 
+                    allow="autoplay"
+                    loading="lazy">
+                </iframe>
+            </div>
+            
+            <p style="font-size: 0.85rem; color: var(--gray); margin-top: 12px; margin-bottom: 0; text-align: center;">
+                💡 প্রিভিউ দেখতে সমস্যা হলে উপরের "ফুলস্ক্রিন দেখুন" অথবা "ডাউনলোড করুন" বাটনে ক্লিক করুন।
+            </p>
+        </section>
+
+
+        <!-- ================================================================= -->
+        <!-- 🗄️ পূর্ববর্তী শিক্ষাবর্ষের সিলেবাস আর্কাইভ -->
+        <!-- পেজের লোডিং স্পিড ঠিক রাখতে অতীতের সিলেবাসগুলো লিস্ট আকারে নিচে থাকবে -->
+        <!-- ================================================================= -->
+        <section class="archive-box">
+            <h3 style="margin-bottom: 20px;">📚 পূর্ববর্তী শিক্ষাবর্ষের সিলেবাসসমূহ</h3>
+
+            <!-- ------------------------------------------------------------- -->
+            <!-- একটি বিগত বছরের সিলেবাস আইটেম (শুরু) -->
+            <!-- ------------------------------------------------------------- -->
+            <div class="archive-card">
+                <div class="archive-info">
+                    <!-- 👇 শিক্ষাবর্ষ -->
+                    <h4>সিলেবাস ২০২৪–২০২৫</h4>
+                    <p>নূরানী, হিফজ ও কিতাব বিভাগ (পিডিএফ ফরম্যাট)</p>
+                </div>
+                <div class="syllabus-actions">
+                    <!-- 👇 ড্রাইভ লিংক পেস্ট করুন -->
+                    <a href="https://drive.google.com/" target="_blank" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem; color: var(--dark); border-color: var(--border);">
+                        👁️ দেখুন
+                    </a>
+                    <!-- 👇 ড্রাইভ লিংক পেস্ট করুন -->
+                    <a href="https://drive.google.com/" target="_blank" class="btn btn-green" style="padding: 8px 16px; font-size: 0.9rem;">
+                        ⬇️ ডাউনলোড
+                    </a>
+                </div>
+            </div>
+            <!-- একটি বিগত বছরের সিলেবাস আইটেম (শেষ) -->
+
+
+            <!-- ------------------------------------------------------------- -->
+            <!-- 📋 নতুন বিগত বছরের আইটেম যুক্ত করতে নিচের কোডটি কপি করে নিচে পেস্ট করুন -->
+            <!-- ------------------------------------------------------------- -->
+            <div class="archive-card">
+                <div class="archive-info">
+                    <h4>সিলেবাস ২০২৩–২০২৪</h4>
+                    <p>বার্ষিক পূর্ণাঙ্গ পাঠ্যক্রম ও রুটিন</p>
+                </div>
+                <div class="syllabus-actions">
+                    <a href="https://drive.google.com/" target="_blank" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem; color: var(--dark); border-color: var(--border);">
+                        👁️ দেখুন
+                    </a>
+                    <a href="https://drive.google.com/" target="_blank" class="btn btn-green" style="padding: 8px 16px; font-size: 0.9rem;">
+                        ⬇️ ডাউনলোড
+                    </a>
+                </div>
+            </div>
+            <!-- কপি-পেস্ট করার নমুনা শেষ -->
+
+        </section>
+
+    </main>
+    <!-- মূল কন্টেন্ট শেষ -->
+
+    <!-- ফুটার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
+    <div id="footer-placeholder"></div>
+
+    <!-- মূল স্ক্রিপ্ট -->
+    <script src="../main.js"></script>
+</body>
+</html>
