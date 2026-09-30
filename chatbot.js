@@ -3,7 +3,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 // ✅ আপনার দেওয়া সক্রিয় Gemini API Key
-const GEMINI_API_KEY = "AQ.Ab8RN6LYjinK0UxrnEjpUpPQeej7aRf9Jd5MHwy8vYtdv_EeJw";
+const GEMINI_API_KEY = "AQ.Ab8RN6JL5VpQa_ILLkc5jiS4W6cpMCN3_zf3y4Uk6oIuOg3Qgg";
 
 // ════ জামিয়ার সকল তথ্যের ডাটাবেজ (AI-এর ব্রেন) ════
 const JAMIA_KNOWLEDGE_BASE = `
@@ -74,8 +74,7 @@ async function sendAIMessage() {
     const loadingId = appendLoadingIndicator();
 
     try {
-        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
-
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
         // রিকোয়েস্ট তৈরি
         const response = await fetch(endpoint, {
             method: "POST",
