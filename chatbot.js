@@ -1,11 +1,14 @@
 /* ═══════════════════════════════════════════════════════════════
-   🤖 জামিয়া বাবুস সালাম — Gemini AI চ্যাটবট ইঞ্জিন (আপডেটেড)
+   🤖 জামিয়া বাবুস সালাম — AI চ্যাটবট ইঞ্জিন (সফল ভার্সন)
    ═══════════════════════════════════════════════════════════════ */
 
-// ✅ আপনার দেওয়া সক্রিয় Gemini API Key
-const GEMINI_API_KEY = "AQ.Ab8RN6JL5VpQa_ILLkc5jiS4W6cpMCN3_zf3y4Uk6oIuOg3Qgg";
+// ✅ আপনার সফলভাবে টেস্ট করা API Key এখানে বসান
+const AI_API_KEY = "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";
 
-// ════ জামিয়ার সকল তথ্যের ডাটাবেজ (AI-এর ব্রেন) ════
+// ✅ আপনার একাউন্টের কার্যকরী মডেল
+const AI_MODEL = "openai/gpt-oss-120b";
+
+// ════ জামিয়ার তথ্যের ডাটাবেজ (AI-এর ব্রেন) ════
 const JAMIA_KNOWLEDGE_BASE = `
 তুমি "জামিয়া দারুল উলুম বাবুস সালাম"-এর অফিসিয়াল এআই সহকারী (AI Assistant)।
 তোমার নাম "বাবুস সালাম এআই"। তুমি অত্যন্ত ভদ্র, বিনয়ী, আন্তরিক ও দ্বীনি মেজাজে ব্যবহারকারীদের প্রশ্নের উত্তর দেবে।
@@ -33,7 +36,7 @@ const JAMIA_KNOWLEDGE_BASE = `
    - বিভিন্ন জেলা ও উপজেলায় অধীনস্থ একাধিক শাখা মাদ্রাসা।
    - দাওয়াহ ও সমাজসেবায় "বাবুস সালাম কাফেলা" এবং অগ্রগামী "হাওয়ারিয়ান কাফেলা"।
 ১০. যোগাযোগ ও অনুদান:
-   - মোবাইল/হেল্পলাইন: ০১৭XXXXXXXX
+   - মোবাইল/হেল্পলাইন: ০১৭১১-XXXXXX
    - অনুদান পদ্ধতি: বিকাশ, নগদ এবং ইসলামী ব্যাংক একাউন্টের মাধ্যমে সাদকায়ে জারিয়ার উদ্দেশ্যে অনুদান পাঠানো যায়।
 
 উত্তর দেওয়ার নীতিমালা:
@@ -42,7 +45,7 @@ const JAMIA_KNOWLEDGE_BASE = `
 - উত্তরের আকার খুব বেশি লম্বা করবে না, যাতে মোবাইলে পড়তে সুবিধা হয়।
 `;
 
-// চ্যাট হিস্ট্রি ধরে রাখার জন্য
+// চ্যাট হিস্ট্রি ধরে রাখার জন্য তালিকা
 let chatHistory = [];
 
 // চ্যাটবক্স খোলা ও বন্ধ করার ফাংশন
@@ -50,100 +53,98 @@ function toggleAIChat() {
     const chatBox = document.getElementById("aiChatBox");
     const chatBtn = document.getElementById("aiChatBtn");
     
+    if (!chatBox) return;
+
     if (chatBox.classList.contains("active")) {
         chatBox.classList.remove("active");
-        chatBtn.style.display = "flex";
+        if (chatBtn) chatBtn.style.display = "flex";
     } else {
         chatBox.classList.add("active");
-        chatBtn.style.display = "none";
-        document.getElementById("aiChatInput").focus();
+        if (chatBtn) chatBtn.style.display = "none";
+        const inputField = document.getElementById("aiChatInput");
+        if (inputField) inputField.focus();
     }
 }
 
-// মেসেজ পাঠানোর ফাংশন
+// মেসেজ পাঠানোর মূল ফাংশন
 async function sendAIMessage() {
     const inputField = document.getElementById("aiChatInput");
+    if (!inputField) return;
+
     const messageText = inputField.value.trim();
     if (!messageText) return;
 
-    // ইউজার মেসেজ স্ক্রিনে দেখানো
+    // ১. ইউজার মেসেজ স্ক্রিনে দেখানো
     appendChatMessage("user", messageText);
     inputField.value = "";
     
-    // লোডিং অ্যানিমেশন দেখানো
+    // ২. লোডিং অ্যানিমেশন দেখানো
     const loadingId = appendLoadingIndicator();
 
     try {
-        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
-        // রিকোয়েস্ট তৈরি
-        const response = await fetch(endpoint, {
+        // নতুন ও আধুনিক API কল
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "x-goog-api-key": GEMINI_API_KEY
+                "Authorization": `Bearer ${AI_API_KEY.trim()}`
             },
             body: JSON.stringify({
-                systemInstruction: {
-                    parts: [{ text: JAMIA_KNOWLEDGE_BASE }]
-                },
-                contents: [
+                model: AI_MODEL,
+                messages: [
+                    {
+                        role: "system",
+                        content: JAMIA_KNOWLEDGE_BASE
+                    },
                     ...chatHistory,
                     {
                         role: "user",
-                        parts: [{ text: messageText }]
+                        content: messageText
                     }
                 ],
-                generationConfig: {
-                    temperature: 0.6,
-                    maxOutputTokens: 600
-                }
+                temperature: 0.6,
+                max_tokens: 600
             })
         });
 
+        const data = await response.json();
+
         if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            console.error("Gemini API Server Error:", errData);
-            throw new Error(errData.error?.message || "HTTP_ERROR_" + response.status);
+            console.error("AI Error Details:", data);
+            throw new Error(data.error?.message || "সার্ভার এরর");
         }
 
-        const data = await response.json();
-        const botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "দুঃখিত, কোনো উত্তর পাওয়া যায়নি।";
+        const botReply = data.choices?.[0]?.message?.content || "দুঃখিত, কোনো উত্তর পাওয়া যায়নি।";
 
-        // চ্যাট হিস্ট্রি আপডেট
-        chatHistory.push({ role: "user", parts: [{ text: messageText }] });
-        chatHistory.push({ role: "model", parts: [{ text: botReply }] });
+        // চ্যাট হিস্ট্রি আপডেট (যাতে আগের কথার প্রসঙ্গ মনে রাখতে পারে)
+        chatHistory.push({ role: "user", content: messageText });
+        chatHistory.push({ role: "assistant", content: botReply });
 
-        // লোডিং মুছে বটের উত্তর বসানো
+        // লোডিং মুছে বটের উত্তর স্ক্রিনে দেখানো
         removeLoadingIndicator(loadingId);
         appendChatMessage("bot", botReply);
 
     } catch (error) {
         removeLoadingIndicator(loadingId);
-        console.error("AI Error:", error);
-        
-        let errorMsg = "দুঃখিত, বর্তমানে সংযোগে সমস্যা হচ্ছে। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।";
-        if (error.message && error.message.includes("API key not valid")) {
-            errorMsg = "⚠️ API Key ভ্যালিডেশন ব্যর্থ হয়েছে। অনুগ্রহ করে কি সঠিক আছে কিনা চেক করুন।";
-        }
-        appendChatMessage("bot", errorMsg);
+        console.error("AI Connection Error:", error);
+        appendChatMessage("bot", "দুঃখিত, বর্তমানে সংযোগে সমস্যা হচ্ছে। কিছুক্ষণ পর আবার চেষ্টা করুন।");
     }
 }
 
 // চ্যাট মেসেজ স্ক্রিনে যোগ করার হেল্পার
 function appendChatMessage(sender, text) {
     const messagesContainer = document.getElementById("aiChatMessages");
+    if (!messagesContainer) return;
+
     const msgDiv = document.createElement("div");
     msgDiv.className = `ai-msg ${sender}-msg`;
     
-    // টেক্সট ফরম্যাটিং (বোল্ড ও লাইনব্রেক)
+    // টেক্সট সুন্দরভাবে সাজানো (বোল্ড ও লাইনব্রেক)
     let formattedText = text
         .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
         .replace(/\n/g, '<br>');
 
-    msgDiv.innerHTML = `
-        <div class="msg-bubble">${formattedText}</div>
-    `;
-    
+    msgDiv.innerHTML = `<div class="msg-bubble">${formattedText}</div>`;
     messagesContainer.appendChild(msgDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
@@ -151,6 +152,8 @@ function appendChatMessage(sender, text) {
 // লোডিং ইন্ডিকেটর
 function appendLoadingIndicator() {
     const messagesContainer = document.getElementById("aiChatMessages");
+    if (!messagesContainer) return null;
+
     const loadingDiv = document.createElement("div");
     const id = "loading_" + Date.now();
     loadingDiv.id = id;
@@ -166,6 +169,7 @@ function appendLoadingIndicator() {
 }
 
 function removeLoadingIndicator(id) {
+    if (!id) return;
     const el = document.getElementById(id);
     if (el) el.remove();
 }
@@ -177,8 +181,11 @@ function handleChatKeyPress(event) {
     }
 }
 
-// দ্রুত প্রশ্ন করার বাটন ক্লিক হ্যান্ডলার
+// কুইক বাটনে ক্লিক হ্যান্ডলার
 function askQuickQuestion(questionText) {
-    document.getElementById("aiChatInput").value = questionText;
-    sendAIMessage();
+    const inputField = document.getElementById("aiChatInput");
+    if (inputField) {
+        inputField.value = questionText;
+        sendAIMessage();
+    }
 }
