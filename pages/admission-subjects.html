@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভর্তি পরীক্ষার কিতাব ও যোগ্যতা | জামিয়া দারুল উলুম বাবুস সালাম</title>
+    <!-- মূল স্টাইলশীট লিংক -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- এই পেজের কার্ড ও ব্যাজের বিশেষ সিএসএস (CSS) -->
+    <style>
+        /* ভর্তি যোগ্যতা সেকশন */
+        .eligibility-section {
+            background: linear-gradient(135deg, rgba(15, 81, 50, 0.04), rgba(255, 215, 0, 0.08));
+            border: 2px dashed var(--primary-light);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+
+        .eligibility-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .eligibility-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .eligibility-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .eligibility-card .percentage {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .eligibility-card .dept-name {
+            font-size: 0.95rem;
+            color: var(--dark);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* মারহালা / বিভাগভিত্তিক হেডিং স্টাইল */
+        .marhala-section {
+            margin-bottom: 35px;
+        }
+
+        .marhala-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--light);
+            padding: 12px 18px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+            color: var(--primary-dark);
+        }
+
+        /* জামাত ও কিতাবের কার্ড ডিজাইন */
+        .subject-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .subject-card:hover {
+            box-shadow: 0 8px 18px rgba(15, 81, 50, 0.12);
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .subject-card h4 {
+            color: var(--primary);
+            margin: 0 0 14px 0;
+            font-size: 1.15rem;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* কিতাবের তালিকা */
+        .kitab-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+            flex-grow: 1;
+        }
+
+        .kitab-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .kitab-list li::before {
+            content: "📖";
+            position: absolute;
+            left: 0;
+            top: 1px;
+            font-size: 0.85rem;
+        }
+
+        /* বাধ্যতামূলক বিষয়ের ব্যাজ (কেরাত ও হাতের লেখা) */
+        .mandatory-subject {
+            background: #E8F5E9;
+            color: var(--primary-dark);
+            border: 1px solid #C8E6C9;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .eligibility-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .eligibility-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
+    <div id="header-placeholder"></div>
+
+    <!-- পেজ ব্যানার ও ব্রেডক্রাম্ব -->
+    <section class="page-header">
+        <h2>ভর্তি পরীক্ষার কিতাব ও যোগ্যতা</h2>
+        <div class="breadcrumb">
+            <a href="../index.html">মূলপাতা</a> /
+            <span>ভর্তি তথ্য</span> /
+            <span>ভর্তি পরীক্ষার কিতাব ও যোগ্যতা</span>
+        </div>
+    </section>
+
+    <!-- মূল কন্টেন্ট শুরু -->
+    <main class="page-content">
+
+        <!-- পেজ পরিচিতি -->
+        <div style="text-align: center; max-width: 800px; margin: 0 auto 30px auto;">
+            <p>জামিয়া দারুল উলুম বাবুস সালাম-এ ভর্তিচ্ছু শিক্ষার্থীদের মেধা ও যোগ্যতা যাচাইয়ের জন্য সংশ্লিষ্ট জামাত অনুযায়ী নির্ধারিত কিতাব ও বিষয়সমূহের ওপর ভর্তি পরীক্ষা অনুষ্ঠিত হবে। নিচে ন্যূনতম যোগ্যতা ও কিতাবসমূহের তালিকা দেওয়া হলো।</p>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- 🎯 সেকশন ১: নতুন ও পুরাতন ছাত্রদের ন্যূনতম ভর্তি যোগ্যতা -->
+        <!-- ============================================================== -->
+        <section class="eligibility-section">
+            <div style="text-align: center;">
+                <h3 style="margin: 0 0 8px 0; border: none; padding: 0;">📊 নতুন ও পুরাতন ছাত্রদের ন্যূনতম ভর্তি যোগ্যতা</h3>
+                <p style="margin: 0; color: var(--gray); font-size: 0.95rem;">পূর্ববর্তী বার্ষিক পরীক্ষা বা সমাপনী পরীক্ষায় শতকরা (পাশের হার) নম্বর আবশ্যক:</p>
+            </div>
+
+            <div class="eligibility-grid">
+                <!-- যোগ্যতা কার্ড ১ -->
+                <div class="eligibility-card">
+                    <span class="percentage">৬৫%</span>
+                    <p class="dept-name">ইফতা বিভাগ</p>
+                </div>
+                <!-- যোগ্যতা কার্ড ২ -->
+                <div class="eligibility-card">
+                    <span class="percentage">৩৩%</span>
+                    <p class="dept-name">তাকমীল জামাত (দাওরায়ে হাদীস)</p>
+                </div>
+                <!-- যোগ্যতা কার্ড ৩ -->
+                <div class="eligibility-card">
+                    <span class="percentage">৫০%</span>
+                    <p class="dept-name">ফযীলত ২য় বর্ষ (মেশকাত)</p>
+                </div>
+                <!-- যোগ্যতা কার্ড ৪ -->
+                <div class="eligibility-card">
+                    <span class="percentage">৬৫%</span>
+                    <p class="dept-name">ফযীলত ১ম, সানাবিয়া উলইয়া ও সানাবিয়া</p>
+                </div>
+                <!-- যোগ্যতা কার্ড ৫ -->
+                <div class="eligibility-card">
+                    <span class="percentage">৭০%</span>
+                    <p class="dept-name">মুতাওয়াসসিতা (১ম, ২য় ও ৩য় বর্ষ)</p>
+                </div>
+                <!-- যোগ্যতা কার্ড ৬ -->
+                <div class="eligibility-card">
+                    <span class="percentage">৮০%</span>
+                    <p class="dept-name">ইবতেদাইয়্যাহ (৫ম বর্ষ)</p>
+                </div>
+                <!-- যোগ্যতা কার্ড ৭ -->
+                <div class="eligibility-card">
+                    <span class="percentage">৮০%</span>
+                    <p class="dept-name">হিফজ বিভাগ</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================== -->
+        <!-- 📚 সেকশন ২: জামাতভিত্তিক ভর্তি পরীক্ষার সিলেবাস ও কিতাবসমূহ -->
+        <!-- ============================================================== -->
+
+        <!-- 🌟 ১. উচ্চতর বিভাগ -->
+        <section class="marhala-section">
+            <h3 class="marhala-title">🌟 উচ্চতর বিভাগ (মারহালাতুদ্দিলরাসাতিল উলয়া)</h3>
+            <div class="card-grid">
+                
+                <!-- ইফতা বিভাগ -->
+                <div class="subject-card">
+                    <div>
+                        <h4>🎓 ইফতা বিভাগ (উচ্চতর ফিকহ ও ফতোয়া)</h4>
+                        <ul class="kitab-list">
+                            <li>হিদায়া (৩য় খণ্ড)</li>
+                            <li>নূরুল আনওয়ার (কিতাবুল্লাহ অংশ)</li>
+                            <li>আরবি ও বাংলা মাকালা (প্রবন্ধ লিখন)</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+                <!-- তাকমীল জামাত -->
+                <div class="subject-card">
+                    <div>
+                        <h4>🎓 তাকমীল জামাত (দাওরায়ে হাদীস)</h4>
+                        <ul class="kitab-list">
+                            <li>মিশকাতুল মাসাবীহ</li>
+                            <li>হিদায়া (৩য় ও ৪র্থ খণ্ড)</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- 🌟 ২. ফযীলত বিভাগ -->
+        <section class="marhala-section">
+            <h3 class="marhala-title">🌟 ফযীলত বিভাগ (মারহালাতুল ফযীলত / স্নাতক)</h3>
+            <div class="card-grid">
+
+                <!-- ফযীলত ২য় বর্ষ -->
+                <div class="subject-card">
+                    <div>
+                        <h4>📚 ফযীলত ২য় বর্ষ (মেশকাত)</h4>
+                        <ul class="kitab-list">
+                            <li>তাফসীরে জালালাইন</li>
+                            <li>হিদায়া (১ম ও ২য় খণ্ড)</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+                <!-- ফযীলত ১ম বর্ষ -->
+                <div class="subject-card">
+                    <div>
+                        <h4>📚 ফযীলত ১ম বর্ষ (জালালাইন)</h4>
+                        <ul class="kitab-list">
+                            <li>শরহে বেকায়া</li>
+                            <li>নূরুল আনওয়ার</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- 🌟 ৩. সানাবিয়া বিভাগ -->
+        <section class="marhala-section">
+            <h3 class="marhala-title">🌟 সানাবিয়া বিভাগ (মারহালাতুস সানাবিয়াতুল উলয়া / উচ্চ মাধ্যমিক)</h3>
+            <div class="card-grid">
+
+                <!-- সানাবিয়া উলইয়া ২য় বর্ষ -->
+                <div class="subject-card">
+                    <div>
+                        <h4>📗 সানাবিয়া উলইয়া ২য় বর্ষ (শরহে বেকায়া)</h4>
+                        <ul class="kitab-list">
+                            <li>শরহে জামী</li>
+                            <li>কানযুদ দাকায়েক</li>
+                            <li>কাফিয়া</li>
+                            <li>উসুলুশ শাশী</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+                <!-- সানাবিয়া উলইয়া ১ম বর্ষ -->
+                <div class="subject-card">
+                    <div>
+                        <h4>📗 সানাবিয়া উলইয়া ১ম বর্ষ (শরহে জামী)</h4>
+                        <ul class="kitab-list">
+                            <li>কাফিয়া</li>
+                            <li>ইলমে আদব (আরবি সাহিত্য)</li>
+                            <li>উসূুলুশ শাশী</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+                               <!-- সানাবিয়া কাফিয়া -->
+                <div class="subject-card">
+                    <div>
+                        <h4>📗 সানাবিয়া (কাফিয়া)</h4>
+                        <ul class="kitab-list">
+                            <li>হেদায়াতুন্নাহু</li>
+                            <li>ইলমে সীগাহ / ইলমে সরফ</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- 🌟 ৪. মুতাওয়াসসিতাহ বিভাগ -->
+        <section class="marhala-section">
+            <h3 class="marhala-title">🌟 মুতাওয়াসসিতাহ বিভাগ (মারহালাতুল মুতাওয়াসসিতাহ / মাধ্যমিক)</h3>
+            <div class="card-grid">
+
+                <!-- সানাবিয়া (হেদায়েতুন্নাহু) -->
+                <div class="subject-card">
+                    <div>
+                        <h4>📘 মুতাওয়াসসিতাহ ৩য় বর্ষ (হেদায়েতুন্নাহু জামাত)</h4>
+                        <ul class="kitab-list">
+                            <li>নাহবেমীর</li>
+                            <li>ইলমে সরফ</li>
+                            <li>রওজাতুল আদব / সমমানের আদব কিতাব</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+                <!-- মুতাওয়াসসিতাহ ২য় বর্ষ -->
+                <div class="subject-card">
+                    <div>
+                        <h4>📘 মুতাওয়াসসিতাহ ২য় বর্ষ (নাহবেমীর জামাত)</h4>
+                        <ul class="kitab-list">
+                            <li>মিযান ও মুনশাইব</li>
+                            <li>এসো আরবি শিখি</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+                <!-- মুতাওয়াসিতাহ 1ম -->
+                <div class="subject-card">
+                    <div>
+                        <h4>📘 মুতাওয়াসসিতাহ ১ম বর্ষ (মিযান জামাত)</h4>
+                        <ul class="kitab-list">
+                            <li>তাইসীরুল মুবতাদী</li>
+                            <li>উর্দু তেসরী / সমমানের কিতাব</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+                <!-- মুতাওয়াসসিতাহ ১ম বর্ষ -->
+                <!-- <div class="subject-card">
+                    <div>
+                        <h4>📘 মুতাওয়াসসিতাহ ১ম বর্ষ (তাইসীর জামাত)</h4>
+                        <ul class="kitab-list">
+                            <li>তাইসীরুল মুবতাদী</li>
+                            <li>উর্দু ভাষার প্রাথমিক কিতাব</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div> -->
+
+            </div>
+        </section>
+
+
+        <!-- 🌟 ৫. ইবতেদায়ী বিভাগ -->
+        <section class="marhala-section">
+            <h3 class="marhala-title">🌟 ইবতেদায়ী বিভাগ (মারহালাতুল ইবতেদাইয়্যাহ / প্রাথমিক)</h3>
+            <div class="card-grid">
+
+                <!-- ইবতেদায়ী ৫ম বর্ষ -->
+                <div class="subject-card">
+                    <div>
+                        <h4>📙 ইবতেদায়ী ৫ম বর্ষ</h4>
+                        <ul class="kitab-list">
+                            <li>বেফাকুল মাদারিসিল আরাবিয়া বাংলাদেশ-এর ৪র্থ শ্রেণির জেনারেল বিষয়সমূহ (বাংলা, গণিত, ইংরেজি ইত্যাদি)</li>
+                        </ul>
+                    </div>
+                    <div class="mandatory-subject">
+                        <span>✨ কুরআন তিলাওয়াত (কেরাত) ও হাতের লেখা আবশ্যক</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- যোগাযোগ ও সহায়তা হেল্পলাইন -->
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: var(--light); border-radius: var(--radius);">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">ভর্তি সংক্রান্ত যেকোনো তথ্যের জন্য যোগাযোগ করুন</h4>
+            <p style="margin: 0; color: var(--gray);">শিক্ষা সচিব (নাজেমে তালিমাত): মুফতী রফিকুল ইসলাম কাসেমী — <a href="tel:01816183469" style="color: var(--primary); font-weight: bold;">০১৮১৬-১৮৩৪৬৯</a></p>
+        </div>
+
+    </main>
+    <!-- মূল কন্টেন্ট শেষ -->
+
+    <!-- ফুটার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
+    <div id="footer-placeholder"></div>
+
+    <!-- মূল জাভাস্ক্রিপ্ট ফাইল -->
+    <script src="../main.js"></script>
+</body>
+</html>
