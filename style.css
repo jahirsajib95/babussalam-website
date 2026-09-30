@@ -562,3 +562,32 @@ input, textarea, select, button,
 .footer-col p {
     font-family: var(--font-bengali) !important;
 }
+
+/* ═══════════════════════════════════════════
+   ব্রেকিং নিউজ — ক্লিকযোগ্য লিংক স্টাইল
+   ═══════════════════════════════════════════ */
+
+.breaking-news .news-item {
+    color: var(--accent);
+    text-decoration: none;
+    padding: 0 4px;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.breaking-news .news-item:hover {
+    color: #FFFFFF;
+    text-decoration: underline;
+    transform: scale(1.05);
+}
+
+.breaking-news .news-separator {
+    color: rgba(255, 215, 0, 0.5);
+    padding: 0 12px;
+    font-size: 11px;
+}
+
+/* মার্কি হোভার করলে থামবে (ইউজার পড়তে পারবে) */
+.breaking-news:hover .marquee-content {
+    animation-play-state: paused;
+}
