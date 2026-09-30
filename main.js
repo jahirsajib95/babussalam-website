@@ -170,3 +170,8 @@ function filterNotice(type, btn) {
         }
     }
 }
+
+// চ্যাটবট স্ক্রিপ্ট অটোমেটিক ইনজেক্ট করা
+const chatbotScript = document.createElement("script");
+chatbotScript.src = BASE + "chatbot.js";
+document.body.appendChild(chatbotScript);

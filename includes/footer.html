@@ -36,3 +36,55 @@
 </footer>
 
 <button class="back-to-top" id="backToTop">↑</button>
+
+<!-- ═══════════════════════════════════════════════
+     🤖 এআই সহকারী উইজেট (Floating AI Chatbot)
+     ═══════════════════════════════════════════════ -->
+
+<!-- ভাসমান গোল চ্যাট বাটন -->
+<button class="ai-float-btn" id="aiChatBtn" onclick="toggleAIChat()" title="জামিয়া এআই সহকারী">
+    <span class="ai-btn-icon">💬</span>
+    <span class="ai-btn-text">মাদরাসা এআই</span>
+</button>
+
+<!-- চ্যাটবক্স পপআপ উইন্ডো -->
+<div class="ai-chat-box" id="aiChatBox">
+    <!-- চ্যাট হেডার -->
+    <div class="ai-chat-header">
+        <div class="ai-header-title">
+            <span class="ai-avatar">🕌</span>
+            <div>
+                <h4>বাবুস সালাম এআই</h4>
+                <small>● অনলাইন সহায়তা</small>
+            </div>
+        </div>
+        <button class="ai-close-btn" onclick="toggleAIChat()">✕</button>
+    </div>
+
+    <!-- দ্রুত সাজেশন প্রশ্নসমূহ -->
+    <div class="ai-quick-suggestions">
+        <button onclick="askQuickQuestion('মাদরাসা কোথায় অবস্থিত?')">📍 মাদরাসা কোথায়?</button>
+        <button onclick="askQuickQuestion('মুহতামিম সাহেবের নাম কি?')">👤 প্রিন্সিপাল কে?</button>
+        <button onclick="askQuickQuestion('কী কী বিভাগ আছে?')">📚 বিভাগসমূহ</button>
+        <button onclick="askQuickQuestion('ভর্তি হতে কী কী লাগে?')">📝 ভর্তি তথ্য</button>
+    </div>
+
+    <!-- চ্যাট মেসেজ হিস্ট্রি -->
+    <div class="ai-chat-messages" id="aiChatMessages">
+        <div class="ai-msg bot-msg">
+            <div class="msg-bubble">
+                আসসালামু আলাইকুম! আমি <b>জামিয়া বাবুস সালামের</b> ভার্চুয়াল এআই সহকারী। জামিয়া সম্পর্কিত যেকোনো তথ্য জানতে আমাকে প্রশ্ন করতে পারেন।
+            </div>
+        </div>
+    </div>
+
+    <!-- ইনপুট বক্স -->
+    <div class="ai-chat-input-area">
+        <input type="text" 
+               id="aiChatInput" 
+               placeholder="আপনার প্রশ্নটি বাংলায় লিখুন..." 
+               onkeypress="handleChatKeyPress(event)" 
+               autocomplete="off" />
+        <button id="aiSendBtn" onclick="sendAIMessage()">➤</button>
+    </div>
+</div>
