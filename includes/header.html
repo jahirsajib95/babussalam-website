@@ -1,14 +1,25 @@
 <!-- ═══ হেডার ═══ -->
-<header class="header">
+<!-- <header class="header">
     <div class="header-top">
         <div class="logo-section">
             <img src="{{BASE}}images/logo.png" alt="লোগো">
             <div class="logo-text">
-                <h1>জামিয়া দারুল উলুম বাবুস সালাম</h1>
-                <small>Jamia Darul Ulum Babus Salam</small>
+                <h1>জামিয়া বাবুস সালাম</h1>
+                <small>Jamia Babus Salam</small>
             </div>
         </div>
         <button class="menu-toggle" id="menuToggle">☰ <span>মেনু</span></button>
+    </div>
+</header> -->
+
+<header class="header">
+    <div class="header-top">
+        <div class="logo-section" onclick="window.location.href='{{BASE}}index.html'" style="cursor: pointer;"> <img
+                src="{{BASE}}images/logo.png" alt="লোগো">
+            <div class="logo-text">
+                <h1>জামিয়া বাবুস সালাম</h1> <small>Jamia Babus Salam</small>
+            </div>
+        </div> <button class="menu-toggle" id="menuToggle"> ☰ <span>মেনু</span> </button>
     </div>
 </header>
 
@@ -74,7 +85,7 @@
         </div>
         <div class="nav-submenu">
             <a href="{{BASE}}pages/admission.html">ভর্তি তথ্য</a>
-            <a href="{{BASE}}pages/admission-subjects.html">ভর্তি পরীক্ষার বিষয়সমূহ</a>
+            <a href="{{BASE}}pages/admission-subjects.html">ভর্তি পরীক্ষার কিতাব ও যোগ্যতা</a>
             <a href="{{BASE}}pages/admission-fee.html">ভর্তি ফি ও খোরাকী</a>
             <a href="{{BASE}}pages/admission-rules.html">বিধি ও অঙ্গীকারনামা</a>
         </div>
@@ -104,7 +115,7 @@
     </div>
 
     <a href="{{BASE}}pages/gallery.html" class="nav-link-single">
-    <span class="icon">📸</span> ফটো গ্যালারি
+        <span class="icon">📸</span> ফটো গ্যালারি
     </a>
 
     <a href="{{BASE}}pages/result.html" class="nav-link-single">
