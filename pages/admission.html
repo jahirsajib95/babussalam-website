@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভর্তি তথ্য ও ফি কাঠামো | জামিয়া দারুল উলুম বাবুস সালাম</title>
+    <!-- মূল স্টাইলশীট লিংক -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- ভর্তি পেজের জন্য আকর্ষণীয় কাস্টম সিএসএস (CSS) -->
+    <style>
+        /* সময়সূচির বিশেষ ব্যানার */
+        .schedule-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .schedule-card {
+            background: var(--light);
+            border-left: 5px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .schedule-card.urgent {
+            border-left-color: #E67E22;
+            background: #FFFBF2;
+        }
+
+        .schedule-card h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.15rem;
+        }
+
+        .schedule-card p {
+            margin: 0;
+            color: var(--dark);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* এককালীন ভর্তি ফি হাইলাইট কার্ড */
+        .admission-fee-banner {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border-radius: var(--radius);
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 20px rgba(15, 81, 50, 0.2);
+        }
+
+        .fee-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 15px;
+        }
+
+        .total-badge {
+            background: var(--accent);
+            color: #000;
+            font-size: 1.4rem;
+            font-weight: 800;
+            padding: 6px 18px;
+            border-radius: 50px;
+        }
+
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .breakdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 16px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .breakdown-item span {
+            display: block;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .breakdown-item strong {
+            font-size: 1.15rem;
+            color: var(--accent);
+        }
+
+        /* মাসিক ফি কার্ড গ্রিড */
+        .pricing-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 22px rgba(15, 81, 50, 0.12);
+        }
+
+        .pricing-card h4 {
+            margin: 0 0 15px 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .price-tag {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        .price-tag small {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: normal;
+        }
+
+        .price-details {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border-top: 1px dashed var(--border);
+            padding-top: 12px;
+        }
+
+        .price-details li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: var(--dark);
+        }
+
+        .free-badge {
+            background: #27AE60;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* গুরুত্বপূর্ণ তারিখের কার্ড */
+        .dates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .date-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .date-icon {
+            font-size: 2.2rem;
+            background: var(--light);
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .date-info h5 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .date-info p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
+    <div id="header-placeholder"></div>
+
+    <!-- পেজ ব্যানার ও ব্রেডক্রাম্ব -->
+    <section class="page-header">
+        <h2>ভর্তি তথ্য ও ফি কাঠামো</h2>
+        <div class="breadcrumb">
+            <a href="../index.html">মূলপাতা</a> /
+            <span>ভর্তি তথ্য</span> /
+            <span>ভর্তি কার্যক্রম ও ফি</span>
+        </div>
+    </section>
+
+    <!-- মূল কন্টেন্ট শুরু -->
+    <main class="page-content">
+
+        <!-- পেজ পরিচিতি -->
+        <div style="text-align: center; max-width: 800px; margin: 0 auto 30px auto;">
+            <p>জামিয়া দারুল উলুম বাবুস সালাম-এর নতুন শিক্ষাবর্ষে সকল বিভাগের ভর্তির সময়সূচি, এককালীন ভর্তি ফি, বিভাগভিত্তিক মাসিক ফি এবং গুরুত্বপূর্ণ তারিখসমূহের বিস্তারিত নিচে তুলে ধরা হলো।</p>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- ⏰ সেকশন ১: ভর্তির সময়সূচি -->
+        <!-- ============================================================== -->
+        <div class="schedule-box">
+            <!-- নতুন ও সাধারণ ছাত্র -->
+            <div class="schedule-card">
+                <h4>📅 সাধারণ ও নতুন ছাত্রদের ভর্তি</h4>
+                <p>
+                    <strong>তারিখ:</strong> ৬ই শাওয়াল থেকে ৯ই শাওয়াল পর্যন্ত।<br>
+                    <strong>সময়:</strong> প্রতিদিন সকাল ৯:০০টা থেকে রাত ৮:০০টা পর্যন্ত নিরবচ্ছিন্নভাবে ভর্তি নেওয়া হবে।
+                </p>
+            </div>
+
+            <!-- পুরাতন হিফজ ও নাজেরা -->
+            <div class="schedule-card urgent">
+                <h4>🕌 হিফজ ও নাজেরা (পুরাতন ছাত্র)</h4>
+                <p>
+                    হিফজুল কুরআন ও নাজেরা বিভাগের পুরাতন ছাত্রদের ভর্তি কার্যক্রম <strong>পুরো পবিত্র রমজান মাসজুড়ে</strong> জামিয়ার অফিসে চালু থাকবে।
+                </p>
+            </div>
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- 💳 সেকশন ২: এককালীন ভর্তি ফি (সকল বিভাগ) -->
+        <!-- ============================================================== -->
+        <section class="admission-fee-banner">
+            <div class="fee-header">
+                <div>
+                    <h3 style="margin: 0; color: var(--white); border: none; padding: 0;">📋 এককালীন ভর্তি ফি (সকল বিভাগের জন্য)</h3>
+                    <p style="margin: 5px 0 0 0; opacity: 0.85; font-size: 0.95rem;">নতুন শিক্ষাবর্ষে ভর্তির সময় প্রদেয় সর্বমোট ফি</p>
+                </div>
+                <div class="total-badge">সর্বমোট: ৩,৭০০ ৳</div>
+            </div>
+
+            <div class="breakdown-grid">
+                <div class="breakdown-item">
+                    <span>ভর্তি ফি</span>
+                    <strong>৩,০০০ টাকা</strong>
+                </div>
+                <div class="breakdown-item">
+                    <span>এককালীন চার্জ</span>
+                    <strong>৫০০ টাকা</strong>
+                </div>
+                <div class="breakdown-item">
+                    <span>ভর্তি ফরম</span>
+                    <strong>১০০ টাকা</strong>
+                </div>
+                <div class="breakdown-item">
+                    <span>তথ্যবহি</span>
+                    <strong>১০০ টাকা</strong>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================== -->
+        <!-- 🏷️ সেকশন ৩: বিভাগভিত্তিক মাসিক ফি কাঠামো -->
+        <!-- ============================================================== -->
+        <section style="margin-bottom: 45px;">
+            <h3 style="margin-bottom: 25px;">📊 বিভাগভিত্তিক মাসিক ফি</h3>
+
+            <div class="card-grid">
+
+                <!-- ১. কিতাব বিভাগ -->
+                <div class="pricing-card">
+                    <div>
+                        <h4>📚 কিতাব বিভাগ</h4>
+                        <div class="price-tag">
+                            ২,৮০০ ৳ <small>/ প্রতি মাসে</small>
+                        </div>
+                        <ul class="price-details">
+                            <li><span>খাবার খরচ:</span> <strong>২,৩০০ টাকা</strong></li>
+                            <li><span>বিদ্যুৎ ও পানি চার্জ:</span> <strong>৫০০ টাকা</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- ২. মক্তব ও হিফজ বিভাগ -->
+                <div class="pricing-card">
+                    <div>
+                        <h4>📖 মক্তব ও হিফজ বিভাগ</h4>
+                        <div class="price-tag">
+                            ৪,৫০০ ৳ <small>/ প্রতি মাসে</small>
+                        </div>
+                        <ul class="price-details">
+                            <li><span>খাবার খরচ:</span> <strong>৩,৫০০ টাকা</strong></li>
+                            <li><span>আবাসিক চার্জ:</span> <strong>১,০০০ টাকা</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- ৩. ইফতা বিভাগ -->
+                <div class="pricing-card">
+                    <div>
+                        <h4>🎓 ইফতা বিভাগ</h4>
+                        <div class="price-tag">
+                            ১,৫০০ ৳ <small>/ প্রতি মাসে</small>
+                        </div>
+                        <ul class="price-details">
+                            <li><span>সকালের নাস্তা:</span> <strong>১,০০০ টাকা</strong></li>
+                            <li><span>বিদ্যুৎ ও পানি চার্জ:</span> <strong>৫০০ টাকা</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- ৪. তাকমীল ও ফযীলত -->
+                <div class="pricing-card" style="border: 2px solid var(--primary-light);">
+                    <div>
+                        <h4>🕌 তাকমীল ও ফযীলত</h4>
+                        <div class="price-tag">
+                            ৫০০ ৳ <small>/ প্রতি মাসে</small>
+                        </div>
+                        <ul class="price-details">
+                            <li><span>খাবার ব্যবস্থা:</span> <span class="free-badge">সম্পূর্ণ ফ্রি 🎉</span></li>
+                            <li><span>বিদ্যুৎ ও পানি চার্জ:</span> <strong>৫০০ টাকা</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ============================================================== -->
+        <!-- 📌 সেকশন ৪: গুরুত্বপূর্ণ তারিখসমূহ -->
+        <!-- ============================================================== -->
+        <section style="margin-bottom: 40px;">
+            <h3 style="margin-bottom: 20px;">🗓️ গুরুত্বপূর্ণ তারিখ ও কার্যক্রম</h3>
+
+            <div class="dates-grid">
+                <!-- সিট বণ্টন -->
+                <div class="date-card">
+                    <div class="date-icon">🛏️</div>
+                    <div class="date-info">
+                        <h5>সিট বণ্টন</h5>
+                        <p>৩০ মার্চ, সোমবার (বাদ মাগরিব)</p>
+                    </div>
+                </div>
+
+                <!-- কিতাব বণ্টন -->
+                <div class="date-card">
+                    <div class="date-icon">📚</div>
+                    <div class="date-info">
+                        <h5>কিতাব বণ্টন</h5>
+                        <p>৩১ মার্চ, মঙ্গলবার</p>
+                    </div>
+                </div>
+
+                <!-- ইফতিতাহ -->
+                <div class="date-card">
+                    <div class="date-icon">✨</div>
+                    <div class="date-info">
+                        <h5>ইফতিতাহ (দারস উদ্বোধন)</h5>
+                        <p>১ এপ্রিল, বুধবার (বাদ মাগরিব)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================== -->
+        <!-- 🔗 সহায়ক লিংক ও যোগাযোগ -->
+        <!-- ============================================================== -->
+        <div style="background: var(--light); border-radius: var(--radius); padding: 24px; text-align: center; border: 1px solid var(--border);">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">ভর্তি পরীক্ষা সংক্রান্ত তথ্য প্রয়োজন?</h4>
+            <p style="margin: 0 0 15px 0; color: var(--gray);">কোন জামাতে ভর্তির জন্য কোন কিতাবের ওপর পরীক্ষা হবে তা দেখতে নিচের বাটনে ক্লিক করুন।</p>
+            
+            <a href="admission-subjects.html" class="btn btn-primary" style="margin-bottom: 15px; display: inline-flex; align-items: center; gap: 8px;">
+                📖 ভর্তি পরীক্ষার কিতাব ও যোগ্যতা দেখুন
+            </a>
+
+            <div style="margin-top: 15px; font-size: 0.95rem; color: var(--dark); border-top: 1px dashed var(--border); padding-top: 15px;">
+                📞 <strong>ভর্তি হেল্পলাইন:</strong> 
+                নাজেমে তালিমাত: <a href="tel:01816183469" style="color: var(--primary); font-weight: bold;">০১৮১৬-১৮৩৪৬৯</a> |
