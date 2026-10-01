@@ -3,153 +3,545 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>জামিয়া বাবুস সালাম</title>
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet"> -->
+    <title>জামিয়া বাবুস সালাম | ইসলামী শিক্ষা ও সংস্কৃতির কেন্দ্র</title>
+    
+    <!-- গুগল ফন্টস -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome আইকন -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
+    <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+
+    
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root {
+            --primary: #0b5335;
+            --primary-dark: #073823;
+            --primary-light: #128253;
+            --accent-gold: #c9933b;
+            --accent-gold-light: #f5dfa2;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+    /* আগের ফন্টের বদলে এটি বসান */
+    font-family: 'SolaimanLipi', Arial, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+        /* ── লাইভ টাইম ও ডেট বার ── */
+        .live-bar-container {
+            background: #062a1a;
+            color: #e2e8f0;
+            border-bottom: 2px solid var(--accent-gold);
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        .live-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .live-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        .live-chip i {
+            color: var(--accent-gold);
+        }
+
+        /* ── হিরো সেকশন ── */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, rgba(11, 83, 53, 0.94) 0%, rgba(7, 56, 35, 0.96) 100%), url('images/banner.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #ffffff;
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            font-size: 26px;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        .hero h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin: 0 0 16px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .hero p.tagline {
+            font-size: 1.15rem;
+            max-width: 680px;
+            margin: 0 auto 30px;
+            color: #d1fae5;
+            line-height: 1.6;
+        }
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .btn-primary {
+            background-color: var(--accent-gold);
+            color: #000;
+            box-shadow: 0 4px 14px rgba(201, 147, 59, 0.35);
+        }
+        .btn-primary:hover {
+            background-color: #dfaa47;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid rgba(255,255,255,0.7);
+        }
+        .btn-outline:hover {
+            background: #ffffff;
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ── কমন কন্টেইনার ও হেডার ── */
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 60px 20px;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+            position: relative;
+        }
+        .section-title h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0 0 8px;
+            display: inline-block;
+            position: relative;
+        }
+        .section-title h2::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 3px;
+            background: var(--accent-gold);
+            margin: 8px auto 0;
+            border-radius: 3px;
+        }
+
+        /* ── দ্রুত প্রবেশ গ্রিড ── */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 18px;
+        }
+        .quick-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px 16px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            box-shadow: var(--card-shadow);
+            border: 1px solid #f1f5f9;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .quick-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(11, 83, 53, 0.12);
+            border-color: var(--accent-gold);
+        }
+        .card-icon {
+            font-size: 32px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f0fdf4;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+        .quick-card:hover .card-icon {
+            background: var(--primary);
+            color: #ffffff;
+        }
+        .card-title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* ── নোটিশ বোর্ড ── */
+        .notice-section {
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .notice-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+        .notice-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid #edf2f7;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            border-left: 5px solid #94a3b8;
+            transition: var(--transition);
+        }
+        .notice-card:hover {
+            transform: translateY(-4px);
+        }
+        .notice-card.urgent { border-left-color: #ef4444; }
+        .notice-card.exam { border-left-color: #f59e0b; }
+        .notice-card.general { border-left-color: var(--primary); }
+
+        .notice-badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+        .notice-badge.urgent { background: #fee2e2; color: #dc2626; }
+        .notice-badge.exam { background: #fef3c7; color: #b45309; }
+        .notice-badge.general { background: #dcfce7; color: #15803d; }
+
+        .notice-card h4 {
+            font-size: 1.15rem;
+            margin: 0 0 8px;
+            color: var(--text-dark);
+        }
+        .notice-date {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 0 0 10px;
+        }
+        .notice-excerpt {
+            font-size: 14px;
+            color: #475569;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .btn-green {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-green:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ── পরিসংখ্যান ── */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary-dark), #042417);
+            color: #ffffff;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .stats-grid {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+        }
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            transition: var(--transition);
+        }
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-gold);
+            transform: translateY(-5px);
+        }
+        .stat-item h3 {
+            font-size: 2.6rem;
+            margin: 0 0 6px;
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+        .stat-item p {
+            font-size: 1.05rem;
+            margin: 0;
+            color: #e2e8f0;
+        }
+
+        /* মোবাইল স্ক্রিন অপ্টিমাইজেশন */
+        @media (max-width: 768px) {
+            .hero h2 { font-size: 2.1rem; }
+            .live-bar-content { justify-content: center; text-align: center; }
+            .quick-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .quick-card { padding: 14px 8px; }
+            .card-icon { width: 45px; height: 45px; font-size: 22px; }
+            .card-title { font-size: 13px; }
+        }
+        @media (max-width: 480px) {
+            .quick-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
 </head>
 <body>
+
+<!-- ═══ লাইভ ডেট ও টাইম টপ-বার ═══ -->
+<div class="live-bar-container">
+    <div class="live-bar-content">
+        <div class="live-chip">
+            <i class="fa-regular fa-calendar-days"></i>
+            <span id="live-date">তারিখ লোড হচ্ছে...</span>
+        </div>
+        <div class="live-chip">
+            <i class="fa-regular fa-clock"></i>
+            <span id="live-time">সময় লোড হচ্ছে...</span>
+        </div>
+    </div>
+</div>
 
 <!-- ═══ হেডার (অটো লোড) ═══ -->
 <div id="header-placeholder"></div>
 
-
-<!-- ╔═══════════════════════════════════════════╗
-     ║   🎨 এই পেজের নিজস্ব কন্টেন্ট শুরু        ║
-     ╚═══════════════════════════════════════════╝ -->
-
-<!-- ══ হিরো ব্যানার (ছবি সহ) ══ -->
-<section class="hero" style="background: linear-gradient(rgba(15,81,50,0.85), rgba(10,54,34,0.9)), url('images/banner.jpg'); background-size: cover; background-position: center;">
-    <p class="arabic-text">بسم الله الرحمن الرحيم</p>
+<!-- ═══ হিরো ব্যানার ═══ -->
+<section class="hero">
+    <div class="arabic-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
     <h2>জামিয়া বাবুস সালাম</h2>
-    <p>ইলমে দ্বীনের আলোয় আলোকিত জীবন — ১৯৯৫ সাল থেকে দ্বীনি খেদমতে নিবেদিত</p>
+    <p class="tagline">ইলমে দ্বীনের আলোয় আলোকিত জীবন — ১৯৯৫ সাল থেকে দ্বীনি খেদমতে নিবেদিত একটি আদর্শ শিক্ষা প্রতিষ্ঠান</p>
     <div class="hero-buttons">
-        <a href="pages/admission.html" class="btn btn-primary">📝 ভর্তি তথ্য</a>
-        <a href="pages/notice.html" class="btn btn-outline">📢 নোটিশ বোর্ড</a>
+        <a href="pages/admission.html" class="btn btn-primary">
+            <i class="fa-solid fa-file-pen"></i> ভর্তি তথ্য
+        </a>
+        <a href="pages/notice.html" class="btn btn-outline">
+            <i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড
+        </a>
     </div>
 </section>
 
-<!-- ══ দ্রুত প্রবেশ ══ -->
-<section class="quick-access">
-    <div class="section-title"><h2>দ্রুত প্রবেশ</h2></div>
+<!-- ═══ দ্রুত প্রবেশ (Quick Access) ═══ -->
+<div class="container">
+    <div class="section-title">
+        <h2>দ্রুত প্রবেশ</h2>
+    </div>
     <div class="quick-grid">
-
         <a href="pages/notice.html" class="quick-card">
-            <span class="card-icon">📢</span>
+            <div class="card-icon"><i class="fa-solid fa-bullhorn"></i></div>
             <span class="card-title">নোটিশ বোর্ড</span>
         </a>
 
         <a href="pages/result.html" class="quick-card">
-            <span class="card-icon">📊</span>
+            <div class="card-icon"><i class="fa-solid fa-square-poll-vertical"></i></div>
             <span class="card-title">ফলাফল</span>
         </a>
 
         <a href="pages/admission.html" class="quick-card">
-            <span class="card-icon">📝</span>
+            <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
             <span class="card-title">ভর্তি তথ্য</span>
         </a>
 
         <a href="pages/syllabus.html" class="quick-card">
-            <span class="card-icon">📚</span>
+            <div class="card-icon"><i class="fa-solid fa-book-open"></i></div>
             <span class="card-title">সিলেবাস</span>
         </a>
 
         <a href="pages/class-schedule.html" class="quick-card">
-            <span class="card-icon">🕐</span>
+            <div class="card-icon"><i class="fa-solid fa-calendar-check"></i></div>
             <span class="card-title">শ্রেণিসূচি</span>
         </a>
 
         <a href="pages/teachers.html" class="quick-card">
-            <span class="card-icon">👨‍🏫</span>
+            <div class="card-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
             <span class="card-title">শিক্ষকমণ্ডলী</span>
         </a>
 
         <a href="pages/foundation.html" class="quick-card">
-            <span class="card-icon">🌿</span>
+            <div class="card-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
             <span class="card-title">ফাউন্ডেশন</span>
         </a>
 
         <a href="pages/kafela.html" class="quick-card">
-            <span class="card-icon">🚩</span>
+            <div class="card-icon"><i class="fa-solid fa-flag"></i></div>
             <span class="card-title">কাফেলা</span>
         </a>
 
         <a href="pages/donate.html" class="quick-card">
-            <span class="card-icon">💰</span>
+            <div class="card-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
             <span class="card-title">অনুদান</span>
         </a>
 
         <a href="pages/download.html" class="quick-card">
-            <span class="card-icon">📥</span>
+            <div class="card-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
             <span class="card-title">ডাউনলোড</span>
         </a>
 
         <a href="pages/branches.html" class="quick-card">
-            <span class="card-icon">🕌</span>
+            <div class="card-icon"><i class="fa-solid fa-mosque"></i></div>
             <span class="card-title">শাখা মাদরাসা</span>
         </a>
 
         <a href="pages/links.html" class="quick-card">
-            <span class="card-icon">🔗</span>
-            <span class="card-title">প্রয়োজনীয় লিংক</span>
+            <div class="card-icon"><i class="fa-solid fa-link"></i></div>
+            <span class="card-title">জরুরি লিংক</span>
         </a>
-
     </div>
-</section>
+</div>
 
-<!-- ══ সাম্প্রতিক নোটিশ ══ -->
+<!-- ═══ সাম্প্রতিক নোটিশ ═══ -->
 <section class="notice-section">
-    <div class="section-title"><h2>সাম্প্রতিক নোটিশ</h2></div>
-
-    <div class="notice-list">
-
-        <div class="notice-card urgent">
-            <span class="notice-badge urgent">🔴 জরুরি</span>
-            <h4>নতুন ভর্তি বিজ্ঞপ্তি ২০২৫</h4>
-            <p class="notice-date">📅 ১৫ জানুয়ারি, ২০২৫</p>
-            <p class="notice-excerpt">আগামী ১ ফেব্রুয়ারি থেকে সকল বিভাগে ভর্তি কার্যক্রম শুরু হবে।</p>
+    <div class="container" style="padding-top: 50px; padding-bottom: 50px;">
+        <div class="section-title">
+            <h2>সাম্প্রতিক নোটিশ</h2>
         </div>
 
-        <div class="notice-card exam">
-            <span class="notice-badge exam">🟡 পরীক্ষা</span>
-            <h4>বার্ষিক পরীক্ষার সময়সূচি প্রকাশ</h4>
-            <p class="notice-date">📅 ১০ জানুয়ারি, ২০২৫</p>
-            <p class="notice-excerpt">২০২৫ সালের বার্ষিক পরীক্ষা আগামী ১ মার্চ থেকে শুরু হবে।</p>
+        <div class="notice-list">
+            <div class="notice-card urgent">
+                <span class="notice-badge urgent">জরুরি বিজ্ঞপ্তি</span>
+                <h4>নতুন শিক্ষাবর্ষে ভর্তি কার্যক্রম ২০২৫</h4>
+                <p class="notice-date"><i class="fa-regular fa-clock"></i> ১৫ জানুয়ারি, ২০২৫</p>
+                <p class="notice-excerpt">আসন্ন শিক্ষাবর্ষে হিফজুল কুরআন ও কিতাব বিভাগের সকল স্তরে নতুন ভর্তি কার্যক্রম শুরু হতে যাচ্ছে।</p>
+            </div>
+
+            <div class="notice-card exam">
+                <span class="notice-badge exam">পরীক্ষা সংক্রান্ত</span>
+                <h4>বার্ষিক পরীক্ষার সময়সূচি প্রকাশ</h4>
+                <p class="notice-date"><i class="fa-regular fa-clock"></i> ১০ জানুয়ারি, ২০২৫</p>
+                <p class="notice-excerpt">আগামী ১ মার্চ থেকে বার্ষিক পরীক্ষা শুরু হবে। সংশ্লিষ্ট শিক্ষার্থীদের যথাসময়ে প্রবেশপত্র সংগ্রহ করতে হবে।</p>
+            </div>
+
+            <div class="notice-card general">
+                <span class="notice-badge general">সাধারণ নোটিশ</span>
+                <h4>শীতকালীন অবকাশের ছুটির নোটিশ</h4>
+                <p class="notice-date"><i class="fa-regular fa-clock"></i> ৫ জানুয়ারি, ২০২৫</p>
+                <p class="notice-excerpt">মাদরাসার সকল বিভাগে আগামী ২০ জানুয়ারি থেকে ৩১ জানুয়ারি পর্যন্ত শীতকালীন ছুটি কার্যকর থাকবে।</p>
+            </div>
         </div>
 
-        <div class="notice-card">
-            <span class="notice-badge general">🟢 সাধারণ</span>
-            <h4>শীতকালীন ছুটির বিজ্ঞপ্তি</h4>
-            <p class="notice-date">📅 ৫ জানুয়ারি, ২০২৫</p>
-            <p class="notice-excerpt">আগামী ২০ জানুয়ারি থেকে ৩১ জানুয়ারি পর্যন্ত শীতকালীন ছুটি থাকবে।</p>
+        <div style="text-align: center;">
+            <a href="pages/notice.html" class="btn btn-green">
+                সকল নোটিশ দেখুন <i class="fa-solid fa-arrow-right-long"></i>
+            </a>
         </div>
-
-    </div>
-
-    <div style="text-align:center; margin-top:18px;">
-        <a href="pages/notice.html" class="btn btn-green">সকল নোটিশ দেখুন →</a>
     </div>
 </section>
 
-<!-- ══ পরিসংখ্যান ══ -->
+<!-- ═══ পরিসংখ্যান ═══ -->
 <section class="stats-section">
-    <div class="section-title" style="margin-bottom:24px;">
-        <h2 style="color:#FFD700;">আমাদের অর্জন</h2>
+    <div class="section-title" style="margin-bottom: 35px;">
+        <h2 style="color: var(--accent-gold);">আমাদের পথচলা ও অর্জন</h2>
     </div>
     <div class="stats-grid">
-        <div class="stat-item"><h3>৫০০+</h3><p>মোট ছাত্র</p></div>
-        <div class="stat-item"><h3>৫০+</h3><p>শিক্ষকমণ্ডলী</p></div>
-        <div class="stat-item"><h3>১০+</h3><p>শাখা মাদরাসা</p></div>
-        <div class="stat-item"><h3>৩০+</h3><p>বছরের ঐতিহ্য</p></div>
+        <div class="stat-item">
+            <h3>৫০০+</h3>
+            <p>বর্তমান শিক্ষার্থী</p>
+        </div>
+        <div class="stat-item">
+            <h3>৫০+</h3>
+            <p>যোগ্য শিক্ষকমণ্ডলী</p>
+        </div>
+        <div class="stat-item">
+            <h3>১০+</h3>
+            <p>শাখা মাদরাসা</p>
+        </div>
+        <div class="stat-item">
+            <h3>৩০+</h3>
+            <p>বছরের নিরবচ্ছিন্ন ঐতিহ্য</p>
+        </div>
     </div>
 </section>
-
-<!-- ╔═══════════════════════════════════════════╗
-     ║   🎨 এই পেজের কন্টেন্ট শেষ                ║
-     ╚═══════════════════════════════════════════╝ -->
-
 
 <!-- ═══ ফুটার (অটো লোড) ═══ -->
 <div id="footer-placeholder"></div>
+
+<!-- ═══ লাইভ ডেট ও টাইম জাভাস্ক্রিপ্ট ═══ -->
+<script>
+    function updateBanglaDateTime() {
+        const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        const toBn = (num) => num.toString().replace(/\d/g, d => bnDigits[d]);
+
+        const days = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
+        const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+
+        const now = new Date();
+
+        // তারিখ রূপান্তর
+        const dayName = days[now.getDay()];
+        const date = toBn(now.getDate());
+        const month = months[now.getMonth()];
+        const year = toBn(now.getFullYear());
+        
+        document.getElementById('live-date').innerText = `${dayName}, ${date} ${month} ${year}`;
+
+        // সময় রূপান্তর (১২ ঘণ্টার ফরম্যাট)
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+        const ampm = hours >= 12 ? 'অপরাহ্ণ' : 'পূর্বাহ্ণ';
+
+        hours = hours % 12;
+        hours = hours ? hours : 12; // '০' হলে ১২ বানাবে
+        
+        const strHours = toBn(hours < 10 ? '0' + hours : hours);
+        const strMinutes = toBn(minutes < 10 ? '0' + minutes : minutes);
+        const strSeconds = toBn(seconds < 10 ? '0' + seconds : seconds);
+
+        document.getElementById('live-time').innerText = `${strHours}:${strMinutes}:${strSeconds} ${ampm}`;
+    }
+
+    // প্রতি সেকেন্ডে কল হবে
+    setInterval(updateBanglaDateTime, 1000);
+    updateBanglaDateTime(); // ইনস্ট্যান্ট লোডের জন্য
+</script>
 
 <script src="main.js"></script>
 </body>
