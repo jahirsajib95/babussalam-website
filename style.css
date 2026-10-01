@@ -1,7 +1,9 @@
 /* ═══════════════════════════════════════════
    গুগল ফন্ট লোড — Noto Sans Bengali
    ═══════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap'); */
+@import url('https://fonts.maateen.me/solaiman-lipi/font.css');
+
 
 /* ═══════════════════════════════════════════
    বেসিক রিসেট ও ভেরিয়েবল
@@ -22,7 +24,8 @@
     --radius: 12px;
 
     /* ═══ Noto Sans Bengali ফন্ট ভেরিয়েবল ═══ */
-    --font-bengali: 'Noto Sans Bengali', sans-serif;
+    /* --font-bengali: 'Noto Sans Bengali', sans-serif; */
+    --font-bengali: 'SolaimanLipi', sans-serif;
 }
 
 html { scroll-behavior: smooth; }
