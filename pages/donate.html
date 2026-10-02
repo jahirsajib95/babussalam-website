@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>দান ও সদকায়ে জারিয়াহ | জামিয়া দারুল উলুম বাবুস সালাম</title>
+    <!-- মূল স্টাইলশীট লিংক -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- ডোনেশন পেজের বিশেষ আকর্ষণীয় সিএসএস (CSS) -->
+    <style>
+        /* হাদিস ব্যানার */
+        .hadith-quote-box {
+            background: linear-gradient(135deg, rgba(15, 81, 50, 0.06), rgba(255, 215, 0, 0.08));
+            border-left: 5px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 24px 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .hadith-quote-box p {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            line-height: 1.8;
+            font-style: italic;
+            margin: 0 0 8px 0;
+        }
+
+        .hadith-quote-box small {
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        /* অনুদানের খাতসমূহের কার্ড গ্রিড */
+        .fund-sectors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 45px;
+        }
+
+        .fund-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease;
+        }
+
+        .fund-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-light);
+        }
+
+        .fund-card .fund-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .fund-card h4 {
+            color: var(--primary);
+            margin: 0 0 8px 0;
+            font-size: 1.15rem;
+        }
+
+        .fund-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* মোবাইল ব্যাংকিং কার্ড ডিজাইন */
+        .mfs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 45px;
+        }
+
+        .mfs-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mfs-card.bkash { border-top: 5px solid #D12053; }
+        .mfs-card.nagad { border-top: 5px solid #F7931E; }
+        .mfs-card.rocket { border-top: 5px solid #8C3494; }
+
+        .mfs-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .mfs-header h4 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+
+        .mfs-type {
+            font-size: 0.8rem;
+            background: var(--light);
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: var(--gray);
+        }
+
+        .copy-box {
+            background: var(--light);
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .number-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            letter-spacing: 0.5px;
+        }
+
+        .copy-action-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .copy-action-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ব্যাংক একাউন্ট কার্ড */
+        .bank-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-left: 6px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 45px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .bank-field {
+            background: var(--light);
+            padding: 12px 16px;
+            border-radius: 8px;
+        }
+
+        .bank-field span {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 4px;
+        }
+
+        .bank-field strong {
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        /* টাকা পাঠানোর পরবর্তী নির্দেশাবলী */
+        .notice-step-box {
+            background: #FFFDF0;
+            border: 1px solid #FFEAA7;
+            border-radius: var(--radius);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .step-icon {
+            font-size: 2.8rem;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 650px) {
+            .notice-step-box {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
+    <div id="header-placeholder"></div>
+
+    <!-- পেজ ব্যানার ও ব্রেডক্রাম্ব -->
+    <section class="page-header">
+        <h2>দান ও সদকায়ে জারিয়াহ</h2>
+        <div class="breadcrumb">
+            <a href="../index.html">মূলপাতা</a> /
+            <span>সহায়তা</span> /
+            <span>অনুদান</span>
+        </div>
+    </section>
+
+    <!-- মূল কন্টেন্ট শুরু -->
+    <main class="page-content">
+
+        <!-- ১. অনুপ্রেরণামূলক হাদিস কোট -->
+        <div class="hadith-quote-box">
+            <p>
+                "মানুষ যখন মারা যায় তখন তার সকল আমল বন্ধ হয়ে যায়; কেবল তিনটি আমল ছাড়া: ১. সদকায়ে জারিয়াহ, ২. এমন ইলম যা দ্বারা মানুষ উপকৃত হয় এবং ৩. এমন নেক সন্তান যে তার মা-বাবার জন্য দোয়া করে।"
+            </p>
+            <small>— সহীহ মুসলিম: ১৬৩১</small>
+        </div>
+
+        <!-- পেজ পরিচিতি টেক্সট -->
+        <div style="text-align: center; max-width: 780px; margin: 0 auto 35px auto;">
+            <p>জামিয়া দারুল উলুম বাবুস সালাম-এর কুরআন শিক্ষা, এতিম-অসহায় শিক্ষার্থীদের লালন-পালন ও মাদ্রাসার সার্বিক উন্নয়নে আপনার যাকাত, ফিৎরা এবং নফল দান পাঠিয়ে আখেরাতের পাথেয় সঞ্চয় করুন।</p>
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- 🏷️ অনুদানের নির্দিষ্ট খাতসমূহ -->
+        <!-- ============================================================== -->
+        <h3 style="margin-bottom: 20px;">🕌 অনুদানের বিশেষ খাতসমূহ</h3>
+        
+        <div class="fund-sectors-grid">
+            <!-- খাত ১ -->
+            <div class="fund-card">
+                <span class="fund-icon">🍲</span>
+                <h4>লিল্লাহ বোর্ডিং ও এতিমখানা</h4>
+                <p>শত শত এতিম, অসহায় ও অসচ্ছল তালিবুল ইলমদের দৈনন্দিন তিন বেলার পুষ্টিকর খাবার ও পোশাকের ব্যবস্থা।</p>
+            </div>
+
+            <!-- খাত ২ -->
+            <div class="fund-card">
+                <span class="fund-icon">🏗️</span>
+                <h4>মাদ্রাসা ও মসজিদ নির্মাণ</h4>
+                <p>বহুতল মাদ্রাসা ভবনের সম্প্রসারণ কাজ, ক্লাসরুম এবং নতুন মসজিদের অসমাপ্ত নির্মাণ প্রকল্পে সহায়তা।</p>
+            </div>
+
+            <!-- খাত ৩ -->
+            <div class="fund-card">
+                <span class="fund-icon">📖</span>
+                <h4>কুরআন ও কিতাব বিতরণ</h4>
+                <p>হিফজ ও কিতাব বিভাগের শিক্ষার্থীদের মাঝে নতুন কুরআন মাজীদ ও পাঠ্য কিতাব উপহার প্রদান।</p>
+            </div>
+
+            <!-- খাত ৪ -->
+            <div class="fund-card">
+                <span class="fund-icon">🤝</span>
+                <h4>সাধারণ ও দাওয়াত তহবিল</h4>
+                <p>বাবুস সালাম ফাউন্ডেশন পরিচালিত বহুমুখী দাওয়াতি কার্যক্রম, ত্রাণ ও সমাজসেবায় ব্যয়িত তহবিল।</p>
+            </div>
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- 📱 মোবাইল ব্যাংকিং মাধ্যমে অনুদান (বিকাশ / নগদ / রকেট) -->
+        <!-- ============================================================== -->
+        <h3 style="margin-bottom: 20px;">📱 মোবাইল ব্যাংকিং (বিকাশ / নগদ / রকেট)</h3>
+
+        <div class="mfs-grid">
+            
+            <!-- বিকাশ (bKash) -->
+            <div class="mfs-card bkash">
+                <div>
+                    <div class="mfs-header">
+                        <span style="font-size: 1.8rem;">🌸</span>
+                        <div>
+                            <h4>বিকাশ (bKash)</h4>
+                            <!-- 👇 পার্সোনাল বা মার্চেন্ট লিখে দিন -->
+                            <span class="mfs-type">পার্সোনাল (Send Money)</span>
+                        </div>
+                    </div>
+                    <div class="copy-box">
+                        <!-- 👇 আপনার সঠিক বিকাশ নম্বর বসান -->
+                        <span class="number-text" id="bkashNum">01823-XXXXXX</span>
+                        <button class="copy-action-btn" onclick="copyToClipboard('bkashNum', this)">📋 কপি</button>
+                    </div>
+                </div>
+                <small style="color: var(--gray);">💡 রেফারেন্সে আপনার নাম বা খাতের নাম (যেমন: Lillah) লিখতে পারেন।</small>
+            </div>
+
+            <!-- নগদ (Nagad) -->
+            <div class="mfs-card nagad">
+                <div>
+                    <div class="mfs-header">
+                        <span style="font-size: 1.8rem;">🔥</span>
+                        <div>
+                            <h4>নগদ (Nagad)</h4>
+                            <span class="mfs-type">পার্সোনাল (Send Money)</span>
+                        </div>
+                    </div>
+                    <div class="copy-box">
+                        <!-- 👇 আপনার সঠিক নগদ নম্বর বসান -->
+                        <span class="number-text" id="nagadNum">0121-XXXXXX</span>
+                        <button class="copy-action-btn" onclick="copyToClipboard('nagadNum', this)">📋 কপি</button>
+                    </div>
+                </div>
+                <small style="color: var(--gray);">💡 টাকা পাঠিয়ে অনুগ্রহ করে হিসাব বিভাগকে নিশ্চিত করুন।</small>
+            </div>
+
+            <!-- রকেট (Rocket) -->
+            <div class="mfs-card rocket">
+                <div>
+                    <div class="mfs-header">
+                        <span style="font-size: 1.8rem;">🚀</span>
+                        <div>
+                            <h4>রকেট (Rocket)</h4>
+                            <span class="mfs-type">পার্সোনাল নম্বর</span>
+                        </div>
+                    </div>
+                    <div class="copy-box">
+                        <!-- 👇 আপনার সঠিক রকেট নম্বর বসান -->
+                        <span class="number-text" id="rocketNum">01521-XXXXXX</span>
+                        <button class="copy-action-btn" onclick="copyToClipboard('rocketNum', this)">📋 কপি</button>
+                    </div>
+                </div>
+                <small style="color: var(--gray);">💡 ডাচ-বাংলা রকেট অ্যাকাউন্টে অনুদান পাঠানো যাবে।</small>
+            </div>
+
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- 🏦 সরাসরি ব্যাংক একাউন্ট বিবরণী -->
+        <!-- ============================================================== -->
+        <h3 style="margin-bottom: 20px;">🏦 সরাসরি ব্যাংক একাউন্টে অনুদান</h3>
+
+        <div class="bank-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: gap: 15px;">
+                <h4 style="margin: 0; color: var(--primary); font-size: 1.25rem;">
+                    🏛️ ইসলামী ব্যাংক বাংলাদেশ পিএলসি (Islami Bank)
+                </h4>
+                <span style="background: var(--light); padding: 4px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; color: var(--primary);">
+                    সঞ্চয়ী হিসাব (Savings Account)
+                </span>
+            </div>
+
+            <div class="bank-grid">
+                <!-- একাউন্টের নাম -->
+                <div class="bank-field">
+                    <span>হিসাবের নাম (Account Title)</span>
+                    <strong>জামিয়া দারুল উলুম বাবুস সালাম</strong>
+                </div>
+
+                <!-- একাউন্ট নম্বর -->
+                <div class="bank-field" style="background: #E8F5E9;">
+                    <span>হিসাব নম্বর (Account Number)</span>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <strong id="bankAcc" style="color: var(--primary); font-size: 1.1rem;">2050XXXXXXXXXXXXX</strong>
+                        <button class="copy-action-btn" style="padding: 4px 8px; font-size: 0.75rem;" onclick="copyToClipboard('bankAcc', this)">📋 কপি</button>
+                    </div>
+                </div>
+
+                <!-- শাখা -->
+                <div class="bank-field">
+                    <span>শাখা (Branch Name)</span>
+                    <strong>হজ ক্যাম্প / বিমানবন্দর শাখা, ঢাকা</strong>
+                </div>
+
+                <!-- রাউটিং নম্বর -->
+                <div class="bank-field">
+                    <span>রাউটিং নম্বর (Routing Number)</span>
+                    <strong>1252XXXXXXXX</strong>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- 📞 টাকা পাঠানোর পর নিশ্চিতকরণ ও রসিদ সংগ্রহ -->
+        <!-- ============================================================== -->
+        <div class="notice-step-box">
+            <div class="step-icon">📝</div>
+            <div>
+                <h4 style="margin: 0 0 6px 0; color: #856404; font-size: 1.15rem;">
+                    টাকা পাঠানোর পর অনুগ্রহ করে অফিসকে অবহিত করুন
+                </h4>
+                <p style="margin: 0; color: #533f03; font-size: 0.95rem; line-height: 1.6;">
+                    ব্যাংক বা মোবাইল ব্যাংকিংয়ে টাকা পাঠানোর পর অনুদানের খাত (যাকাত / লিল্লাহ / নির্মাণ) এবং প্রেরিত টাকার পরিমাণ জানিয়ে অফিসিয়াল মানি রসিদ (Donation Receipt) সংগ্রহ করার জন্য অনুরোধ করা যাচ্ছে।
+                </p>
+                <div style="margin-top: 10px; font-size: 0.95rem;">
+                    📞 <strong>হিসাব বিভাগ:</strong> <a href="tel:01311482389" style="color: var(--primary); font-weight: bold;">০১৩১১-৪৮২৩৮৯</a> (হাফেজ মাওলানা নুর মোহাম্মাদ) | 
+                    অফিস: <a href="tel:01646846077" style="color: var(--primary); font-weight: bold;">০১৬৪৬-৮৪৬০৭৭</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <!-- মূল কন্টেন্ট শেষ -->
+
+    <!-- ফুটার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
+    <div id="footer-placeholder"></div>
+
+    <!-- মূল স্ক্রিপ্ট ফাইল -->
+    <script src="../main.js"></script>
+
+    <!-- ১-ক্লিকে নম্বর কপি করার স্ক্রিপ্ট -->
+    <script>
+        function copyToClipboard(elementId, btnElement) {
+            const textToCopy = document.getElementById(elementId).innerText.trim();
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = btnElement.innerHTML;
+                btnElement.innerHTML = "✓ কপি হয়েছে!";
+                btnElement.style.background = "#27AE60";
+
+                setTimeout(() => {
+                    btnElement.innerHTML = originalText;
+                    btnElement.style.background = "";
+                }, 2000);
+            }).catch(err => {
+                console.error("কপি করতে সমস্যা হয়েছে:", err);
+            });
+        }
+    </script>
+</body>
+</html>
