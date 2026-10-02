@@ -171,6 +171,20 @@ function filterNotice(type, btn) {
     }
 }
 
+// ════ ব্রাউজার ট্যাবে স্বয়ংক্রিয় Favicon (লোগো) যুক্ত করা ════
+(function() {
+    const isPagesFolder = window.location.pathname.includes('/pages/');
+    const logoPath = isPagesFolder ? '../images/logo.png' : 'images/logo.png';
+    
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+    }
+    link.href = logoPath;
+})();
+
 // চ্যাটবট স্ক্রিপ্ট অটোমেটিক ইনজেক্ট করা
 const chatbotScript = document.createElement("script");
 chatbotScript.src = BASE + "chatbot.js";
