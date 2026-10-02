@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>শিক্ষক, কর্মকর্তা-কর্মচারী — জামিয়া বাবুস সালাম</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
 
-    <!-- এই পেজের নিজস্ব স্টাইল -->
+    <!-- এই পেজের নিজস্ব কাস্টম স্টাইল -->
     <style>
         /* ══ সেক্টর/বিভাগ হেডার ══ */
         .sector-header {
@@ -229,7 +228,7 @@
             margin: 0;
         }
 
-        /* মোবাইল */
+        /* মোবাইল রেসপন্সিভ */
         @media (max-width: 600px) {
             .teachers-grid {
                 grid-template-columns: 1fr;
@@ -278,10 +277,9 @@
 <div class="page-content">
 
 
-    <!-- ══ মোট পরিসংখ্যান ══ -->
+    <!-- ══ মোট সংখ্যা ══ -->
     <div class="total-count">
         <div class="count-grid">
-            <!-- 👇 সংখ্যা চেঞ্জ করুন -->
             <div class="count-item"><h3>১৫</h3><p>কিতাব শিক্ষক</p></div>
             <div class="count-item"><h3>৮</h3><p>নূরানী শিক্ষক</p></div>
             <div class="count-item"><h3>৬</h3><p>নাযেরা শিক্ষক</p></div>
@@ -316,28 +314,24 @@
         <!-- ═══ ব্যক্তি ১: মুহতামিম ═══ -->
         <div class="teacher-card" data-name="হযরত মাওলানা আনিসুর রহমান">
             <div class="teacher-photo">
-                <!-- 👇 ছবির পাথ চেঞ্জ করুন -->
+                <!-- ✅ লুপ ও অফলাইন প্রোটেক্টেড onerror হ্যান্ডলার -->
                 <img src="../images/teachers/muhtamim.jpg" 
                      alt="হযরত মাওলানা আনিসুর রহমান"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">মুহতামিম</div>
             </div>
             <div class="teacher-info">
-                <!-- 👇 নাম চেঞ্জ করুন -->
                 <h4>হযরত মাওলানা আনিসুর রহমান</h4>
-                <!-- 👇 পদবি চেঞ্জ করুন -->
                 <span class="designation">মুহতামিম (প্রতিষ্ঠাতা পরিচালক)</span>
-                <!-- 👇 তথ্য চেঞ্জ করুন -->
                 <div class="teacher-detail">
                     <span class="detail-icon">🎓</span>
                     <span>দাওরায়ে হাদিস, তাখাসসুস ফিল ফিকহ</span>
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">🏛️</span>
-                    <span>দারুল উলুম দেওবন্দ থেকে সনদপ্রাপ্ত</span>
+                    <span>দারুল উলুম দেওবন্দের সুযোগ্য ফাজেল</span>
                 </div>
                 <div class="teacher-phone">
-                    <!-- 👇 ফোন নম্বর চেঞ্জ করুন -->
                     <a href="tel:+8801712345678" class="phone-btn">
                         📞 ০১৭১-২৩৪৫৬৭৮
                     </a>
@@ -350,7 +344,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/najem.jpg" 
                      alt="মুফতি রফিকুল ইসলাম কাসেমী"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">নাযেমে তালিমাত</div>
             </div>
             <div class="teacher-info">
@@ -358,11 +352,11 @@
                 <span class="designation">নাযেমে তালিমাত ও সিনিয়র মুহাদ্দিস</span>
                 <div class="teacher-detail">
                     <span class="detail-icon">🎓</span>
-                    <span>দাওরায়ে হাদিস</span>
+                    <span>দাওরায়ে হাদিস, তাখাসসুস ফিল ফিকহ</span>
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">📚</span>
-                    <span>তাখাসসুস ফিল ফিকহ</span>
+                    <span>হাদিস ও ফিকহ শাস্ত্রের প্রাজ্ঞ ব্যক্তিত্ব</span>
                 </div>
                 <div class="teacher-phone">
                     <a href="tel:+8801816183488" class="phone-btn">
@@ -393,7 +387,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/basar.jpg" 
                      alt="মুফতি আবুল বাশার"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">সহকারী মুদাররিস</div>
             </div>
             <div class="teacher-info">
@@ -405,10 +399,10 @@
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">📖</span>
-                    <span>ফাজেল: জামিয়াতু ইব্রাহীম, পাঠদান: নাহু, আদব, ফিক্হ</span>
+                    <span>পাঠদান: নাহু, আদব ও ফিক্হ শাস্ত্র</span>
                 </div>
                 <div class="teacher-phone">
-                    <a href="tel:+8801301-070113" class="phone-btn">
+                    <a href="tel:+8801301070113" class="phone-btn">
                         📞 ০১৩০১-০৭০১১৩
                     </a>
                 </div>
@@ -420,7 +414,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/jahir.jpg" 
                      alt="মুফতি জহিরুল ইসলাম"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">সিনিয়র মুদাররিস</div>
             </div>
             <div class="teacher-info">
@@ -432,10 +426,10 @@
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">📖</span>
-                    <span>ফাজেল: জামিয়াতু ইব্রাহীম, পাঠদান: ফিক্হ, তরজমা, নাহু</span>
+                    <span>পাঠদান: ফিক্হ, কুরআন তরজমা ও নাহু</span>
                 </div>
                 <div class="teacher-phone">
-                    <a href="tel:+880521566322" class="phone-btn">
+                    <a href="tel:+8801521566322" class="phone-btn">
                         📞 ০১৫২১-৫৬৬৩২২
                     </a>
                 </div>
@@ -447,7 +441,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/abdul-basit.jpg" 
                      alt="মাওলানা আব্দুল বাসিত"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">শিক্ষক</div>
             </div>
             <div class="teacher-info">
@@ -459,7 +453,7 @@
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">📖</span>
-                    <span>আরবি সাহিত্য ও বালাগাত পাঠদান</span>
+                    <span>পাঠদান: আরবি সাহিত্য ও বালাগাত</span>
                 </div>
                 <div class="teacher-phone">
                     <a href="tel:+8801512345678" class="phone-btn">
@@ -468,8 +462,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- 👇 নতুন কিতাব শিক্ষক যোগ করতে উপরের একটি ব্লক কপি করে এখানে পেস্ট করুন -->
 
     </div>
 
@@ -492,7 +484,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/abdullah-mamun.jpg" 
                      alt="ক্বারী আব্দুল্লাহ আল মামুন"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">প্রধান শিক্ষক</div>
             </div>
             <div class="teacher-info">
@@ -504,7 +496,7 @@
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">📖</span>
-                    <span>কায়দা, নূরানী পদ্ধতি ও তাজবীদ</span>
+                    <span>কায়দা, নূরানী পদ্ধতি ও সহীহ তাজবীদ</span>
                 </div>
                 <div class="teacher-phone">
                     <a href="tel:+8801312345678" class="phone-btn">
@@ -519,7 +511,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/rafiqul-islam.jpg" 
                      alt="হাফেজ মোঃ রফিকুল ইসলাম"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">শিক্ষক</div>
             </div>
             <div class="teacher-info">
@@ -527,11 +519,11 @@
                 <span class="designation">নূরানী শিক্ষক</span>
                 <div class="teacher-detail">
                     <span class="detail-icon">🎓</span>
-                    <span>হিফজুল কুরআন, আলিম পাশ</span>
+                    <span>হিফজুল কুরআন ও দ্বীনিয়াত সম্পন্ন</span>
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">📖</span>
-                    <span>আমপারা ও দো'আ-কালাম পাঠদান</span>
+                    <span>আমপারা, মাসআলা ও মাসনূন দো'আ</span>
                 </div>
                 <div class="teacher-phone">
                     <a href="tel:+8801412345678" class="phone-btn">
@@ -540,8 +532,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- 👇 নতুন নূরানী শিক্ষক যোগ করতে উপরের ব্লক কপি করে পেস্ট করুন -->
 
     </div>
 
@@ -564,7 +554,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/ibrahim-khalil.jpg" 
                      alt="হাফেজ ক্বারী ইব্রাহীম খলীল"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">হিফজ বিভাগ প্রধান</div>
             </div>
             <div class="teacher-info">
@@ -572,15 +562,11 @@
                 <span class="designation">হিফজ বিভাগ প্রধান</span>
                 <div class="teacher-detail">
                     <span class="detail-icon">🎓</span>
-                    <span>হিফজুল কুরআন, দাওরায়ে হাদিস</span>
+                    <span>হিফজুল কুরআন ও ক্বারী</span>
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">📖</span>
-                    <span>কুরআন হিফজ তত্ত্বাবধান ও মুরাজাআ</span>
-                </div>
-                <div class="teacher-detail">
-                    <span class="detail-icon">🏆</span>
-                    <span>অভিজ্ঞতা: ১৫+ বছর</span>
+                    <span>সবক দান ও কুরআন তিলাওয়াত মুরাদ</span>
                 </div>
                 <div class="teacher-phone">
                     <a href="tel:+8801312345679" class="phone-btn">
@@ -595,7 +581,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/muhammad-tarek.jpg" 
                      alt="হাফেজ মুহাম্মদ তারেক"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">শিক্ষক</div>
             </div>
             <div class="teacher-info">
@@ -603,11 +589,11 @@
                 <span class="designation">নাযেরা ও হিফজ শিক্ষক</span>
                 <div class="teacher-detail">
                     <span class="detail-icon">🎓</span>
-                    <span>হিফজুল কুরআন, তাজবীদ সনদপ্রাপ্ত</span>
+                    <span>হাফেজে কুরআন ও ক্বারী</span>
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">📖</span>
-                    <span>নাযেরা কুরআন ও সবক তত্ত্বাবধান</span>
+                    <span>নাযেরা সবক ও মুতাআলা তদারকি</span>
                 </div>
                 <div class="teacher-phone">
                     <a href="tel:+8801712345679" class="phone-btn">
@@ -616,8 +602,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- 👇 নতুন নাযেরা শিক্ষক যোগ করতে উপরের ব্লক কপি করে পেস্ট করুন -->
 
     </div>
 
@@ -640,7 +624,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/shafiqul-islam.jpg" 
                      alt="মোঃ শফিকুল ইসলাম"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">অফিস ম্যানেজার</div>
             </div>
             <div class="teacher-info">
@@ -648,11 +632,11 @@
                 <span class="designation">অফিস ম্যানেজার</span>
                 <div class="teacher-detail">
                     <span class="detail-icon">💼</span>
-                    <span>প্রশাসনিক ব্যবস্থাপনা ও হিসাব</span>
+                    <span>প্রশাসনিক ব্যবস্থাপনা ও হিসাবরক্ষণ</span>
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">🏢</span>
-                    <span>ভর্তি, সনদ ও অফিসিয়াল কাজ</span>
+                    <span>ভর্তি, কাগুজে কাজ ও অন্যান্য যোগাযোগ</span>
                 </div>
                 <div class="teacher-phone">
                     <a href="tel:+8801812345679" class="phone-btn">
@@ -667,7 +651,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/anowar-hosen.jpg" 
                      alt="মোঃ আনোয়ার হোসেন"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">খাদেম</div>
             </div>
             <div class="teacher-info">
@@ -675,11 +659,11 @@
                 <span class="designation">প্রধান খাদেম (কেয়ারটেকার)</span>
                 <div class="teacher-detail">
                     <span class="detail-icon">🏠</span>
-                    <span>ছাত্রাবাস ব্যবস্থাপনা</span>
+                    <span>ছাত্রাবাস ব্যবস্থাপনা ও শৃঙ্খলার কাজ</span>
                 </div>
                 <div class="teacher-detail">
                     <span class="detail-icon">🍽️</span>
-                    <span>খাবার ও রান্নাঘর তদারকি</span>
+                    <span>খাবার-দাবার ও তদারকির দায়িত্ব</span>
                 </div>
                 <div class="teacher-phone">
                     <a href="tel:+8801612345679" class="phone-btn">
@@ -694,7 +678,7 @@
             <div class="teacher-photo">
                 <img src="../images/teachers/johirul-islam.jpg" 
                      alt="মোঃ জহিরুল ইসলাম"
-                     onerror="this.src='https://via.placeholder.com/300x300/0F5132/FFFFFF?text=ছবি'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%230F5132\'/><text x=\'50\' y=\'55\' font-size=\'11\' fill=\'%23FFFFFF\' text-anchor=\'middle\' font-family=\'sans-serif\'>🕌 বাবুস সালাম</text></svg>';">
                 <div class="teacher-badge">গার্ড</div>
             </div>
             <div class="teacher-info">
@@ -702,7 +686,7 @@
                 <span class="designation">নিরাপত্তা প্রহরী</span>
                 <div class="teacher-detail">
                     <span class="detail-icon">🛡️</span>
-                    <span>ক্যাম্পাস নিরাপত্তা ও তদারকি</span>
+                    <span>মাদরাসার নিরাপত্তা ও গেট পাহারা</span>
                 </div>
                 <div class="teacher-phone">
                     <a href="tel:+8801912345679" class="phone-btn">
@@ -711,8 +695,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- 👇 নতুন স্টাফ/কর্মচারী যোগ করতে উপরের ব্লক কপি করে পেস্ট করুন -->
 
     </div>
 

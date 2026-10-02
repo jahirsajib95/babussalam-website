@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   জামিয়া বাবুস সালাম — মেইন স্ক্রিপ্ট
+   জামিয়া বাবুস সালাম — মেইন স্ক্রিপ্ট (আপডেটেড)
    ⚠️ এই ফাইলে কোনো পরিবর্তন করবেন না
    ═══════════════════════════════════════════ */
 
@@ -11,9 +11,26 @@ function getBasePath() {
 var BASE = getBasePath();
 
 document.addEventListener('DOMContentLoaded', function () {
+    // ১. সব পেজে অটোমেটিক ফেভিকন (ট্যাবের লোগো) সেট করা
+    setAutoFavicon();
+
+    // ২. হেডার ও ফুটার লোড করা
     loadPart('header-placeholder', BASE + 'includes/header.html', initMenu);
     loadPart('footer-placeholder', BASE + 'includes/footer.html', initBackToTop);
 });
+
+// 🌟 অটো-ফেভিকন সেট করার ফাংশন
+function setAutoFavicon() {
+    var favicon = document.querySelector("link[rel*='icon']");
+    if (!favicon) {
+        favicon = document.createElement('link');
+        favicon.setAttribute('rel', 'shortcut icon');
+        document.head.appendChild(favicon);
+    }
+    favicon.setAttribute('type', 'image/png');
+    // BASE পাথ অনুযায়ী অটোমেটিক সঠিক লোগো নিয়ে নেবে (যেমন: ./images/logo.png বা ../images/logo.png)
+    favicon.setAttribute('href', BASE + 'images/logo.png'); 
+}
 
 // হেডার/ফুটার লোড করার ফাংশন
 function loadPart(id, file, callback) {
@@ -45,14 +62,14 @@ function initMenu() {
     var close = document.getElementById('navClose');
 
     function openMenu() {
-        menu.classList.add('active');
-        overlay.classList.add('active');
+        if (menu) menu.classList.add('active');
+        if (overlay) overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
     function closeMenu() {
-        menu.classList.remove('active');
-        overlay.classList.remove('active');
+        if (menu) menu.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
         document.body.style.overflow = '';
     }
 
@@ -170,20 +187,6 @@ function filterNotice(type, btn) {
         }
     }
 }
-
-// ════ ব্রাউজার ট্যাবে স্বয়ংক্রিয় Favicon (লোগো) যুক্ত করা ════
-(function() {
-    const isPagesFolder = window.location.pathname.includes('/pages/');
-    const logoPath = isPagesFolder ? '../images/logo.png' : 'images/logo.png';
-    
-    let link = document.querySelector("link[rel~='icon']");
-    if (!link) {
-        link = document.createElement('link');
-        link.rel = 'icon';
-        document.head.appendChild(link);
-    }
-    link.href = logoPath;
-})();
 
 // চ্যাটবট স্ক্রিপ্ট অটোমেটিক ইনজেক্ট করা
 const chatbotScript = document.createElement("script");
