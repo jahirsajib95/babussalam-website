@@ -3,7 +3,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 // ✅ আপনার সফলভাবে টেস্ট করা API Key এখানে বসান
-const AI_API_KEY = "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";
+const AI_API_KEY = "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";
 
 // ✅ আপনার একাউন্টের কার্যকরী মডেল
 const AI_MODEL = "openai/gpt-oss-120b";
