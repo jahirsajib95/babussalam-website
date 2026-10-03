@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>শিক্ষা ও প্রশিক্ষণ বিভাগসমূহ | জামিয়া দারুল উলুম বাবুস সালাম</title>
+    <!-- মূল স্টাইলশীট লিংক -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- বিভাগ পেজের বিশেষ আকর্ষণীয় সিএসএস (CSS) -->
+    <style>
+        /* সেকশন গ্রুপ হেডিং */
+        .dept-group-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            color: var(--primary-dark);
+            font-size: 1.4rem;
+        }
+
+        .dept-group-title span {
+            background: var(--light);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 1.3rem;
+            border: 1px solid var(--border);
+        }
+
+        /* সাধারণ বিভাগ কার্ড গ্রিড */
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 22px;
+            margin-bottom: 25px;
+        }
+
+        .dept-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .dept-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-light);
+            box-shadow: 0 8px 22px rgba(15, 81, 50, 0.1);
+        }
+
+        .dept-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 14px;
+        }
+
+        .dept-icon {
+            font-size: 2.2rem;
+            line-height: 1;
+        }
+
+        .dept-card-header h4 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+
+        .dept-card p {
+            color: var(--dark);
+            margin: 0;
+            font-size: 0.98rem;
+            line-height: 1.7;
+        }
+
+        /* কিতাব বিভাগের ধারাবাহিক ৫টি স্তর (Timeline Card) */
+        .kitab-intro-box {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .tier-steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 35px;
+        }
+
+        .tier-step-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .tier-step-card:hover {
+            transform: translateX(6px);
+            border-color: var(--primary);
+        }
+
+        .tier-number {
+            background: var(--primary);
+            color: var(--white);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .tier-content {
+            flex-grow: 1;
+        }
+
+        .tier-content h5 {
+            margin: 0 0 6px 0;
+            font-size: 1.2rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tier-badge {
+            background: #E8F5E9;
+            color: var(--primary-dark);
+            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            border: 1px solid #C8E6C9;
+        }
+
+        .tier-badge.masters {
+            background: #FFF3CD;
+            color: #856404;
+            border-color: #FFEEBA;
+        }
+
+        .tier-content p {
+            margin: 0;
+            color: var(--dark);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* শিক্ষা সফলতা সেকশন */
+        .success-banner {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border-radius: var(--radius);
+            padding: 35px 30px;
+            margin-top: 45px;
+            box-shadow: 0 8px 24px rgba(15, 81, 50, 0.18);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-banner h3 {
+            color: var(--accent);
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .success-banner p {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            margin-bottom: 15px;
+            opacity: 0.95;
+            text-align: justify;
+        }
+
+        .dua-quote {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #FFF;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .tier-step-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .tier-step-card:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
+    <div id="header-placeholder"></div>
+
+    <!-- পেজ ব্যানার ও ব্রেডক্রাম্ব -->
+    <section class="page-header">
+        <h2>শিক্ষা ও প্রশিক্ষণ বিভাগসমূহ</h2>
+        <div class="breadcrumb">
+            <a href="../index.html">মূলপাতা</a> /
+            <span>একাডেমিক</span> /
+            <span>বিভাগসমূহ</span>
+        </div>
+    </section>
+
+    <!-- মূল কন্টেন্ট শুরু -->
+    <main class="page-content">
+
+        <!-- পেজ পরিচিতি -->
+        <div style="text-align: center; max-width: 820px; margin: 0 auto 30px auto;">
+            <p>জামিয়া দারুল উলুম বাবুস সালাম-এ কোমলমতি শিশুদের বুনিয়াদি কুরআন শিক্ষা থেকে শুরু করে দাওরায়ে হাদিস (মাস্টার্স) এবং উচ্চতর ইফতা গবেষণা পর্যন্ত অত্যন্ত সুশৃঙ্খল ও আদর্শ পরিবেশে পাঠদান পরিচালিত হয়।</p>
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- 📖 গ্রুপ ১: প্রাথমিক কুরআন ও হিফজ বিভাগসমূহ -->
+        <!-- ============================================================== -->
+        <div class="dept-group-title">
+            <span>🌸</span>
+            <h3 style="margin: 0; border: none; padding: 0;">কুরআন শিক্ষা ও হিফজ বিভাগ</h3>
+        </div>
+
+        <div class="dept-grid">
+            
+            <!-- ১. মক্তব ও নূরানী বিভাগ -->
+            <div class="dept-card" style="border-top: 4px solid var(--primary);">
+                <div>
+                    <div class="dept-card-header">
+                        <span class="dept-icon">📖</span>
+                        <h4>১. মক্তব ও নূরানী বিভাগ</h4>
+                    </div>
+                    <p>
+                        শিশুদের কোমল হৃদয়ে ঈমান ও কুরআনের ভিত্তি স্থাপন করার লক্ষ্যে এ বিভাগ পরিচালিত হয়। মনোরম পরিবেশে আধুনিক ও বিজ্ঞানসম্মত পদ্ধতিতে মাত্র ১ থেকে ২ বছরের মধ্যে শিশুদের তাজবীদসহ বিশুদ্ধ কুরআন তিলাওয়াত, দৈনন্দিন প্রয়োজনীয় দোয়া এবং জরুরি মাসনূন আমল হাতে-কলমে শেখানো হয়।
+                    </p>
+                </div>
+            </div>
+
+            <!-- ২. হিফজুল কুরআন বিভাগ -->
+            <div class="dept-card" style="border-top: 4px solid #D4AF37;">
+                <div>
+                    <div class="dept-card-header">
+                        <span class="dept-icon">🎙️</span>
+                        <h4>২. হিফজুল কুরআন বিভাগ</h4>
+                    </div>
+                    <p>
+                        এ বিভাগে প্রখর মেধার অধিকারী শিশুদের অত্যন্ত যত্ন ও স্নেহের সাথে আন্তর্জাতিক মানের হাফেজে কুরআন হিসেবে গড়ে তোলা হয়। ৩ থেকে ৪ বছরের মধ্যে সম্পূর্ণ কুরআনুল কারীম তাজবীদের নিখুঁত নিয়ম মেনে হিফজ করানোর পাশাপাশি তাজবীদের বিশেষ মশক ও নিয়মানুবর্তিতা নিশ্চিত করা হয়।
+                    </p>
+                </div>
+            </div>
+
+            <!-- ৩. নাযেরা বিভাগ -->
+            <div class="dept-card" style="border-top: 4px solid #16A085;">
+                <div>
+                    <div class="dept-card-header">
+                        <span class="dept-icon">📜</span>
+                        <h4>৩. নাযেরা বিভাগ</h4>
+                    </div>
+                    <p>
+                        হিফজ বিভাগে প্রবেশের পূর্বপ্রস্তুতি হিসেবে ছাত্রদের কুরআন মাজীদের বিশুদ্ধ উচ্চারণ, সাবলীল পাঠ এবং গতিশীল পঠনরীতি শেখানো হয়।
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- 📚 গ্রুপ ২: কিতাব বিভাগ (প্রাথমিক থেকে স্নাতকোত্তর) -->
+        <!-- ============================================================== -->
+        <div class="dept-group-title">
+            <span>📚</span>
+            <h3 style="margin: 0; border: none; padding: 0;">৪. কিতাব বিভাগ (ধারাবাহিক ৫টি শিক্ষাস্তর)</h3>
+        </div>
+
+        <div class="kitab-intro-box">
+            এটি জামিয়ার প্রধান ও সর্ববৃহৎ অংশ। দারুল উলুম দেওবন্দের মহান সিলেবাসের আলোকে এ বিভাগে মোট পাঁচটি ধারাবাহিক ও পূর্ণাঙ্গ স্তর রয়েছে:
+        </div>
+
+        <div class="tier-steps-container">
+
+            <!-- স্তর ১: ইবতেদায়ী -->
+            <div class="tier-step-card">
+                <span class="tier-number">১</span>
+                <div class="tier-content">
+                    <h5>
+                        ইবতেদায়ী
+                        <span class="tier-badge">প্রাইমারী স্তর</span>
+                    </h5>
+                    <p>আরবি ও উর্দু ভাষার মৌলিক জ্ঞান, ব্যাকরণ, নাহু-সরফ ও বুনিয়াদি ইসলামী শিক্ষা হাতে-কলমে শেখানো হয়।</p>
+                </div>
+            </div>
+
+            <!-- স্তর ২: মুতাওয়াসসিতাহ -->
+            <div class="tier-step-card">
+                <span class="tier-number">২</span>
+                <div class="tier-content">
+                    <h5>
+                        মুতাওয়াসসিতাহ
+                        <span class="tier-badge">মাধ্যমিক স্তর</span>
+                    </h5>
+                    <p>ফিকহ শাস্ত্রের মূল পাঠ, আরবি সাহিত্য, বালাগাত (অলংকারশাস্ত্র) এবং তাফসির ও হাদিসের প্রাথমিক পাঠদান।</p>
+                </div>
+            </div>
+
+            <!-- স্তর ৩: ছানবী -->
+            <div class="tier-step-card">
+                <span class="tier-number">৩</span>
+                <div class="tier-content">
+                    <h5>
+                        ছানবী
+                        <span class="tier-badge">উচ্চ মাধ্যমিক স্তর</span>
+                    </h5>
+                    <p>উচ্চতর আরবি ব্যাকরণ, ফিকহের মূলনীতি (উসুলুল ফিকহ), মানতিক ও উন্নত বালাগাত শাস্ত্রের নিবিড় পাঠ।</p>
+                </div>
+            </div>
+
+            <!-- স্তর ৪: ফযিলত -->
+            <div class="tier-step-card">
+                <span class="tier-number">৪</span>
+                <div class="tier-content">
+                    <h5>
+                        ফযিলত
+                        <span class="tier-badge">স্নাতক স্তর</span>
+                    </h5>
+                    <p>কুরআনুল কারীমের বিস্তারিত তাফসির, হাদিসের মূলনীতি (উসুলুল হাদিস) এবং গভীর ফিকহী গবেষণা।</p>
+                </div>
+            </div>
+
+            <!-- স্তর ৫: দাওরায়ে হাদিস / তাকমীল -->
+            <div class="tier-step-card" style="border-left: 5px solid var(--accent); background: #FFFCF2;">
+                <span class="tier-number" style="background: var(--accent); color: #000;">৫</span>
+                <div class="tier-content">
+                    <h5>
+                        দাওরায়ে হাদিস / তাকমীল
+                        <span class="tier-badge masters">মাস্টার্স / স্নাতকোত্তর সমমান 🎓</span>
+                    </h5>
+                    <p>
+                        সিহাহ সিত্তাহসহ হাদিসের প্রধান কিতাবসমূহ (বুখারী, মুসলিম, তিরমিযী, আবু দাউদ, নাসাঈ, ইবনে মাজাহ)-এর গভীর পর্যালোচনা ও গবেষণা। <strong>সরকারিভাবে এ স্তরটি ইসলামিক স্টাডিজ মাস্টার্স সমমানের মর্যাদাপ্রাপ্ত।</strong>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- ⚖️ গ্রুপ ৩: উচ্চতর গবেষণা, তারবিয়াত ও অন্যান্য বিভাগসমূহ -->
+        <!-- ============================================================== -->
+        <div class="dept-group-title">
+            <span>🏛️</span>
+            <h3 style="margin: 0; border: none; padding: 0;">উচ্চতর গবেষণা ও সহায়ক বিভাগসমূহ</h3>
+        </div>
+
+        <div class="dept-grid">
+
+            <!-- ৫. ইফতা বিভাগ -->
+            <div class="dept-card" style="border-top: 4px solid var(--primary); grid-column: span 1;">
+                <div>
+                    <div class="dept-card-header">
+                        <span class="dept-icon">⚖️</span>
+                        <h4>৫. ইফতা বিভাগ (উচ্চতর ইসলামী আইন)</h4>
+                    </div>
+                    <p>
+                        দাওরায়ে হাদিস সফলভাবে সম্পন্নকারী মেধাবী আলেমদের জন্য এটি ২ বছর মেয়াদী বিশেষ গবেষণা কোর্স। সমকালীন আধুনিক সমস্যাবলীর শরীয়তসম্মত সমাধান, ইসলামী অর্থনীতি, ব্যাংকিং এবং ফতোয়া প্রদানের ব্যবহারিক কলাকৌশল শিক্ষাদানের মাধ্যমে যোগ্যতাসম্পন্ন গবেষক "মুফতি" তৈরি করা হয়।
+                    </p>
+                </div>
+            </div>
+
+            <!-- ৬. দাওয়াত ও তাবলীগ বিভাগ -->
+            <div class="dept-card" style="border-top: 4px solid #27AE60;">
+                <div>
+                    <div class="dept-card-header">
+                        <span class="dept-icon">🗣️</span>
+                        <h4>৬. দাওয়াত ও তাবলীগ বিভাগ</h4>
+                    </div>
+                    <p>
+                        উম্মতে মুহাম্মদীর মূল দায়িত্ব সৎকাজের আদেশ ও অসৎকাজের নিষেধ। জামিয়ার পক্ষ থেকে ছাত্রদের নিয়মিত সাপ্তাহিক ও মাসিক তাবলীগী জামাতে প্রেরণ এবং এলাকায় সাধারণ মানুষের মাঝে দ্বীনি চেতনা জাগ্রত করতে মাসিক ইজতেমা ও বয়ানের আয়োজন করা হয়।
+                    </p>
+                </div>
+            </div>
+
+            <!-- ৭. তারবিয়াত বিভাগ -->
+            <div class="dept-card" style="border-top: 4px solid #8E44AD;">
+                <div>
+                    <div class="dept-card-header">
+                        <span class="dept-icon">📿</span>
+                        <h4>৭. তারবিয়াত বিভাগ</h4>
+                    </div>
+                    <p>
+                        ইলমের সাথে আমল এবং আত্মশুদ্ধির সংযোগ না থাকলে দ্বীনের হক আদায় হয় না। এ লক্ষ্যে সপ্তাহে একদিন জামিয়ার সর্বস্তরের ছাত্রদের নিয়ে বিশেষ তারবিয়াতী মজলিস অনুষ্ঠিত হয়, যেখানে জিকির, মোরাকাবা এবং আত্মশুদ্ধির নসিহতের মাধ্যমে ছাত্রদের খাঁটি আল্লাহভীরু হিসেবে গড়ে তোলা হয়।
+                    </p>
+                </div>
+            </div>
+
+            <!-- ৮. গ্রন্থাগার (কুতুবখানা) -->
+            <div class="dept-card" style="border-top: 4px solid #2980B9;">
+                <div>
+                    <div class="dept-card-header">
+                        <span class="dept-icon">📚</span>
+                        <h4>৮. গ্রন্থাগার (কুতুবখানা)</h4>
+                    </div>
+                    <p>
+                        ছাত্রদের জ্ঞানতৃষ্ণা নিবারণ, সাহিত্যচর্চা ও সমকালীন গবেষণার জন্য রয়েছে প্রাচীন ও আধুনিক দুর্লভ কিতাবাদিতে সমৃদ্ধ এক বিশাল লাইব্রেরি।
+                    </p>
+                </div>
+            </div>
+
+            <!-- ৯. প্রকাশনা বিভাগ -->
+            <div class="dept-card" style="border-top: 4px solid #E67E22;">
+                <div>
+                    <div class="dept-card-header">
+                        <span class="dept-icon">✍️</span>
+                        <h4>৯. প্রকাশনা বিভাগ (দেয়ালিকা 'আস সালাম')</h4>
+                    </div>
+                    <p>
+                        ছাত্রদের লেখনী শক্তি বিকাশ ও দ্বীনের সহীহ দাওয়াত সাধারণ মানুষের মাঝে ছড়িয়ে দিতে প্রতি বছর প্রাতিষ্ঠানিক দেয়ালিকা ও সাহিত্যপত্র <strong>"আস সালাম"</strong> নিয়মিত প্রকাশিত হয়।
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- 🏆 ১০. শিক্ষা সফলতা (Academic Success) -->
+        <!-- ============================================================== -->
+        <section class="success-banner">
+            <h3>🏆 ১০. ঈর্ষণীয় শিক্ষা সফলতা ও গৌরবগাঁথা</h3>
+            <p>
+                প্রতিষ্ঠালগ্ন থেকে জামিয়া দারুল উলুম বাবুস সালাম-এর সাফল্য ঈর্ষণীয়। জামিয়ার সুনাম খ্যাতি ও আদর্শ সন্তানেরা আজ দেশ ও বিশ্বের আনাচে-কানাচে ছড়িয়ে পড়েছে। সার্বিক দিক বিবেচনায় প্রতিষ্ঠানটি ওলামায়ে কেরাম ও সুধিমহলে প্রশংসাসূচক ভূমিকা রাখছে। আমাদের শিক্ষার্থীরা বাংলাদেশ কওমি মাদ্রাসা শিক্ষা বোর্ড (বেফাক) ও আঞ্চলিক শিক্ষা বোর্ডের অধীনে অনুষ্ঠিত কেন্দ্রীয় পরীক্ষাসমূহের বিভিন্ন বিভাগে নিয়মিত মেধা তালিকায় সম্মানজনক স্থান অধিকার করে সাফল্যের স্বাক্ষর রেখে আসছে।
+            </p>
+            <div class="dua-quote">
+                ✨ "জামিয়ার এই ইলমী ধারা হোক আরও উন্নত, হোক আরও দীপ্তময়। আমীন।"
+            </div>
+        </section>
+
+        <!-- ভর্তি ও সিলেবাস নেভিগেশন লিংক -->
+        <div style="text-align: center; margin-top: 40px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <a href="admission.html" class="btn btn-primary">📝 ভর্তি তথ্য দেখুন</a>
+            <a href="admission-subjects.html" class="btn btn-green">📖 ভর্তি পরীক্ষার কিতাবসমূহ</a>
+        </div>
+
+    </main>
+    <!-- মূল কন্টেন্ট শেষ -->
+
+    <!-- ফুটার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
+    <div id="footer-placeholder"></div>
+
+    <!-- মূল স্ক্রিপ্ট ফাইল -->
+    <script src="../main.js"></script>
+</body>
+  </html>
