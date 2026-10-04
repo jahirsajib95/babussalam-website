@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মাদরাসা কন্ট্রোল প্যানেল (GitHub Live)</title>
+    <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0b5335;
+            --primary-dark: #073823;
+            --accent-gold: #c9933b;
+            --danger: #dc2626;
+            --bg: #f1f5f9;
+        }
+        body {
+            font-family: 'SolaimanLipi', sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+            color: #1e293b;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        h2 { text-align: center; color: var(--primary); margin-top: 0; }
+        .config-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .btn {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover { background: var(--primary-dark); }
+        .btn-gold { background: var(--accent-gold); color: #000; font-weight: bold; }
+        .btn-danger { background: var(--danger); }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+        }
+        .tab.active {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .item-card {
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+        }
+        .badge {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .urgent { background: #dc2626; }
+        .exam { background: #d97706; }
+        .general { background: #16a34a; }
+        #status-msg {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2><i class="fa-solid fa-gauge-high"></i> মাদরাসা অ্যাডমিন প্যানেল</h2>
+    
+    <!-- গিটহাব কনফিগারেশন -->
+    <div class="config-box">
+        <h4><i class="fa-brands fa-github"></i> গিটহাব কানেকশন সেটিংস</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+                <label>GitHub Username:</label>
+                <input type="text" id="gh-owner" placeholder="যেমন: your-username">
+            </div>
+            <div>
+                <label>Repository Name:</label>
+                <input type="text" id="gh-repo" placeholder="যেমন: jamia-babus-salam">
+            </div>
+        </div>
+        <div style="margin-top: 10px;">
+            <label>GitHub Personal Token:</label>
+            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        </div>
+        <div style="margin-top: 10px; display: flex; gap: 10px;">
+            <button class="btn" onclick="saveConfig()"><i class="fa-solid fa-floppy-disk"></i> তথ্য সেভ রাখুন</button>
+            <button class="btn btn-gold" onclick="loadFromGitHub()"><i class="fa-solid fa-cloud-arrow-down"></i> লাইভ ডেটা আনুন</button>
+        </div>
+    </div>
+
+    <div id="status-msg"></div>
+
+    <!-- ট্যাব মেনু -->
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('notice')"><i class="fa-solid fa-bullhorn"></i> নোটিশ ম্যানেজমেন্ট</div>
+        <div class="tab" onclick="switchTab('result')"><i class="fa-solid fa-square-poll-vertical"></i> ফলাফল ম্যানেজমেন্ট</div>
+    </div>
+
+    <!-- নোটিশ ফর্ম -->
+    <div id="notice-section">
+        <form onsubmit="handleSaveNotice(event)">
+            <input type="hidden" id="notice-id">
+            <div class="form-group">
+                <label>নোটিশের শিরোনাম:</label>
+                <input type="text" id="notice-title" required placeholder="উদা: বার্ষিক পরীক্ষার ফলাফল প্রকাশ">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label>ধরন (Category):</label>
+                    <select id="notice-type">
+                        <option value="urgent">জরুরি (Red)</option>
+                        <option value="exam">পরীক্ষা (Yellow)</option>
+                        <option value="general">সাধারণ (Green)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>তারিখ:</label>
+                    <input type="text" id="notice-date" placeholder="যেমন: ১৫ জানুয়ারি, ২০২৫" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>সংক্ষিপ্ত বিবরণ:</label>
+                <textarea id="notice-desc" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn" id="notice-btn"><i class="fa-solid fa-plus"></i> নোটিশ তালিকায় যুক্ত করুন</button>
+        </form>
+
+        <h3 style="margin-top: 30px;">বর্তমান নোটিশ সমূহ:</h3>
+        <div id="notice-list"></div>
+    </div>
+
+    <!-- ফলাফল ফর্ম -->
+    <div id="result-section" style="display: none;">
+        <form onsubmit="handleSaveResult(event)">
+            <input type="hidden" id="result-id">
+            <div class="form-group">
+                <label>পরীক্ষার নাম:</label>
+                <input type="text" id="exam-name" required placeholder="উদা: বার্ষিক পরীক্ষা ২০২৪">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label>বিভাগ/জামাত:</label>
+                    <input type="text" id="exam-class" required placeholder="উদা: হিফজুল কুরআন / মেশকাত">
+                </div>
+                <div class="form-group">
+                    <label>ফলাফল ফাইল / PDF লিংক:</label>
+                    <input type="url" id="result-url" placeholder="https://example.com/result.pdf" required>
+                </div>
+            </div>
+            <button type="submit" class="btn" id="result-btn"><i class="fa-solid fa-plus"></i> ফলাফল যুক্ত করুন</button>
+        </form>
+
+        <h3 style="margin-top: 30px;">বর্তমান ফলাফল তালিকা:</h3>
+        <div id="result-list"></div>
+    </div>
+
+    <!-- পুশ বাটন -->
+    <div style="margin-top: 40px; border-top: 2px solid #e2e8f0; padding-top: 20px; text-align: center;">
+        <button class="btn btn-gold" style="font-size: 18px; padding: 15px 30px;" onclick="pushToGitHub()">
+            <i class="fa-solid fa-cloud-arrow-up"></i> গিটহাবে পুশ করুন (সরাসরি লাইভ হবে)
+        </button>
+    </div>
+</div>
+
+<script>
+    // মূল ডেটা স্ট্রাকচার
+    let siteData = { notices: [], results: [] };
+    let fileSha = ""; // গিটহাব ফাইল আপডেটের জন্য প্রয়োজন
+
+    // কনফিগারেশন লোড করা
+    window.onload = () => {
+        document.getElementById('gh-owner').value = localStorage.getItem('gh_owner') || '';
+        document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || '';
+        document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
+        if(localStorage.getItem('gh_token')) {
+            loadFromGitHub();
+        }
+    };
+
+    function saveConfig() {
+        localStorage.setItem('gh_owner', document.getElementById('gh-owner').value.trim());
+        localStorage.setItem('gh_repo', document.getElementById('gh-repo').value.trim());
+        localStorage.setItem('gh_token', document.getElementById('gh-token').value.trim());
+        showStatus('কনফিগারেশন লোকাল স্টোরেজে সেভ হয়েছে!', '#dcfce7', '#15803d');
+    }
+
+    function showStatus(text, bg, color) {
+        const el = document.getElementById('status-msg');
+        el.innerText = text;
+        el.style.background = bg;
+        el.style.color = color;
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 5000);
+    }
+
+    // গিটহাব থেকে সরাসরি data.json নামানো
+    async function loadFromGitHub() {
+        const owner = document.getElementById('gh-owner').value.trim();
+        const repo = document.getElementById('gh-repo').value.trim();
+        const token = document.getElementById('gh-token').value.trim();
+
+        if(!owner || !repo || !token) {
+            alert('দয়া করে GitHub-এর ৩টি ফিল্ড পূরণ করুন!');
+            return;
+        }
+
+        try {
+            const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/data.json`, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+
+            if(res.status === 200) {
+                const data = await res.json();
+                fileSha = data.sha;
+                siteData = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+                renderNotices();
+                renderResults();
+                showStatus('সফলভাবে গিটহাব থেকে ডাটা লোড হয়েছে!', '#dcfce7', '#15803d');
+            } else if(res.status === 404) {
+                showStatus('data.json এখনো গিটহাবে নেই। পুশ করলে স্বয়ংক্রিয়ভাবে তৈরি হবে।', '#fef3c7', '#b45309');
+            }
+        } catch(err) {
+            alert('ডাটা লোড করতে সমস্যা হয়েছে! টোকেন ঠিক আছে কিনা যাচাই করুন।');
+        }
+    }
+
+    // গিটহাবে Commit & Push করা
+    async function pushToGitHub() {
+        const owner = document.getElementById('gh-owner').value.trim();
+        const repo = document.getElementById('gh-repo').value.trim();
+        const token = document.getElementById('gh-token').value.trim();
+
+        if(!owner || !repo || !token) {
+            alert('গিটহাব সেটিংস সঠিকভাবে পূরণ করুন!');
+            return;
+        }
+
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(siteData, null, 2))));
+        
+        const bodyData = {
+            message: "নোটিশ ও ফলাফল আপডেট (Admin Panel)",
+            content: content
+        };
+        if(fileSha) bodyData.sha = fileSha;
+
+        try {
+            showStatus('গিটহাবে আপলোড হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন...', '#fef3c7', '#b45309');
+            const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/data.json`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bodyData)
+            });
+
+            if(res.status === 200 || res.status === 201) {
+                const resJson = await res.json();
+                fileSha = resJson.content.sha;
+                showStatus('আলহামদুলিল্লাহ! সরাসরি গিটহাবে পুশ ও লাইভ হয়ে গেছে!', '#dcfce7', '#15803d');
+            } else {
+                alert('পুশ ব্যর্থ হয়েছে! টোকেনের অনুমতি চেক করুন।');
+            }
+        } catch(err) {
+            alert('ইন্টারনেট বা নেটওয়ার্ক সমস্যা!');
+        }
+    }
+
+    /* ─── নোটিশ ম্যানেজমেন্ট ফাংশন ─── */
+    function renderNotices() {
+        const list = document.getElementById('notice-list');
+        list.innerHTML = '';
+        siteData.notices.forEach((n, idx) => {
+            list.innerHTML += `
+                <div class="item-card">
+                    <div>
+                        <span class="badge ${n.type}">${n.type.toUpperCase()}</span>
+                        <strong style="margin-left:8px;">${n.title}</strong>
+                        <p style="margin:4px 0 0; font-size:13px; color:#64748b;">📅 ${n.date}</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-gold" onclick="editNotice(${idx})"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn btn-danger" onclick="deleteNotice(${idx})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function handleSaveNotice(e) {
+        e.preventDefault();
+        const id = document.getElementById('notice-id').value;
+        const notice = {
+            title: document.getElementById('notice-title').value,
+            type: document.getElementById('notice-type').value,
+            date: document.getElementById('notice-date').value,
+            desc: document.getElementById('notice-desc').value
+        };
+
+        if(id === "") {
+            siteData.notices.unshift(notice);
+        } else {
+            siteData.notices[id] = notice;
+            document.getElementById('notice-id').value = "";
+            document.getElementById('notice-btn').innerHTML = `<i class="fa-solid fa-plus"></i> নোটিশ তালিকায় যুক্ত করুন`;
+        }
+
+        e.target.reset();
+        renderNotices();
+    }
+
+    function editNotice(index) {
+        const n = siteData.notices[index];
+        document.getElementById('notice-id').value = index;
+        document.getElementById('notice-title').value = n.title;
+        document.getElementById('notice-type').value = n.type;
+        document.getElementById('notice-date').value = n.date;
+        document.getElementById('notice-desc').value = n.desc;
+        document.getElementById('notice-btn').innerHTML = `<i class="fa-solid fa-check"></i> পরিবর্তন সেভ করুন`;
+    }
+
+    function deleteNotice(index) {
+        if(confirm('আপনি কি নিশ্চিতভাবে এই নোটিশটি মুছতে চান?')) {
+            siteData.notices.splice(index, 1);
+            renderNotices();
+        }
+    }
+
+    /* ─── ফলাফল ম্যানেজমেন্ট ফাংশন ─── */
+    function renderResults() {
+        const list = document.getElementById('result-list');
+        list.innerHTML = '';
+        (siteData.results || []).forEach((r, idx) => {
+            list.innerHTML += `
+                <div class="item-card">
+                    <div>
+                        <strong>${r.exam}</strong> (${r.className})
+                        <br><a href="${r.url}" target="_blank" style="font-size:13px; color:#2563eb;">PDF ফাইল দেখুন</a>
+                    </div>
+                    <div>
+                        <button class="btn btn-danger" onclick="deleteResult(${idx})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function handleSaveResult(e) {
+        e.preventDefault();
+        if(!siteData.results) siteData.results = [];
+        siteData.results.unshift({
+            exam: document.getElementById('exam-name').value,
+            className: document.getElementById('exam-class').value,
+            url: document.getElementById('result-url').value
+        });
+        e.target.reset();
+        renderResults();
+    }
+
+    function deleteResult(index) {
+        if(confirm('ফলাফলটি ডিলিট করতে চান?')) {
+            siteData.results.splice(index, 1);
+            renderResults();
+        }
+    }
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        if(tab === 'notice') {
+            document.querySelectorAll('.tab')[0].classList.add('active');
+            document.getElementById('notice-section').style.display = 'block';
+            document.getElementById('result-section').style.display = 'none';
+        } else {
+            document.querySelectorAll('.tab')[1].classList.add('active');
+            document.getElementById('notice-section').style.display = 'none';
+            document.getElementById('result-section').style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>
