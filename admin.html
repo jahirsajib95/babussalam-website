@@ -29,6 +29,16 @@
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
+        /* লগইন স্ক্রিন */
+        #login-screen {
+            max-width: 400px;
+            margin: 80px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
         h2 { text-align: center; color: var(--primary); margin-top: 0; }
         .config-box {
             background: #f8fafc;
@@ -37,14 +47,8 @@
             border-radius: 8px;
             margin-bottom: 20px;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; }
         input, select, textarea {
             width: 100%;
             padding: 10px;
@@ -114,25 +118,43 @@
 </head>
 <body>
 
-<div class="container">
-    <h2><i class="fa-solid fa-gauge-high"></i> মাদরাসা অ্যাডমিন প্যানেল</h2>
+<!-- ══ পাসওয়ার্ড প্রোটেকশন স্ক্রিন ══ -->
+<div id="login-screen">
+    <i class="fa-solid fa-lock" style="font-size: 45px; color: var(--primary); margin-bottom: 15px;"></i>
+    <h3>অ্যাডমিন লগইন</h3>
+    <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">প্যানেলে প্রবেশ করতে সিক্রেট পাসওয়ার্ড লিখুন</p>
+    <div class="form-group">
+        <input type="password" id="pass-input" placeholder="পাসওয়ার্ড লিখুন..." autofocus>
+    </div>
+    <button class="btn btn-gold" style="width: 100%; justify-content: center;" onclick="checkPassword()">
+        <i class="fa-solid fa-right-to-bracket"></i> প্রবেশ করুন
+    </button>
+    <p id="pass-error" style="color: red; font-size: 13px; display: none; margin-top: 10px;">ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।</p>
+</div>
+
+<!-- ══ মূল অ্যাডমিন প্যানেল ══ -->
+<div class="container" id="admin-panel" style="display: none;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h2 style="margin: 0;"><i class="fa-solid fa-gauge-high"></i> মাদরাসা কন্ট্রোল প্যানেল</h2>
+        <button class="btn btn-danger" style="padding: 6px 12px;" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> লগআউট</button>
+    </div>
     
-    <!-- গিটহাব কনফিগারেশন -->
+    <!-- গিটহাব কানেকশন -->
     <div class="config-box">
         <h4><i class="fa-brands fa-github"></i> গিটহাব কানেকশন সেটিংস</h4>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div>
                 <label>GitHub Username:</label>
-                <input type="text" id="gh-owner" placeholder="যেমন: your-username">
+                <input type="text" id="gh-owner">
             </div>
             <div>
                 <label>Repository Name:</label>
-                <input type="text" id="gh-repo" placeholder="যেমন: jamia-babus-salam">
+                <input type="text" id="gh-repo">
             </div>
         </div>
         <div style="margin-top: 10px;">
             <label>GitHub Personal Token:</label>
-            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            <input type="password" id="gh-token">
         </div>
         <div style="margin-top: 10px; display: flex; gap: 10px;">
             <button class="btn" onclick="saveConfig()"><i class="fa-solid fa-floppy-disk"></i> তথ্য সেভ রাখুন</button>
@@ -154,11 +176,11 @@
             <input type="hidden" id="notice-id">
             <div class="form-group">
                 <label>নোটিশের শিরোনাম:</label>
-                <input type="text" id="notice-title" required placeholder="উদা: বার্ষিক পরীক্ষার ফলাফল প্রকাশ">
+                <input type="text" id="notice-title" required placeholder="উদা: বার্ষিক পরীক্ষার সময়সূচি প্রকাশ">
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <div class="form-group">
-                    <label>ধরন (Category):</label>
+                    <label>ক্যাটাগরি:</label>
                     <select id="notice-type">
                         <option value="urgent">জরুরি (Red)</option>
                         <option value="exam">পরীক্ষা (Yellow)</option>
@@ -166,15 +188,15 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>তারিখ:</label>
-                    <input type="text" id="notice-date" placeholder="যেমন: ১৫ জানুয়ারি, ২০২৫" required>
+                    <label>প্রকাশের তারিখ (স্বয়ংক্রিয়/পরিবর্তনযোগ্য):</label>
+                    <input type="text" id="notice-date" required>
                 </div>
             </div>
             <div class="form-group">
-                <label>সংক্ষিপ্ত বিবরণ:</label>
+                <label>বিস্তারিত বিবরণ:</label>
                 <textarea id="notice-desc" rows="3" required></textarea>
             </div>
-            <button type="submit" class="btn" id="notice-btn"><i class="fa-solid fa-plus"></i> নোটিশ তালিকায় যুক্ত করুন</button>
+            <button type="submit" class="btn" id="notice-btn"><i class="fa-solid fa-plus"></i> নোটিশ যুক্ত করুন</button>
         </form>
 
         <h3 style="margin-top: 30px;">বর্তমান নোটিশ সমূহ:</h3>
@@ -186,18 +208,31 @@
         <form onsubmit="handleSaveResult(event)">
             <input type="hidden" id="result-id">
             <div class="form-group">
-                <label>পরীক্ষার নাম:</label>
-                <input type="text" id="exam-name" required placeholder="উদা: বার্ষিক পরীক্ষা ২০২৪">
+                <label>পরীক্ষার নাম ও শিক্ষাবর্ষ:</label>
+                <input type="text" id="exam-name" required placeholder="উদা: প্রথম সাময়িক পরীক্ষা ২০২৬ ঈ.">
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <div class="form-group">
-                    <label>বিভাগ/জামাত:</label>
-                    <input type="text" id="exam-class" required placeholder="উদা: হিফজুল কুরআন / মেশকাত">
+                    <label>পরীক্ষার ক্যাটাগরি (ট্যাব মিল রাখার জন্য):</label>
+                    <select id="exam-category">
+                        <option value="term1">১. প্রথম সাময়িক</option>
+                        <option value="term2">২. দ্বিতীয় সাময়িক</option>
+                        <option value="annual">৩. বার্ষিক পরীক্ষা</option>
+                        <option value="monthly">৪. মাসিক পরীক্ষা</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label>ফলাফল ফাইল / PDF লিংক:</label>
-                    <input type="url" id="result-url" placeholder="https://example.com/result.pdf" required>
+                    <label>বিভাগ/জামাত:</label>
+                    <input type="text" id="exam-class" required placeholder="উদা: সকল বিভাগ / হেদায়াতুন্নাহ">
                 </div>
+            </div>
+            <div class="form-group">
+                <label>প্রকাশের সময় ও তারিখ:</label>
+                <input type="text" id="exam-publish-time" required>
+            </div>
+            <div class="form-group">
+                <label>গুগল ড্রাইভ ফোল্ডার / PDF লিঙ্ক:</label>
+                <input type="url" id="result-url" placeholder="https://drive.google.com/..." required>
             </div>
             <button type="submit" class="btn" id="result-btn"><i class="fa-solid fa-plus"></i> ফলাফল যুক্ত করুন</button>
         </form>
@@ -215,25 +250,69 @@
 </div>
 
 <script>
-    // মূল ডেটা স্ট্রাকচার
-    let siteData = { notices: [], results: [] };
-    let fileSha = ""; // গিটহাব ফাইল আপডেটের জন্য প্রয়োজন
+    // ডিফল্ট পাসওয়ার্ড (এখানে আপনার পছন্দমতো পরিবর্তন করে নিন)
+    const ADMIN_PASSWORD = "babus123";
 
-    // কনফিগারেশন লোড করা
+    function checkPassword() {
+        const val = document.getElementById('pass-input').value;
+        if(val === ADMIN_PASSWORD) {
+            sessionStorage.setItem('admin_logged', 'true');
+            showAdmin();
+        } else {
+            document.getElementById('pass-error').style.display = 'block';
+        }
+    }
+
+    function showAdmin() {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        loadLocalSettings();
+        setTodayDate();
+    }
+
+    function logout() {
+        sessionStorage.removeItem('admin_logged');
+        location.reload();
+    }
+
+    // অটো আজকের বাংলা তারিখ ও সময় তৈরি
+    function getTodayBangla() {
+        const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        const toBn = (n) => n.toString().replace(/\d/g, d => bnDigits[d]);
+        const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+        const now = new Date();
+        return `${toBn(now.getDate())} ${months[now.getMonth()]}, ${toBn(now.getFullYear())}`;
+    }
+
+    function setTodayDate() {
+        const dateStr = getTodayBangla();
+        document.getElementById('notice-date').value = dateStr;
+        document.getElementById('exam-publish-time').value = `${dateStr} | রাত ৮:০০ টা`;
+    }
+
     window.onload = () => {
+        if(sessionStorage.getItem('admin_logged') === 'true') {
+            showAdmin();
+        }
+    };
+
+    let siteData = { notices: [], results: [] };
+    let fileSha = "";
+
+    function loadLocalSettings() {
         document.getElementById('gh-owner').value = localStorage.getItem('gh_owner') || '';
         document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || '';
         document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
         if(localStorage.getItem('gh_token')) {
             loadFromGitHub();
         }
-    };
+    }
 
     function saveConfig() {
         localStorage.setItem('gh_owner', document.getElementById('gh-owner').value.trim());
         localStorage.setItem('gh_repo', document.getElementById('gh-repo').value.trim());
         localStorage.setItem('gh_token', document.getElementById('gh-token').value.trim());
-        showStatus('কনফিগারেশন লোকাল স্টোরেজে সেভ হয়েছে!', '#dcfce7', '#15803d');
+        showStatus('কনফিগারেশন সেভ হয়েছে!', '#dcfce7', '#15803d');
     }
 
     function showStatus(text, bg, color) {
@@ -245,58 +324,44 @@
         setTimeout(() => { el.style.display = 'none'; }, 5000);
     }
 
-    // গিটহাব থেকে সরাসরি data.json নামানো
     async function loadFromGitHub() {
         const owner = document.getElementById('gh-owner').value.trim();
         const repo = document.getElementById('gh-repo').value.trim();
         const token = document.getElementById('gh-token').value.trim();
 
-        if(!owner || !repo || !token) {
-            alert('দয়া করে GitHub-এর ৩টি ফিল্ড পূরণ করুন!');
-            return;
-        }
+        if(!owner || !repo || !token) return;
 
         try {
             const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/data.json`, {
                 headers: { 'Authorization': `token ${token}` }
             });
-
             if(res.status === 200) {
                 const data = await res.json();
                 fileSha = data.sha;
                 siteData = JSON.parse(decodeURIComponent(escape(atob(data.content))));
                 renderNotices();
                 renderResults();
-                showStatus('সফলভাবে গিটহাব থেকে ডাটা লোড হয়েছে!', '#dcfce7', '#15803d');
-            } else if(res.status === 404) {
-                showStatus('data.json এখনো গিটহাবে নেই। পুশ করলে স্বয়ংক্রিয়ভাবে তৈরি হবে।', '#fef3c7', '#b45309');
+                showStatus('ডাটাবেজ লোড সম্পন্ন হয়েছে!', '#dcfce7', '#15803d');
             }
         } catch(err) {
-            alert('ডাটা লোড করতে সমস্যা হয়েছে! টোকেন ঠিক আছে কিনা যাচাই করুন।');
+            alert('ডাটা লোডে সমস্যা হয়েছে!');
         }
     }
 
-    // গিটহাবে Commit & Push করা
     async function pushToGitHub() {
         const owner = document.getElementById('gh-owner').value.trim();
         const repo = document.getElementById('gh-repo').value.trim();
         const token = document.getElementById('gh-token').value.trim();
 
-        if(!owner || !repo || !token) {
-            alert('গিটহাব সেটিংস সঠিকভাবে পূরণ করুন!');
-            return;
-        }
-
         const content = btoa(unescape(encodeURIComponent(JSON.stringify(siteData, null, 2))));
-        
         const bodyData = {
-            message: "নোটিশ ও ফলাফল আপডেট (Admin Panel)",
+            message: "আপডেট (Admin Control Panel)",
             content: content
         };
         if(fileSha) bodyData.sha = fileSha;
 
         try {
-            showStatus('গিটহাবে আপলোড হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন...', '#fef3c7', '#b45309');
+            showStatus('গিটহাবে আপডেট হচ্ছে...', '#fef3c7', '#b45309');
             const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/data.json`, {
                 method: 'PUT',
                 headers: {
@@ -306,7 +371,7 @@
                 body: JSON.stringify(bodyData)
             });
 
-            if(res.status === 200 || res.status === 201) {
+            if(res.ok) {
                 const resJson = await res.json();
                 fileSha = resJson.content.sha;
                 showStatus('আলহামদুলিল্লাহ! সরাসরি গিটহাবে পুশ ও লাইভ হয়ে গেছে!', '#dcfce7', '#15803d');
@@ -314,19 +379,19 @@
                 alert('পুশ ব্যর্থ হয়েছে! টোকেনের অনুমতি চেক করুন।');
             }
         } catch(err) {
-            alert('ইন্টারনেট বা নেটওয়ার্ক সমস্যা!');
+            alert('নেটওয়ার্ক সমস্যা!');
         }
     }
 
-    /* ─── নোটিশ ম্যানেজমেন্ট ফাংশন ─── */
+    /* নোটিশ হ্যান্ডলিং */
     function renderNotices() {
         const list = document.getElementById('notice-list');
         list.innerHTML = '';
-        siteData.notices.forEach((n, idx) => {
+        (siteData.notices || []).forEach((n, idx) => {
             list.innerHTML += `
                 <div class="item-card">
                     <div>
-                        <span class="badge ${n.type}">${n.type.toUpperCase()}</span>
+                        <span class="badge ${n.type}">${n.type}</span>
                         <strong style="margin-left:8px;">${n.title}</strong>
                         <p style="margin:4px 0 0; font-size:13px; color:#64748b;">📅 ${n.date}</p>
                     </div>
@@ -354,10 +419,10 @@
         } else {
             siteData.notices[id] = notice;
             document.getElementById('notice-id').value = "";
-            document.getElementById('notice-btn').innerHTML = `<i class="fa-solid fa-plus"></i> নোটিশ তালিকায় যুক্ত করুন`;
+            document.getElementById('notice-btn').innerHTML = `<i class="fa-solid fa-plus"></i> নোটিশ যুক্ত করুন`;
         }
-
         e.target.reset();
+        setTodayDate();
         renderNotices();
     }
 
@@ -372,13 +437,13 @@
     }
 
     function deleteNotice(index) {
-        if(confirm('আপনি কি নিশ্চিতভাবে এই নোটিশটি মুছতে চান?')) {
+        if(confirm('নোটিশটি ডিলিট করতে চান?')) {
             siteData.notices.splice(index, 1);
             renderNotices();
         }
     }
 
-    /* ─── ফলাফল ম্যানেজমেন্ট ফাংশন ─── */
+    /* ফলাফল হ্যান্ডলিং */
     function renderResults() {
         const list = document.getElementById('result-list');
         list.innerHTML = '';
@@ -386,8 +451,8 @@
             list.innerHTML += `
                 <div class="item-card">
                     <div>
-                        <strong>${r.exam}</strong> (${r.className})
-                        <br><a href="${r.url}" target="_blank" style="font-size:13px; color:#2563eb;">PDF ফাইল দেখুন</a>
+                        <strong>${r.exam}</strong> [${r.category}]
+                        <br><span style="font-size:13px; color:#64748b;">বিভাগ: ${r.className} | সময়: ${r.publishTime || ''}</span>
                     </div>
                     <div>
                         <button class="btn btn-danger" onclick="deleteResult(${idx})"><i class="fa-solid fa-trash"></i></button>
@@ -402,10 +467,13 @@
         if(!siteData.results) siteData.results = [];
         siteData.results.unshift({
             exam: document.getElementById('exam-name').value,
+            category: document.getElementById('exam-category').value,
             className: document.getElementById('exam-class').value,
+            publishTime: document.getElementById('exam-publish-time').value,
             url: document.getElementById('result-url').value
         });
         e.target.reset();
+        setTodayDate();
         renderResults();
     }
 
@@ -429,6 +497,5 @@
         }
     }
 </script>
-
 </body>
 </html>

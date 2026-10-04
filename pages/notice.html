@@ -6,19 +6,25 @@
     <title>নোটিশ — জামিয়া বাবুস সালাম</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
+    <style>
+        .empty-notice {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
 
 <div id="header-placeholder"></div>
 
-
-<!-- ══ পেজ টাইটেল ══ -->
 <section class="page-header">
     <h2>📢 নোটিশ বোর্ড</h2>
     <p class="breadcrumb"><a href="../index.html">🏠 মূলপাতা</a> / নোটিশ</p>
 </section>
 
-<!-- ══ পেজ কন্টেন্ট ══ -->
 <div class="page-content">
 
     <!-- ফিল্টার ট্যাব -->
@@ -29,64 +35,72 @@
         <button class="notice-tab" onclick="filterNotice('general', this)">🟢 সাধারণ</button>
     </div>
 
-
-    <!-- ══════════ নোটিশ ১ ══════════ -->
-    <div class="notice-card urgent" data-notice-type="urgent">
-        <span class="notice-badge urgent">🔴 জরুরি</span>
-        <h4>নতুন ভর্তি বিজ্ঞপ্তি ২০২৫</h4>
-        <p class="notice-date">📅 ১৫ জানুয়ারি, ২০২৫</p>
-        <p class="notice-excerpt">
-            আগামী ১ ফেব্রুয়ারি থেকে সকল বিভাগে ভর্তি কার্যক্রম শুরু হবে।
-            আগ্রহী অভিভাবকগণ অফিসে যোগাযোগ করুন। প্রয়োজনীয় কাগজপত্র:
-            জন্ম নিবন্ধন, পূর্ববর্তী সনদ ও পাসপোর্ট সাইজ ছবি ৪ কপি।
-        </p>
+    <!-- নোটিশ তালিকা কন্টেইনার -->
+    <div id="noticeContainer">
+        <div id="loading-notice" style="text-align:center; padding:30px;">নোটিশ লোড হচ্ছে...</div>
     </div>
-
-
-    <!-- ══════════ নোটিশ ২ ══════════ -->
-    <div class="notice-card exam" data-notice-type="exam">
-        <span class="notice-badge exam">🟡 পরীক্ষা</span>
-        <h4>বার্ষিক পরীক্ষার সময়সূচি প্রকাশ</h4>
-        <p class="notice-date">📅 ১০ জানুয়ারি, ২০২৫</p>
-        <p class="notice-excerpt">
-            ২০২৫ সালের বার্ষিক পরীক্ষা আগামী ১ মার্চ থেকে শুরু হবে।
-            সকল ছাত্রদের নির্ধারিত সময়ে পরীক্ষা কেন্দ্রে উপস্থিত থাকতে হবে।
-        </p>
-    </div>
-
-
-    <!-- ══════════ নোটিশ ৩ ══════════ -->
-    <div class="notice-card" data-notice-type="general">
-        <span class="notice-badge general">🟢 সাধারণ</span>
-        <h4>শীতকালীন ছুটির বিজ্ঞপ্তি</h4>
-        <p class="notice-date">📅 ৫ জানুয়ারি, ২০২৫</p>
-        <p class="notice-excerpt">
-            আগামী ২০ জানুয়ারি থেকে ৩১ জানুয়ারি পর্যন্ত শীতকালীন ছুটি থাকবে।
-            ছুটি শেষে নির্ধারিত তারিখে ক্লাসে উপস্থিত হতে হবে।
-        </p>
-    </div>
-
-
-    <!-- ══════════ নোটিশ ৪ ══════════ -->
-    <div class="notice-card" data-notice-type="general">
-        <span class="notice-badge general">🟢 সাধারণ</span>
-        <h4>মাসিক অভিভাবক সমাবেশ</h4>
-        <p class="notice-date">📅 ১ জানুয়ারি, ২০২৫</p>
-        <p class="notice-excerpt">
-            আগামী ১৫ ফেব্রুয়ারি বেলা ১০টায় মাসিক অভিভাবক সমাবেশ অনুষ্ঠিত হবে।
-            সকল অভিভাবকের উপস্থিতি একান্ত কাম্য।
-        </p>
-    </div>
-
-
-    <!-- 👇 নতুন নোটিশ যোগ করতে উপরের যেকোনো ব্লক কপি করে এখানে পেস্ট করুন -->
-
+    
+    <div id="emptyNotice" class="empty-notice">এই ক্যাটাগরিতে কোনো নোটিশ নেই।</div>
 
 </div>
-
 
 <div id="footer-placeholder"></div>
 
 <script src="../main.js"></script>
+
+<!-- data.json থেকে ডায়নামিক নোটিশ লোড -->
+<script>
+    function renderNotices(notices) {
+        const container = document.getElementById('noticeContainer');
+        container.innerHTML = '';
+
+        notices.forEach(n => {
+            const badgeText = n.type === 'urgent' ? '🔴 জরুরি' : (n.type === 'exam' ? '🟡 পরীক্ষা' : '🟢 সাধারণ');
+            const card = document.createElement('div');
+            card.className = `notice-card ${n.type}`;
+            card.setAttribute('data-notice-type', n.type);
+            card.innerHTML = `
+                <span class="notice-badge ${n.type}">${badgeText}</span>
+                <h4>${n.title}</h4>
+                <p class="notice-date">📅 ${n.date}</p>
+                <p class="notice-excerpt">${n.desc}</p>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function filterNotice(type, btn) {
+        document.querySelectorAll('.notice-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+
+        const cards = document.querySelectorAll('.notice-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            if(type === 'all' || card.getAttribute('data-notice-type') === type) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        document.getElementById('emptyNotice').style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    // data.json লোড
+    fetch('../data.json')
+        .then(res => res.json())
+        .then(data => {
+            if(data.notices && data.notices.length > 0) {
+                renderNotices(data.notices);
+            } else {
+                document.getElementById('loading-notice').innerText = 'বর্তমানে কোনো নোটিশ নেই।';
+            }
+        })
+        .catch(() => {
+            document.getElementById('loading-notice').innerText = 'নোটিশ লোড করা যায়নি।';
+        });
+</script>
 </body>
 </html>

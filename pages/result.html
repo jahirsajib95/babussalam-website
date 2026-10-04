@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>পরীক্ষার ফলাফল | জামিয়া দারুল উলুম বাবুস সালাম</title>
-    <!-- মূল স্টাইলশীট লিংক -->
     <link rel="stylesheet" href="../style.css">
 
-    <!-- ফলাফল পেজের জন্য বিশেষ সিএসএস (CSS) -->
     <style>
-        /* ফিল্টার ট্যাব ডিজাইন */
         .result-tabs-wrapper {
             display: flex;
             justify-content: center;
@@ -17,7 +14,6 @@
             overflow-x: auto;
             padding-bottom: 5px;
         }
-
         .result-tabs {
             display: inline-flex;
             gap: 10px;
@@ -26,7 +22,6 @@
             border-radius: 50px;
             max-width: 100%;
         }
-
         .tab-btn {
             background: transparent;
             border: none;
@@ -40,24 +35,17 @@
             transition: all 0.3s ease;
             white-space: nowrap;
         }
-
-        .tab-btn:hover {
-            color: var(--primary);
-        }
-
+        .tab-btn:hover { color: var(--primary); }
         .tab-btn.active {
             background: var(--primary);
             color: var(--white);
             box-shadow: 0 4px 10px rgba(15, 81, 50, 0.25);
         }
-
-        /* ফলাফল কার্ড ডিজাইন */
         .result-list {
             display: flex;
             flex-direction: column;
             gap: 18px;
         }
-
         .result-card {
             background: var(--white);
             border: 1px solid var(--border);
@@ -70,29 +58,13 @@
             gap: 20px;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
         .result-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
         }
-
-        .result-info {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-        }
-
-        .folder-icon {
-            font-size: 2.2rem;
-            line-height: 1;
-        }
-
-        .result-details h4 {
-            margin: 0 0 6px 0;
-            color: var(--primary);
-            font-size: 1.25rem;
-        }
-
+        .result-info { display: flex; align-items: flex-start; gap: 16px; }
+        .folder-icon { font-size: 2.2rem; line-height: 1; }
+        .result-details h4 { margin: 0 0 6px 0; color: var(--primary); font-size: 1.25rem; }
         .result-meta {
             margin: 0;
             font-size: 0.9rem;
@@ -101,14 +73,6 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-
-        .result-meta span {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* কোনো ফলাফল না থাকলে দেখানোর বার্তা */
         .empty-message {
             display: none;
             text-align: center;
@@ -116,216 +80,119 @@
             color: var(--gray);
             font-size: 1.1rem;
         }
-
-        /* মোবাইল রেসপন্সিভ ডিজাইন */
         @media (max-width: 768px) {
-            .result-tabs-wrapper {
-                justify-content: flex-start;
-            }
-
-            .tab-btn {
-                padding: 8px 16px;
-                font-size: 0.9rem;
-            }
-
-            .result-card {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 16px;
-                gap: 15px;
-            }
-
-            .result-card .btn {
-                width: 100%;
-                text-align: center;
-                justify-content: center;
-            }
+            .result-tabs-wrapper { justify-content: flex-start; }
+            .result-card { flex-direction: column; align-items: flex-start; padding: 16px; }
+            .result-card .btn { width: 100%; text-align: center; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- হেডার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
     <div id="header-placeholder"></div>
 
-    <!-- পেজ ব্যানার ও ব্রেডক্রাম্ব -->
     <section class="page-header">
         <h2>পরীক্ষার ফলাফল</h2>
         <div class="breadcrumb">
-            <a href="../index.html">মূলপাতা</a> /
-            <span>একাডেমিক</span> /
-            <span>ফলাফল</span>
+            <a href="../index.html">মূলপাতা</a> / <span>ফলাফল</span>
         </div>
     </section>
 
-    <!-- মূল কন্টেন্ট শুরু -->
     <main class="page-content">
-
-        <!-- পেজ পরিচিতি টেক্সট -->
         <div style="text-align: center; max-width: 750px; margin: 0 auto 30px auto;">
-            <p>জামিয়া দারুল উলুম বাবুস সালাম-এর বিভিন্ন পরীক্ষার ফলাফল ও নম্বরপত্র নিচে দেওয়া হলো। আপনার কাঙ্ক্ষিত পরীক্ষার ট্যাবে ক্লিক করে ফোল্ডার থেকে ফলাফল দেখুন ও ডাউনলোড করুন।</p>
+            <p>জামিয়া দারুল উলুম বাবুস সালাম-এর বিভিন্ন পরীক্ষার ফলাফল নিচে দেওয়া হলো। আপনার কাঙ্ক্ষিত পরীক্ষার ট্যাবে ক্লিক করে ফলাফল দেখুন ও ডাউনলোড করুন।</p>
         </div>
 
-        <!-- ========================================== -->
-        <!-- 🏷️ ৪টি ক্যাটাগরি ফিল্টার ট্যাব -->
-        <!-- ========================================== -->
+        <!-- ফিল্টার ট্যাব -->
         <div class="result-tabs-wrapper">
             <div class="result-tabs">
                 <button class="tab-btn active" onclick="filterTab('term1', this)">১. প্রথম সাময়িক</button>
                 <button class="tab-btn" onclick="filterTab('term2', this)">২. দ্বিতীয় সাময়িক</button>
                 <button class="tab-btn" onclick="filterTab('annual', this)">৩. বার্ষিক পরীক্ষা</button>
-                <!-- ৪ নম্বর ট্যাব: মাসিক পরীক্ষা -->
                 <button class="tab-btn" onclick="filterTab('monthly', this)">৪. মাসিক পরীক্ষা</button>
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- 📋 ফলাফলের তালিকা (সর্বশেষ পরীক্ষা সবার উপরে থাকবে) -->
-        <!-- ========================================== -->
+        <!-- ফলাফল কন্টেইনার -->
         <div class="result-list" id="resultContainer">
-
-            <!-- ------------------------------------------------------------- -->
-            <!-- 🟢 [নমুনা ১: প্রথম সাময়িক পরীক্ষা (term1)] -->
-            <!-- ------------------------------------------------------------- -->
-            <div class="result-card" data-category="term1">
-                <div class="result-info">
-                    <span class="folder-icon">📁</span>
-                    <div class="result-details">
-                        <!-- 👇 পরীক্ষার নাম ও বছর পরিবর্তন করুন -->
-                        <h4>প্রথম সাময়িক পরীক্ষা ২০২৬ ঈ.</h4>
-                        <div class="result-meta">
-                            <!-- 👇 প্রকাশের তারিখ ও সময় -->
-                            <span>📅 প্রকাশের সময়: ১৫ এপ্রিল, ২০২৬ | রাত ৮:০০ টা</span>
-                            <span>🏷️ বিভাগ: সকল বিভাগ</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- 👇 গুগল ড্রাইভ ফোল্ডারের লিংক href="" এর ভেতর বসিয়ে দিন -->
-                <a href="https://drive.google.com/drive/folders/10csYb84CxqV791FdN9pmmNyNU1UEnq2o?usp=sharing" target="_blank" class="btn btn-primary">
-                     ফলাফল দেখুন ও ডাউনলোড
-                </a>
-            </div>
-            <!-- আইটেম শেষ -->
-
-
-            <!-- ------------------------------------------------------------- -->
-            <!-- 🟢 [নমুনা ২: দ্বিতীয় সাময়িক পরীক্ষা (term2)] -->
-            <!-- ------------------------------------------------------------- -->
-            <!-- <div class="result-card" data-category="term2">
-                <div class="result-info">
-                    <span class="folder-icon">📁</span>
-                    <div class="result-details">
-                        <h4>দ্বিতীয় সাময়িক পরীক্ষা ২০২৬ ঈ.</h4>
-                        <div class="result-meta">
-                            <span>📅 প্রকাশের সময়: ২০ আগস্ট, ২০২৬ | দুপুর ১২:০০ টা</span>
-                            <span>🏷️ বিভাগ: সকল বিভাগ</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://drive.google.com/" target="_blank" class="btn btn-primary">
-                    📂 ফলাফল ফোল্ডার ও ডাউনলোড
-                </a>
-            </div> -->
-            <!-- আইটেম শেষ -->
-
-
-            <!-- ------------------------------------------------------------- -->
-            <!-- 🟢 [নমুনা ৩: বার্ষিক পরীক্ষা (annual)] -->
-            <!-- ------------------------------------------------------------- -->
-            <!-- <div class="result-card" data-category="annual">
-                <div class="result-info">
-                    <span class="folder-icon">📁</span>
-                    <div class="result-details">
-                        <h4>বার্ষিক পরীক্ষা ২০২৫ ঈ.</h4>
-                        <div class="result-meta">
-                            <span>📅 প্রকাশের সময়: ৩০ ডিসেম্বর, ২০২৫ | বিকাল ৪:০০ টা</span>
-                            <span>🏷️ বিভাগ: সকল জামাত</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://drive.google.com/" target="_blank" class="btn btn-primary">
-                    📂 ফলাফল ফোল্ডার ও ডাউনলোড
-                </a>
-            </div> -->
-            <!-- আইটেম শেষ -->
-
-
-            <!-- ------------------------------------------------------------- -->
-            <!-- 🟢 [নমুনা ৪: মাসিক পরীক্ষা (monthly)] -->
-            <!-- নতুন মাসিক পরীক্ষা যোগ করতে এই ব্লকটি কপি করে উপরে পেস্ট করুন -->
-            <!-- ------------------------------------------------------------- -->
-            <div class="result-card" data-category="monthly">
-                <div class="result-info">
-                    <span class="folder-icon">📁</span>
-                    <div class="result-details">
-                        <!-- 👇 পরীক্ষার নাম ও মাস পরিবর্তন করুন -->
-                        <h4>দ্বিতীয় মাসিক পরীক্ষা ২০২৬ ঈ.</h4>
-                        <div class="result-meta">
-                            <span>📅 প্রকাশের সময়: ২০ সেপ্টেম্বর, ২০২৬ | দুপুর ৩:৩০ টা</span>
-                            <span>🏷️ বিভাগ: হেদায়াতুন্নাহ থেকে তাইসীর</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://drive.google.com/drive/folders/1IepnEHnCdkji66Aw05ySAYX8MAhVn_n3?usp=drive_link" target="_blank" class="btn btn-primary">
-                     ফলাফল দেখুন ও ডাউনলোড
-                </a>
-            </div>
-
-            <!-- আইটেম শেষ -->
-
-            <!-- ফাঁকা থাকলে দেখানোর মেসেজ -->
+            <div id="loading" style="text-align:center; padding:30px;">ফলাফল লোড হচ্ছে...</div>
             <div id="noResultMsg" class="empty-message">
                 <p>⚠️ এই ক্যাটাগরিতে এখনো কোনো ফলাফল প্রকাশিত হয়নি।</p>
             </div>
-
         </div>
-
     </main>
-    <!-- মূল কন্টেন্ট শেষ -->
 
-    <!-- ফুটার (স্বয়ংক্রিয়ভাবে লোড হবে) -->
     <div id="footer-placeholder"></div>
-
-    <!-- মূল জাভাস্ক্রিপ্ট -->
     <script src="../main.js"></script>
 
-    <!-- ট্যাব ফিল্টারিংয়ের জন্য জাভাস্ক্রিপ্ট কোড -->
+    <!-- data.json থেকে লোড ও ফিল্টারিং স্ক্রিপ্ট -->
     <script>
+        let currentCategory = 'term1';
+
+        function renderResults(results) {
+            const container = document.getElementById('resultContainer');
+            const noMsg = document.getElementById('noResultMsg');
+            container.querySelectorAll('.result-card').forEach(c => c.remove());
+
+            let hasCard = false;
+
+            results.forEach(r => {
+                const cardCat = r.category || 'annual';
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.setAttribute('data-category', cardCat);
+                if (cardCat !== currentCategory) card.style.display = 'none';
+                else hasCard = true;
+
+                card.innerHTML = `
+                    <div class="result-info">
+                        <span class="folder-icon">📁</span>
+                        <div class="result-details">
+                            <h4>${r.exam}</h4>
+                            <div class="result-meta">
+                                <span>📅 প্রকাশের সময়: ${r.publishTime || 'নির্দিষ্ট নয়'}</span>
+                                <span>🏷️ বিভাগ: ${r.className}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="${r.url}" target="_blank" class="btn btn-primary">ফলাফল দেখুন ও ডাউনলোড</a>
+                `;
+                container.appendChild(card);
+            });
+
+            noMsg.style.display = hasCard ? 'none' : 'block';
+        }
+
         function filterTab(category, buttonElement) {
-            // ১. সব বাটনের এক্টিভ ক্লাস রিমুভ করে বর্তমান বাটনে যোগ করা
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            tabButtons.forEach(btn => btn.classList.remove('active'));
+            currentCategory = category;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             buttonElement.classList.add('active');
 
-            // ২. কার্ডগুলো ফিল্টার করা
             const cards = document.querySelectorAll('.result-card');
-            let hasVisibleCard = false;
-
+            let hasCard = false;
             cards.forEach(card => {
-                if (card.getAttribute('data-category') === category) {
+                if(card.getAttribute('data-category') === category) {
                     card.style.display = 'flex';
-                    hasVisibleCard = true;
+                    hasCard = true;
                 } else {
                     card.style.display = 'none';
                 }
             });
-
-            // ৩. ফলাফল না থাকলে নোটিশ দেখানো
-            const noMsg = document.getElementById('noResultMsg');
-            if (hasVisibleCard) {
-                noMsg.style.display = 'none';
-            } else {
-                noMsg.style.display = 'block';
-            }
+            document.getElementById('noResultMsg').style.display = hasCard ? 'none' : 'block';
         }
 
-        // পেজ লোড হলে প্রথম ট্যাবটি অটো সিলেক্ট হয়ে ফিল্টার দেখাবে
-        document.addEventListener('DOMContentLoaded', () => {
-            const firstTab = document.querySelector('.tab-btn.active');
-            if (firstTab) {
-                filterTab('term1', firstTab);
-            }
-        });
+        // data.json ফেচ করা (রুট ডিরেক্টরি থেকে)
+        fetch('../data.json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                if(data.results) {
+                    renderResults(data.results);
+                }
+            })
+            .catch(() => {
+                document.getElementById('loading').innerText = 'ফলাফল লোড করা সম্ভব হয়নি।';
+            });
     </script>
 </body>
 </html>
