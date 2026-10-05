@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আপনার জিজ্ঞাসা ও ফতোয়া | জামিয়া বাবুস সালাম</title>
+    <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        :root {
+            --primary: #0b5335;
+            --primary-dark: #073823;
+            --accent-gold: #c9933b;
+            --bg-light: #f8fafc;
+        }
+        body { font-family: 'SolaimanLipi', sans-serif; background: var(--bg-light); margin:0; }
+        .page-header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; padding: 40px 20px; text-align: center; }
+        .container { max-width: 1000px; margin: auto; padding: 30px 15px; }
+
+        /* প্রশ্ন করার বক্স */
+        .ask-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            border-top: 4px solid var(--accent-gold);
+            margin-bottom: 40px;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .btn-submit {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .btn-submit:hover { background: var(--primary-dark); }
+
+        /* সার্চ ও ফিল্টার */
+        .filter-section { margin-bottom: 25px; display: flex; flex-direction: column; gap: 15px; }
+        .search-box { display: flex; gap: 10px; }
+        .cat-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+        .cat-pill {
+            background: #e2e8f0;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .cat-pill.active { background: var(--primary); color: #fff; }
+
+        /* ফতোয়া কার্ড */
+        .fatwa-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            border-left: 5px solid var(--primary);
+        }
+        .fatwa-q { color: var(--primary-dark); font-size: 18px; margin: 0 0 10px; font-weight: bold; }
+        .fatwa-meta { font-size: 13px; color: #64748b; margin-bottom: 12px; }
+        .fatwa-ans {
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 8px;
+            color: #1e293b;
+            line-height: 1.8;
+            border: 1px solid #dcfce7;
+        }
+        .mufti-tag { font-weight: bold; color: var(--primary); margin-top: 10px; display: block; font-size: 13px; }
+        @media(max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<section class="page-header">
+    <h2><i class="fa-solid fa-scale-balanced"></i> আপনার জিজ্ঞাসা ও ফতোয়া বিভাগ</h2>
+    <p>মারকাযুল ইফতা — জামিয়া দারুল উলুম বাবুস সালাম</p>
+</section>
+
+<div class="container">
+
+    <!-- প্রশ্ন সাবমিট ফর্ম -->
+    <div class="ask-card">
+        <h3 style="color:var(--primary); margin-top:0;"><i class="fa-solid fa-pen-to-square"></i> আপনার শরয়ী প্রশ্ন পেশ করুন</h3>
+        <p style="font-size:14px; color:#64748b;">আপনার প্রশ্নের নির্ভরযোগ্য শরয়ী সমাধান দেওয়া হবে ইনশাআল্লাহ।</p>
+        
+        <form id="askForm" onsubmit="submitQuestion(event)">
+            <div class="form-row">
+                <div>
+                    <label>আপনার নাম (বা ছদ্মনাম):</label>
+                    <input type="text" id="askName" placeholder="উদা: আব্দুল্লাহ" required>
+                </div>
+                <div>
+                    <label>মোবাইল নম্বর (গোপন থাকবে):</label>
+                    <input type="tel" id="askPhone" placeholder="017xxxxxxxx">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label>বিষয় / ক্যাটাগরি:</label>
+                    <select id="askCategory" onchange="checkNewCategory(this)">
+                        <!-- ক্যাটাগরি ডায়নামিক আসবে -->
+                    </select>
+                </div>
+                <div id="customCatDiv" style="display:none;">
+                    <label>নতুন ক্যাটাগরির নাম লিখুন:</label>
+                    <input type="text" id="customCat" placeholder="যেমন: হজ ও ওমরাহ">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label>আপনার পূর্ণ প্রশ্ন লিখুন:</label>
+                <textarea id="askQuestion" rows="4" placeholder="প্রশ্নের প্রেক্ষাপট স্পষ্টভাবে উল্লেখ করুন..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <i class="fa-solid fa-paper-plane"></i> প্রশ্ন জমা দিন
+            </button>
+        </form>
+    </div>
+
+    <!-- প্রশ্নোত্তর ও সার্চ সেকশন -->
+    <div class="filter-section">
+        <div class="search-box">
+            <input type="text" id="searchKeyword" placeholder="প্রশ্ন বা মাসআলা লিখে সার্চ করুন..." onkeyup="filterFatwa()">
+        </div>
+        <div class="cat-pills" id="categoryPills">
+            <!-- ক্যাটাগরি ফিল্টার বাটন আসবে -->
+        </div>
+    </div>
+
+    <!-- ফতোয়ার তালিকা -->
+    <div id="fatwaContainer">
+        <p style="text-align:center;">ফতোয়া লোড হচ্ছে...</p>
+    </div>
+
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="../main.js"></script>
+
+<script>
+    // 👇 আপনার তৈরি করা Google Apps Script Web App URL এখানে বসান
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyL9tx00X3FgXoDYX1KdXScBMERMx696mQjragcxBIQqk92dn2Ob8A0EqZKIGXDq--r/exec";
+
+    let allFatwas = [];
+    let currentCategory = 'all';
+
+    // data.json লোড করা
+    fetch('../data.json')
+        .then(res => res.json())
+        .then(data => {
+            initCategories(data.categories || ["ঈমান ও আকীদা", "নামাজ", "রোজা", "লেনদেন", "পারিবারিক", "বিবিধ"]);
+            allFatwas = data.fatwas || [];
+            renderFatwaList();
+        });
+
+    function initCategories(cats) {
+        const select = document.getElementById('askCategory');
+        const pills = document.getElementById('categoryPills');
+        
+        select.innerHTML = '<option value="">নির্বাচন করুন</option>';
+        pills.innerHTML = `<button class="cat-pill active" onclick="setCatFilter('all', this)">সকল বিষয়</button>`;
+
+        cats.forEach(c => {
+            select.innerHTML += `<option value="${c}">${c}</option>`;
+            pills.innerHTML += `<button class="cat-pill" onclick="setCatFilter('${c}', this)">${c}</button>`;
+        });
+        select.innerHTML += `<option value="NEW">+ নতুন ক্যাটাগরি যোগ করুন</option>`;
+    }
+
+    function checkNewCategory(el) {
+        document.getElementById('customCatDiv').style.display = el.value === 'NEW' ? 'block' : 'none';
+    }
+
+    // প্রশ্ন সাবমিট (গুগল শিটে যাবে)
+    async function submitQuestion(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "পাঠানো হচ্ছে...";
+        btn.disabled = true;
+
+        let cat = document.getElementById('askCategory').value;
+        if(cat === 'NEW') cat = document.getElementById('customCat').value.trim();
+
+        const payload = {
+            name: document.getElementById('askName').value,
+            phone: document.getElementById('askPhone').value,
+            category: cat || "সাধারণ",
+            question: document.getElementById('askQuestion').value
+        };
+
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            alert('আপনার প্রশ্নটি ইফতা বিভাগে জমা হয়েছে! মুফতি সাহেবদের পর্যালোচনার পর উত্তর প্রকাশ করা হবে।');
+            document.getElementById('askForm').reset();
+            document.getElementById('customCatDiv').style.display = 'none';
+        } catch(err) {
+            alert('প্রশ্ন পাঠাতে সমস্যা হয়েছে। ইন্টারনেট চেক করুন।');
+        }
+        btn.innerText = "প্রশ্ন জমা দিন";
+        btn.disabled = false;
+    }
+
+    function setCatFilter(cat, btn) {
+        currentCategory = cat;
+        document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filterFatwa();
+    }
+
+    function filterFatwa() {
+        const q = document.getElementById('searchKeyword').value.toLowerCase();
+        const filtered = allFatwas.filter(f => {
+            const matchCat = currentCategory === 'all' || f.category === currentCategory;
+            const matchSearch = f.question.toLowerCase().includes(q) || f.answer.toLowerCase().includes(q);
+            return matchCat && matchSearch;
+        });
+        renderFatwas(filtered);
+    }
+
+    function renderFatwaList() {
+        renderFatwas(allFatwas);
+    }
+
+    function renderFatwas(list) {
+        const container = document.getElementById('fatwaContainer');
+        container.innerHTML = '';
+        if(list.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#64748b;">কোনো ফতোয়া পাওয়া যায়নি।</p>';
+            return;
+        }
+        list.forEach(f => {
+            container.innerHTML += `
+                <div class="fatwa-card">
+                    <div class="fatwa-meta">
+                        <span>🏷️ বিষয়: <strong>${f.category}</strong></span> | 
+                        <span>📅 তারিখ: ${f.date}</span>
+                    </div>
+                    <div class="fatwa-q">প্রশ্ন: ${f.question}</div>
+                    <div class="fatwa-ans">
+                        <strong>উত্তরঃ</strong><br>
+                        ${f.answer}
+                        <span class="mufti-tag">— ${f.mufti || 'মুফতি পরিষদ, জামিয়া বাবুস সালাম'}</span>
+                    </div>
+                </div>
+            `;
+        });
+    }
+</script>
+</body>
+</html>

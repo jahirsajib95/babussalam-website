@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মারকাযুল ইফতা — অ্যাডমিন কন্ট্রোল</title>
+    <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --primary: #0b5335; --gold: #c9933b; --danger: #dc2626; }
+        body { font-family: 'SolaimanLipi', sans-serif; background: #f1f5f9; padding: 20px; }
+        .container { max-width: 950px; margin: auto; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+        .box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
+        .btn { background: var(--primary); color: #fff; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 15px; font-family: inherit; }
+        .btn-gold { background: var(--gold); color: #000; font-weight: bold; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 12px; background: #fafafa; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; }
+        .tab { padding: 10px 20px; cursor: pointer; font-weight: bold; }
+        .tab.active { border-bottom: 3px solid var(--primary); color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<!-- লগইন স্ক্রিন -->
+<div id="login-box" style="max-width: 380px; margin: 80px auto; background: #fff; padding: 30px; text-align: center; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+    <i class="fa-solid fa-scale-balanced" style="font-size:40px; color:var(--primary); margin-bottom: 10px;"></i>
+    <h3>ইফতা বিভাগ প্যানেল</h3>
+    <input type="password" id="ifta-pass" placeholder="ইফতা প্যানেল পাসওয়ার্ড...">
+    <button class="btn btn-gold" style="width: 100%;" onclick="loginIfta()">প্রবেশ করুন</button>
+    <p id="err" style="color:red; display:none; margin-top:10px;">ভুল পাসওয়ার্ড!</p>
+</div>
+
+<!-- মূল প্যানেল -->
+<div class="container" id="main-panel" style="display: none;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 style="color:var(--primary); margin:0;"><i class="fa-solid fa-scale-balanced"></i> মারকাযুল ইফতা ড্যাশবোর্ড</h2>
+        <button class="btn btn-danger" onclick="location.reload()">লগআউট</button>
+    </div>
+
+    <!-- গিটহাব ও শিট সেটিংস -->
+    <div class="box" style="margin-top: 15px;">
+        <h4>API ও গিটহাব কনফিগারেশন</h4>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <input type="text" id="gh-owner" placeholder="GitHub Username">
+            <input type="text" id="gh-repo" placeholder="GitHub Repository Name">
+        </div>
+        <input type="password" id="gh-token" placeholder="GitHub Personal Token">
+        <input type="text" id="sheet-url" placeholder="Google Script Web App URL">
+        <button class="btn" onclick="saveIftaConfig()">তথ্য সেভ করুন</button>
+        <button class="btn btn-gold" onclick="loadAllData()">ডাটা রিফ্রেশ করুন</button>
+    </div>
+
+    <!-- ট্যাব মেনু -->
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('pending')"><i class="fa-solid fa-inbox"></i> পেন্ডিং প্রশ্নাবলী</div>
+        <div class="tab" onclick="switchTab('add')"><i class="fa-solid fa-plus"></i> সরাসরি ফতোয়া লিখুন</div>
+        <div class="tab" onclick="switchTab('published')"><i class="fa-solid fa-list-check"></i> প্রকাশিত ফতোয়া তালিকা</div>
+    </div>
+
+    <!-- ১. পেন্ডিং প্রশ্ন (শিট থেকে আসবে) -->
+    <div id="pending-tab">
+        <h3>জনগণের পাঠানো প্রশ্ন (গুগল শিট থেকে):</h3>
+        <div id="pending-list"><p>লোড হচ্ছে...</p></div>
+    </div>
+
+    <!-- ২. ফতোয়া লেখার ফর্ম (উত্তর দেওয়া অথবা নতুন লেখা) -->
+    <div id="add-tab" style="display:none;">
+        <h3 id="form-title">নতুন ফতোয়া যোগ করুন:</h3>
+        <input type="hidden" id="edit-id">
+        <input type="hidden" id="sheet-delete-id">
+        
+        <label>ক্যাটাগরি:</label>
+        <div style="display:flex; gap:10px;">
+            <select id="fatwa-cat"></select>
+            <input type="text" id="new-cat-input" placeholder="+ নতুন ক্যাটাগরি নাম লিখুন" style="width:250px;">
+        </div>
+
+        <label>প্রশ্ন:</label>
+        <textarea id="fatwa-q" rows="3"></textarea>
+
+        <label>শরয়ী সমাধান / উত্তর:</label>
+        <textarea id="fatwa-a" rows="6"></textarea>
+
+        <label>মুফতি / সাক্ষীর নাম:</label>
+        <input type="text" id="fatwa-mufti" value="মুফতি পরিষদ, জামিয়া বাবুস সালাম">
+
+        <button class="btn btn-gold" onclick="saveFatwaToList()"><i class="fa-solid fa-check"></i> ফতোয়া রেডি করুন</button>
+    </div>
+
+    <!-- ৩. প্রকাশিত তালিকা -->
+    <div id="published-tab" style="display:none;">
+        <h3>প্রকাশিত ফতোয়া সমূহ (data.json):</h3>
+        <div id="published-list"></div>
+    </div>
+
+    <!-- গিটহাব পুশ বাটন -->
+    <div style="margin-top: 30px; text-align:center; border-top: 2px solid #e2e8f0; padding-top: 20px;">
+        <button class="btn btn-gold" style="font-size:18px; padding:12px 30px;" onclick="pushToGitHub()">
+            <i class="fa-solid fa-cloud-arrow-up"></i> গিটহাবে পুশ করুন (সাইটে লাইভ হবে)
+        </button>
+    </div>
+</div>
+
+<script>
+    const IFTA_PASS = "ifta123"; // 👈 ইফতা প্যানেল পাসওয়ার্ড
+    let siteData = { categories: [], fatwas: [] };
+    let fileSha = "";
+
+    function loginIfta() {
+        if(document.getElementById('ifta-pass').value === IFTA_PASS) {
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('main-panel').style.display = 'block';
+            loadIftaConfig();
+            loadAllData();
+        } else {
+            document.getElementById('err').style.display = 'block';
+        }
+    }
+
+    function saveIftaConfig() {
+        localStorage.setItem('gh_owner', document.getElementById('gh-owner').value.trim());
+        localStorage.setItem('gh_repo', document.getElementById('gh-repo').value.trim());
+        localStorage.setItem('gh_token', document.getElementById('gh-token').value.trim());
+        localStorage.setItem('sheet_url', document.getElementById('sheet-url').value.trim());
+        alert('কনফিগারেশন সেভ হয়েছে!');
+    }
+
+    function loadIftaConfig() {
+        document.getElementById('gh-owner').value = localStorage.getItem('gh_owner') || '';
+        document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || '';
+        document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
+        document.getElementById('sheet-url').value = localStorage.getItem('sheet_url') || '';
+    }
+
+    async function loadAllData() {
+        await loadFromGitHub();
+        await loadPendingFromSheet();
+    }
+
+    // গিটহাব থেকে data.json আনা
+    async function loadFromGitHub() {
+        const owner = localStorage.getItem('gh_owner');
+        const repo = localStorage.getItem('gh_repo');
+        const token = localStorage.getItem('gh_token');
+        if(!owner || !repo || !token) return;
+
+        try {
+            const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/data.json`, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            if(res.ok) {
+                const data = await res.json();
+                fileSha = data.sha;
+                siteData = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+                if(!siteData.categories) siteData.categories = ["ঈমান ও আকীদা", "নামাজ", "রোজা", "লেনদেন", "পারিবারিক", "বিবিধ"];
+                if(!siteData.fatwas) siteData.fatwas = [];
+                populateCategories();
+                renderPublished();
+            }
+        } catch(e) {}
+    }
+
+    // গুগল শিট থেকে পেন্ডিং প্রশ্ন লোড
+    async function loadPendingFromSheet() {
+        const url = localStorage.getItem('sheet_url');
+        if(!url) return;
+        try {
+            const res = await fetch(url);
+            const list = await res.json();
+            const div = document.getElementById('pending-list');
+            div.innerHTML = '';
+            if(list.length === 0) {
+                div.innerHTML = '<p>কোনো নতুন প্রশ্ন নেই।</p>';
+                return;
+            }
+            list.forEach((item, idx) => {
+                div.innerHTML += `
+                    <div class="card">
+                        <strong>প্রেরক:</strong> ${item.name} | <strong>ক্যাটাগরি:</strong> ${item.category}<br>
+                        <p style="margin: 8px 0; font-size:16px;"><strong>প্রশ্ন:</strong> ${item.question}</p>
+                        <button class="btn btn-gold" onclick="answerSheetQuestion('${item.id}', '${escape(item.question)}', '${item.category}')">উত্তর লিখুন</button>
+                        <button class="btn btn-danger" onclick="deleteFromSheet('${item.id}')">মুছে ফেলুন</button>
+                    </div>
+                `;
+            });
+        } catch(e) {}
+    }
+
+    function populateCategories() {
+        const sel = document.getElementById('fatwa-cat');
+        sel.innerHTML = '';
+        siteData.categories.forEach(c => sel.innerHTML += `<option value="${c}">${c}</option>`);
+    }
+
+    // শিটের প্রশ্নে উত্তর দেওয়ার জন্য ফর্মে নেওয়া
+    function answerSheetQuestion(id, q, cat) {
+        switchTab('add');
+        document.getElementById('fatwa-q').value = unescape(q);
+        document.getElementById('fatwa-cat').value = cat;
+        document.getElementById('sheet-delete-id').value = id;
+    }
+
+    // শিট থেকে প্রশ্ন ডিলিট
+    async function deleteFromSheet(id) {
+        if(!confirm('শিট থেকে এই প্রশ্নটি মুছে ফেলবেন?')) return;
+        const url = localStorage.getItem('sheet_url');
+        await fetch(url, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify({ action: "delete", id: id })
+        });
+        alert('মুছে ফেলা হয়েছে!');
+        loadPendingFromSheet();
+    }
+
+    function saveFatwaToList() {
+        let cat = document.getElementById('fatwa-cat').value;
+        const newCat = document.getElementById('new-cat-input').value.trim();
+        if(newCat) {
+            cat = newCat;
+            if(!siteData.categories.includes(cat)) siteData.categories.push(cat);
+            populateCategories();
+            document.getElementById('new-cat-input').value = '';
+        }
+
+        const fatwaObj = {
+            id: Date.now(),
+            question: document.getElementById('fatwa-q').value,
+            answer: document.getElementById('fatwa-a').value,
+            category: cat,
+            mufti: document.getElementById('fatwa-mufti').value,
+            date: new Date().toLocaleDateString('bn-BD')
+        };
+
+        siteData.fatwas.unshift(fatwaObj);
+
+        // যদি এটি শিটের কোনো প্রশ্ন হয়ে থাকে, তবে শিট থেকেও ডিলিট করে দেওয়া হবে
+        const sheetId = document.getElementById('sheet-delete-id').value;
+        if(sheetId) {
+            deleteFromSheet(sheetId);
+            document.getElementById('sheet-delete-id').value = '';
+        }
+
+        alert('ফতোয়া তালিকায় যুক্ত হয়েছে! এবার নিচে "গিটহাবে পুশ করুন" চাপুন।');
+        document.getElementById('fatwa-q').value = '';
+        document.getElementById('fatwa-a').value = '';
+        switchTab('published');
+        renderPublished();
+    }
+
+    function renderPublished() {
+        const div = document.getElementById('published-list');
+        div.innerHTML = '';
+        siteData.fatwas.forEach((f, idx) => {
+            div.innerHTML += `
+                <div class="card">
+                    <strong>[${f.category}]</strong> ${f.question}
+                    <p style="margin:5px 0; color:#475569;">${f.answer.substring(0, 100)}...</p>
+                    <button class="btn btn-danger" onclick="deleteFatwa(${idx})">ডিলিট</button>
+                </div>
+            `;
+        });
+    }
+
+    function deleteFatwa(idx) {
+        if(confirm('ফতোয়াটি ডিলিট করতে চান?')) {
+            siteData.fatwas.splice(idx, 1);
+            renderPublished();
+        }
+    }
+
+    async function pushToGitHub() {
+        const owner = localStorage.getItem('gh_owner');
+        const repo = localStorage.getItem('gh_repo');
+        const token = localStorage.getItem('gh_token');
+
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(siteData, null, 2))));
+        const bodyData = { message: "ইফতা ফতোয়া আপডেট", content: content };
+        if(fileSha) bodyData.sha = fileSha;
+
+        try {
+            const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/data.json`, {
+                method: 'PUT',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(bodyData)
+            });
+            if(res.ok) {
+                const resJson = await res.json();
+                fileSha = resJson.content.sha;
+                alert('আলহামদুলিল্লাহ! ফতোয়া সরাসরি ওয়েবসাইটে লাইভ হয়ে গেছে!');
+            } else {
+                alert('পুশ ব্যর্থ হয়েছে! টোকেন পারমিশন চেক করুন।');
+            }
+        } catch(e) { alert('ইন্টারনেট সমস্যা!'); }
+    }
+
+    function switchTab(t) {
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        document.getElementById('pending-tab').style.display = 'none';
+        document.getElementById('add-tab').style.display = 'none';
+        document.getElementById('published-tab').style.display = 'none';
+
+        if(t === 'pending') {
+            document.querySelectorAll('.tab')[0].classList.add('active');
+            document.getElementById('pending-tab').style.display = 'block';
+        } else if(t === 'add') {
+            document.querySelectorAll('.tab')[1].classList.add('active');
+            document.getElementById('add-tab').style.display = 'block';
+        } else {
+            document.querySelectorAll('.tab')[2].classList.add('active');
+            document.getElementById('published-tab').style.display = 'block';
+        }
+    }
+</script>
+</body>
+</html>
