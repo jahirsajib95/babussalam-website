@@ -224,6 +224,7 @@
             <input type="text" id="searchInput" placeholder="ফাইলের নাম বা বিষয় লিখে খুঁজুন..." onkeyup="filterFiles()">
         </div>
         <div class="category-tabs">
+            <button class="cat-btn" onclick="filterCategory('apk', this)">মোবাইল এপ্লিকেশন</button>
             <button class="cat-btn active" onclick="filterCategory('all', this)">সকল ফাইল</button>
             <button class="cat-btn" onclick="filterCategory('admission', this)">ভর্তি ফরম</button>
             <button class="cat-btn" onclick="filterCategory('syllabus', this)">সিলেবাস</button>
@@ -238,6 +239,26 @@
 
         <!-- ═════════ আইটেম ১: অফলাইন পিডিএফ (হোস্টিংয়ে রাখা ফাইল) ═════════ -->
         <!-- দ্রষ্টব্য: 'download' অ্যাট্রিবিউট থাকলে ব্রাউজার সরাসরি ডাউনলোড করে নেবে -->
+         <div class="dl-card" data-category="apk">
+            <div>
+                <div class="dl-top">
+                    <div class="file-icon icon-link"><i class="fa-brands fa-android"></i></div>
+                    <div class="dl-title-box">
+                        <h4>আমাদের মোবাইল এপ ডাউনলোড</h4>
+                        <div class="dl-meta">
+                            <span><i class="fa-solid fa-file"></i> APK</span>
+                            <span><i class="fa-solid fa-weight-hanging"></i> 12 MB</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="dl-desc">সকল প্রকার আপডেট ও নোটিফিকেশন পেতে আমাদের মোবাইল এপ্লিকেশন ইন্সটল করুন। এটি বিনামূল্যে ও সহজেই ব্যবহার করা যায়।</p>
+            </div>
+            <!-- অফলাইন ডাউনলোডের ফাইল লিংক -->
+            <a href="https://drive.google.com/uc?export=download&id=1IcTrihcDjz-9bfGYkKdkNbFhdd9mFBpx" download class="dl-btn">
+                <i class="fa-solid fa-download"></i> সরাসরি ডাউনলোড
+            </a>
+        </div>
+
         <div class="dl-card" data-category="admission">
             <div>
                 <div class="dl-top">
@@ -264,16 +285,16 @@
                 <div class="dl-top">
                     <div class="file-icon icon-pdf"><i class="fa-solid fa-file-pdf"></i></div>
                     <div class="dl-title-box">
-                        <h4>বার্ষিক পাঠ্যক্রম ও সিলেবাস ২০২৬</h4>
+                        <h4>পাঠ্যক্রম ও সিলেবাস ২০২৬</h4>
                         <div class="dl-meta">
                             <span><i class="fa-solid fa-file"></i> PDF</span>
-                            <span><i class="fa-solid fa-weight-hanging"></i> ২.৮ MB</span>
+                            <span><i class="fa-solid fa-weight-hanging"></i> 628 KB</span>
                         </div>
                     </div>
                 </div>
-                <p class="dl-desc">নূরানী, নাযেরা ও কিতাব বিভাগের পূর্ণাঙ্গ বাৎসরিক পাঠ্যক্রম ও বিষয়ভিত্তিক নম্বর বণ্টন।</p>
+                <p class="dl-desc">নূরানী, নাযেরা ও কিতাব বিভাগের পূর্ণাঙ্গ বাৎসরিক পাঠ্যক্রম ও বিষয়ভিত্তিক নম্বর বণ্টন।</p>
             </div>
-            <a href="../downloads/syllabus-2026.pdf" download class="dl-btn">
+            <a href="https://drive.google.com/uc?export=download&id=1AsKkKCLbewV-uTNthIZTcugd3J2u2Wem" download class="dl-btn">
                 <i class="fa-solid fa-download"></i> সরাসরি ডাউনলোড
             </a>
         </div>
@@ -282,7 +303,7 @@
         <div class="dl-card" data-category="calendar">
             <div>
                 <div class="dl-top">
-                    <div class="file-icon icon-link"><i class="fa-brands fa-google-drive"></i></div>
+                    <div class="file-icon icon-pdf"><i class="fa-solid fa-file-pdf"></i></i></div>
                     <div class="dl-title-box">
                         <h4>একাডেমিক ক্যালেন্ডার ২০২৬</h4>
                         <div class="dl-meta">
@@ -296,7 +317,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="dl-desc">একাডেমিক বৎসর ২০২৬-২০২৭ এর জন্য প্রয়োজনীয় তারিখ ও ঘটনা সম্পর্কে তথ্য।</p>
+                <p class="dl-desc">একাডেমিক বৎসর ২০২৬-২০২৭ এর জন্য প্রয়োজনীয় তারিখ, ছুটি ও ঘটনা সম্পর্কে বিস্তারিত তথ্য।</p>
             </div>
             <!-- অনলাইন ড্রাইভ লিংক -->
             <a href="https://drive.google.com/uc?export=download&id=1P7NZk-0JkxQ4_1KVgW0TBKIO5hil1_YA" target="_blank" class="dl-btn btn-drive">
