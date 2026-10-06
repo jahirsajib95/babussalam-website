@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডাউনলোড ও প্রয়োজনীয় ফরমসমূহ | জামিয়া বাবুস সালাম</title>
+    
+    <!-- ফন্ট ও আইকন -->
+    <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        :root {
+            --primary: #0b5335;
+            --primary-dark: #073823;
+            --accent-gold: #c9933b;
+            --bg-light: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'SolaimanLipi', sans-serif;
+            background: var(--bg-light);
+            margin: 0;
+            color: #1e293b;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            padding: 45px 20px;
+            text-align: center;
+        }
+        .page-header h2 { margin: 0 0 10px; font-size: 2.2rem; }
+        .breadcrumb { font-size: 14px; opacity: 0.9; }
+        .breadcrumb a { color: var(--accent-gold); text-decoration: none; }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 15px;
+        }
+
+        /* ── সার্চ ও ক্যাটাগরি ফিল্টার ── */
+        .filter-wrapper {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 42px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .search-box input:focus { border-color: var(--primary); }
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .cat-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: 600;
+            color: #475569;
+            transition: 0.2s;
+        }
+        .cat-btn:hover { background: #e2e8f0; }
+        .cat-btn.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* ── ডাউনলোড কার্ড গ্রিড ── */
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .dl-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .dl-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(11, 83, 53, 0.1);
+            border-color: var(--accent-gold);
+        }
+
+        .dl-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .file-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        /* ফাইল ফরম্যাট অনুযায়ী কালার */
+        .icon-pdf { background: #fee2e2; color: #dc2626; }
+        .icon-doc { background: #e0f2fe; color: #0284c7; }
+        .icon-zip { background: #fef3c7; color: #d97706; }
+        .icon-link { background: #dcfce7; color: #16a34a; }
+
+        .dl-title-box h4 {
+            margin: 0 0 6px;
+            font-size: 17px;
+            color: var(--primary-dark);
+            line-height: 1.4;
+        }
+        .dl-meta {
+            font-size: 12.5px;
+            color: #64748b;
+            display: flex;
+            gap: 12px;
+        }
+
+        .dl-desc {
+            font-size: 13.5px;
+            color: #475569;
+            margin: 0 0 15px;
+            line-height: 1.6;
+        }
+
+        .dl-btn {
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+        .dl-btn:hover { background: var(--primary-dark); }
+        .dl-btn.btn-drive {
+            background: #0284c7;
+        }
+        .dl-btn.btn-drive:hover { background: #0369a1; }
+
+        .no-data {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            color: #64748b;
+            font-size: 16px;
+            display: none;
+        }
+
+        @media(max-width: 600px) {
+            .download-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- হেডার (অটো লোড) -->
+<div id="header-placeholder"></div>
+
+<!-- ব্যানার -->
+<section class="page-header">
+    <h2><i class="fa-solid fa-cloud-arrow-down"></i> ডাউনলোড ও ফরমসমূহ</h2>
+    <div class="breadcrumb">
+        <a href="../index.html">মূলপাতা</a> / <span>ডাউনলোড</span>
+    </div>
+</section>
+
+<div class="container">
+
+    <!-- সার্চ ও ফিল্টার বার -->
+    <div class="filter-wrapper">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="ফাইলের নাম বা বিষয় লিখে খুঁজুন..." onkeyup="filterFiles()">
+        </div>
+        <div class="category-tabs">
+            <button class="cat-btn active" onclick="filterCategory('all', this)">সকল ফাইল</button>
+            <button class="cat-btn" onclick="filterCategory('admission', this)">ভর্তি ফরম</button>
+            <button class="cat-btn" onclick="filterCategory('syllabus', this)">সিলেবাস</button>
+            <button class="cat-btn" onclick="filterCategory('routine', this)">পরীক্ষার রুটিন</button>
+            <button class="cat-btn" onclick="filterCategory('calendar', this)">একাডেমিক ক্যালেন্ডার</button>
+            <button class="cat-btn" onclick="filterCategory('others', this)">অন্যান্য</button>
+        </div>
+    </div>
+
+    <!-- ডাউনলোড ফাইল গ্রিড -->
+    <div class="download-grid" id="fileGrid">
+
+        <!-- ═════════ আইটেম ১: অফলাইন পিডিএফ (হোস্টিংয়ে রাখা ফাইল) ═════════ -->
+        <!-- দ্রষ্টব্য: 'download' অ্যাট্রিবিউট থাকলে ব্রাউজার সরাসরি ডাউনলোড করে নেবে -->
+        <div class="dl-card" data-category="admission">
+            <div>
+                <div class="dl-top">
+                    <div class="file-icon icon-pdf"><i class="fa-solid fa-file-pdf"></i></div>
+                    <div class="dl-title-box">
+                        <h4>নতুন ভর্তি আবেদন ফরম ২০২৬</h4>
+                        <div class="dl-meta">
+                            <span><i class="fa-solid fa-file"></i> PDF</span>
+                            <span><i class="fa-solid fa-weight-hanging"></i> ১.৫ MB</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="dl-desc">সকল বিভাগের জন্য প্রযোজ্য সাধারণ ভর্তি ফরম। প্রিন্ট করে পূরণপূর্বক মাদরাসা অফিসে জমা দিতে হবে।</p>
+            </div>
+            <!-- অফলাইন ডাউনলোডের ফাইল লিংক -->
+            <a href="../downloads/admission-form-2026.pdf" download class="dl-btn">
+                <i class="fa-solid fa-download"></i> সরাসরি ডাউনলোড
+            </a>
+        </div>
+
+        <!-- ═════════ আইটেম ২: সিলেবাস (অফলাইন ফাইল) ═════════ -->
+        <div class="dl-card" data-category="syllabus">
+            <div>
+                <div class="dl-top">
+                    <div class="file-icon icon-pdf"><i class="fa-solid fa-file-pdf"></i></div>
+                    <div class="dl-title-box">
+                        <h4>বার্ষিক পাঠ্যক্রম ও সিলেবাস ২০২৬</h4>
+                        <div class="dl-meta">
+                            <span><i class="fa-solid fa-file"></i> PDF</span>
+                            <span><i class="fa-solid fa-weight-hanging"></i> ২.৮ MB</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="dl-desc">নূরানী, নাযেরা ও কিতাব বিভাগের পূর্ণাঙ্গ বাৎসরিক পাঠ্যক্রম ও বিষয়ভিত্তিক নম্বর বণ্টন।</p>
+            </div>
+            <a href="../downloads/syllabus-2026.pdf" download class="dl-btn">
+                <i class="fa-solid fa-download"></i> সরাসরি ডাউনলোড
+            </a>
+        </div>
+
+        <!-- ═════════ আইটেম ৩: গুগল ড্রাইভ / বাহ্যিক অনলাইন লিংক ═════════ -->
+        <div class="dl-card" data-category="routine">
+            <div>
+                <div class="dl-top">
+                    <div class="file-icon icon-link"><i class="fa-brands fa-google-drive"></i></div>
+                    <div class="dl-title-box">
+                        <h4>একাডেমিক ক্যালেন্ডার ২০২৬</h4>
+                        <div class="dl-meta">
+                            <span><i class="fa-solid fa-file"></i> PDF</span>
+                            <span><i class="fa-solid fa-weight-hanging"></i> 72.5 KB</span>
+
+                            <!-- <span><i class="fa-solid fa-cloud"></i> Google Drive</span>
+                            <span><i class="fa-solid fa-calendar"></i> ২০২৬</span> -->
+
+
+                        </div>
+                    </div>
+                </div>
+                <p class="dl-desc">একাডেমিক বৎসর ২০২৬-২০২৭ এর জন্য প্রয়োজনীয় তারিখ ও ঘটনা সম্পর্কে তথ্য।</p>
+            </div>
+            <!-- অনলাইন ড্রাইভ লিংক -->
+            <a href="../downloads/calender-2026.pdf" target="_blank" class="dl-btn btn-drive">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> ড্রাইভে দেখুন ও নামান
+            </a>
+        </div>
+
+        <!-- ═════════ আইটেম ৪: অন্যান্য বা জিপ ফাইল ═════════ -->
+        <div class="dl-card" data-category="others">
+            <div>
+                <div class="dl-top">
+                    <div class="file-icon icon-zip"><i class="fa-solid fa-file-zipper"></i></div>
+                    <div class="dl-title-box">
+                        <h4>মাদরাসার পরিচয়পত্র ও প্রশংসাপত্র ফরম</h4>
+                        <div class="dl-meta">
+                            <span><i class="fa-solid fa-file-zipper"></i> ZIP</span>
+                            <span><i class="fa-solid fa-weight-hanging"></i> ৫.২ MB</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="dl-desc">ছাত্রদের ছাড়পত্র (ছাড়পত্র ফরম), চারিত্রিক সনদপত্র ও প্রত্যায়নপত্র ফরমের সংকলন।</p>
+            </div>
+            <a href="../downloads/certificates-bundle.zip" download class="dl-btn">
+                <i class="fa-solid fa-download"></i> জিপ ফাইল ডাউনলোড
+            </a>
+        </div>
+
+        <!-- কোনো রেজাল্ট না মিললে এটি দেখাবে -->
+        <div id="noData" class="no-data">
+            <i class="fa-regular fa-folder-open" style="font-size: 40px; margin-bottom: 10px; display: block;"></i>
+            কাঙ্ক্ষিত ফাইলটি খুঁজে পাওয়া যায়নি!
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ফুটার (অটো লোড) -->
+<div id="footer-placeholder"></div>
+
+<script src="../main.js"></script>
+
+<!-- ফিল্টার ও সার্চ স্ক্রিপ্ট -->
+<script>
+    let currentCategory = 'all';
+
+    function filterCategory(cat, btn) {
+        currentCategory = cat;
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filterFiles();
+    }
+
+    function filterFiles() {
+        const query = document.getElementById('searchInput').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.dl-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const cardCat = card.getAttribute('data-category');
+            const title = card.querySelector('h4').innerText.toLowerCase();
+            const desc = card.querySelector('.dl-desc').innerText.toLowerCase();
+
+            const matchCat = (currentCategory === 'all' || cardCat === currentCategory);
+            const matchQuery = (title.includes(query) || desc.includes(query));
+
+            if (matchCat && matchQuery) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        document.getElementById('noData').style.display = (visibleCount === 0) ? 'block' : 'none';
+    }
+</script>
+
+</body>
+</html>
