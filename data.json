@@ -1,12 +1,6 @@
 {
   "notices": [
     {
-      "title": "Test",
-      "type": "urgent",
-      "date": "৬ অক্টোবর, ২০২৬",
-      "desc": "Test Ignor"
-    },
-    {
       "title": "দ্বিতীয় সাময়িক পরিক্ষার নোটিশ",
       "type": "exam",
       "date": "৪ অক্টোবর, ২০২৬",
