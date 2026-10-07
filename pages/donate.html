@@ -304,7 +304,7 @@
                     </div>
                     <div class="copy-box">
                         <!-- 👇 আপনার সঠিক বিকাশ নম্বর বসান -->
-                        <span class="number-text" id="bkashNum">01823-XXXXXX</span>
+                        <span class="number-text" id="bkashNum">01311482388</span>
                         <button class="copy-action-btn" onclick="copyToClipboard('bkashNum', this)">📋 কপি</button>
                     </div>
                 </div>
@@ -312,7 +312,7 @@
             </div>
 
             <!-- নগদ (Nagad) -->
-            <div class="mfs-card nagad">
+            <!-- <div class="mfs-card nagad">
                 <div>
                     <div class="mfs-header">
                         <span style="font-size: 1.8rem;">🔥</span>
@@ -321,34 +321,16 @@
                             <span class="mfs-type">পার্সোনাল (Send Money)</span>
                         </div>
                     </div>
-                    <div class="copy-box">
+                    <div class="copy-box"> -->
                         <!-- 👇 আপনার সঠিক নগদ নম্বর বসান -->
-                        <span class="number-text" id="nagadNum">0121-XXXXXX</span>
+                        <!-- <span class="number-text" id="nagadNum">0121-XXXXXX</span>
                         <button class="copy-action-btn" onclick="copyToClipboard('nagadNum', this)">📋 কপি</button>
                     </div>
                 </div>
                 <small style="color: var(--gray);">💡 টাকা পাঠিয়ে অনুগ্রহ করে হিসাব বিভাগকে নিশ্চিত করুন।</small>
-            </div>
+            </div> -->
 
-            <!-- রকেট (Rocket) -->
-            <div class="mfs-card rocket">
-                <div>
-                    <div class="mfs-header">
-                        <span style="font-size: 1.8rem;">🚀</span>
-                        <div>
-                            <h4>রকেট (Rocket)</h4>
-                            <span class="mfs-type">পার্সোনাল নম্বর</span>
-                        </div>
-                    </div>
-                    <div class="copy-box">
-                        <!-- 👇 আপনার সঠিক রকেট নম্বর বসান -->
-                        <span class="number-text" id="rocketNum">01521-XXXXXX</span>
-                        <button class="copy-action-btn" onclick="copyToClipboard('rocketNum', this)">📋 কপি</button>
-                    </div>
-                </div>
-                <small style="color: var(--gray);">💡 ডাচ-বাংলা রকেট অ্যাকাউন্টে অনুদান পাঠানো যাবে।</small>
-            </div>
-
+            
         </div>
 
 
@@ -363,7 +345,7 @@
                     🏛️ ইসলামী ব্যাংক বাংলাদেশ পিএলসি (Islami Bank)
                 </h4>
                 <span style="background: var(--light); padding: 4px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; color: var(--primary);">
-                    সঞ্চয়ী হিসাব (Savings Account)
+                    চলতি অ্যাকাউন্ট (Current Account)।
                 </span>
             </div>
 
@@ -397,6 +379,42 @@
             </div>
         </div>
 
+        <div class="bank-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <h4 style="margin: 0; color: var(--primary); font-size: 1.25rem;">
+                    🏛️ দ্য প্রিমিয়ার ব্যাংক পিএলসি (The Premier Bank PLC)
+                </h4>
+                <span style="background: var(--light); padding: 4px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; color: var(--primary);">
+                    চলতি অ্যাকাউন্ট (Current Account)।
+                </span>
+            </div>
+
+            <div class="bank-grid">
+                <div class="bank-field">
+                    <span>হিসাবের নাম (Account Title)</span>
+                    <strong>JAMIA BABUS SALAM AND ORPHANAGE</strong>
+                </div>
+
+                <div class="bank-field" style="background: #E8F5E9;">
+                    <span>হিসাব নম্বর (Account Number)</span>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <strong id="ashkonaBankAcc" style="color: var(--primary); font-size: 1.1rem;">014811100000498</strong>
+                        <button class="copy-action-btn" style="padding: 4px 8px; font-size: 0.75rem;" onclick="copyToClipboard('ashkonaBankAcc', this)">📋 কপি</button>
+                    </div>
+                </div>
+
+                <div class="bank-field">
+                    <span>শাখা (Branch Name)</span>
+                    <strong>আশকোনা শাখা (Ashkona Branch - 0148)</strong>
+                </div>
+
+                <div class="bank-field">
+                    <span>রাউটিং নম্বর (Routing Number)</span>
+                    <strong>235260202</strong>
+                </div>
+            </div>
+        </div>
+
 
         <!-- ============================================================== -->
         <!-- 📞 টাকা পাঠানোর পর নিশ্চিতকরণ ও রসিদ সংগ্রহ -->
@@ -411,8 +429,8 @@
                     ব্যাংক বা মোবাইল ব্যাংকিংয়ে টাকা পাঠানোর পর অনুদানের খাত (যাকাত / লিল্লাহ / নির্মাণ) এবং প্রেরিত টাকার পরিমাণ জানিয়ে অফিসিয়াল মানি রসিদ (Donation Receipt) সংগ্রহ করার জন্য অনুরোধ করা যাচ্ছে।
                 </p>
                 <div style="margin-top: 10px; font-size: 0.95rem;">
-                    📞 <strong>হিসাব বিভাগ:</strong> <a href="tel:01311482389" style="color: var(--primary); font-weight: bold;">০১৩১১-৪৮২৩৮৯</a> (হাফেজ মাওলানা নুর মোহাম্মাদ) | 
-                    অফিস: <a href="tel:01646846077" style="color: var(--primary); font-weight: bold;">০১৬৪৬-৮৪৬০৭৭</a>
+                    📞 <strong>হিসাব বিভাগ:</strong> <a href="tel:01311482388" style="color: var(--primary); font-weight: bold;">01311 482388</a> (হাফেজ মাওলানা নুর মোহাম্মাদ) | 
+                    অফিস: <a href="tel:01979827881" style="color: var(--primary); font-weight: bold;">01979 827881</a>
                 </div>
             </div>
         </div>
