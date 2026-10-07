@@ -43,12 +43,16 @@ a:hover { color: var(--primary-light); }
 img { max-width: 100%; height: auto; }
 
 /* ═══ হেডার ═══ */
-.header {
-    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-    color: var(--white);
+#header-placeholder {
     position: sticky;
     top: 0;
     z-index: 1000;
+    width: 100%;
+}
+
+.header {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: var(--white);
     box-shadow: var(--shadow);
 }
 
