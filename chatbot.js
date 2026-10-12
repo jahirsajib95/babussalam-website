@@ -3,10 +3,10 @@
    ═══════════════════════════════════════════════════════════════ */
 
 // ✅ আপনার সফলভাবে টেস্ট করা API Key এখানে বসান
-const AI_API_KEY = "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";
+const AI_API_KEY = "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";
 
 // ✅ আপনার একাউন্টের কার্যকরী মডেল
-const AI_MODEL = "openai/gpt-oss-120b";
+const AI_MODEL = "openai/gpt-oss-20b";
 
 // ════ জামিয়ার তথ্যের ডাটাবেজ (AI-এর ব্রেন) ════
 const JAMIA_KNOWLEDGE_BASE = `

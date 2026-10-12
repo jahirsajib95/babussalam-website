@@ -2,10 +2,10 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <title>AI API টেস্ট পেজ</title>
+    <title>Groq মডেল ফাইন্ডার</title>
     <style>
-        body { font-family: sans-serif; padding: 30px; line-height: 1.6; }
-        .box { max-width: 600px; margin: 0 auto; border: 1px solid #ccc; padding: 20px; border-radius: 8px; }
+        body { font-family: sans-serif; padding: 25px; line-height: 1.6; }
+        .box { max-width: 650px; margin: 0 auto; border: 1px solid #ccc; padding: 20px; border-radius: 8px; }
         button { background: #0F5132; color: #fff; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; }
         #output { margin-top: 20px; padding: 15px; border-radius: 5px; background: #f8f9fa; white-space: pre-wrap; font-family: monospace; }
         .success { color: green; border-left: 5px solid green; }
@@ -15,47 +15,76 @@
 <body>
 
 <div class="box">
-    <h2>🤖 বাবুস সালাম AI টেস্ট</h2>
-    <p>নিচের বাটনে ক্লিক করে পরীক্ষা করুন:</p>
+    <h2>🔍 Groq মডেল ডিটেক্টর</h2>
+    <p>নিচের বাটনে ক্লিক করুন, এটি আপনার একাউন্টে থাকা সঠিক মডেলটি স্বয়ংক্রিয়ভাবে খুঁজে বের করবে:</p>
     
-    <button onclick="testGemini()">এপিআই টেস্ট করুন</button>
+    <button onclick="findAndTestModel()">মডেল খুঁজুন ও টেস্ট করুন</button>
 
-    <div id="output">এখানে টেস্টের ফলাফল দেখা যাবে...</div>
+    <div id="output">এখানে ফলাফল দেখা যাবে...</div>
 </div>
 
 <script>
-const API_KEY = "AQ.Ab8RN6JL5VpQa_ILLkc5jiS4W6cpMCN3_zf3y4Uk6oIuOg3Qgg";
+// 👇 আপনার Groq API Key এখানে বসান
+const GROQ_API_KEY = "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";
 
-async function testGemini() {
+async function findAndTestModel() {
     const out = document.getElementById("output");
     out.className = "";
-    out.innerText = "গুগলে সংযোগ করা হচ্ছে... অপেক্ষা করুন...";
+    out.innerText = "১. Groq সার্ভারে আপনার জন্য বরাদ্দকৃত মডেলের তালিকা খোঁজা হচ্ছে...";
 
     try {
-        // ✅ গুগলের নির্দেশিত সর্বশেষ gemini-3.8-flash মডেল
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${API_KEY}`;
+        // ১. একাউন্টে থাকা সকল মডেলের লিস্ট আনা
+        const modelsRes = await fetch("https://api.groq.com/openai/v1/models", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${GROQ_API_KEY.trim()}`
+            }
+        });
 
-        const response = await fetch(url, {
+        const modelsData = await modelsRes.json();
+
+        if (!modelsRes.ok) {
+            out.className = "error";
+            out.innerText = "❌ মডেল তালিকা আনতে ব্যর্থ:\n\n" + JSON.stringify(modelsData, null, 2);
+            return;
+        }
+
+        // চ্যাটের জন্য উপযোগী মডেল খোঁজা
+        const availableModels = modelsData.data.map(m => m.id);
+        const selectedModel = availableModels.find(id => !id.includes("whisper") && !id.includes("guard")) || availableModels[0];
+
+        out.innerText = `✅ আপনার একাউন্টে প্রাপ্ত মডেলসমূহ:\n` + availableModels.join("\n") + 
+                        `\n\n--------------------------------\n` +
+                        `২. এখন [ ${selectedModel} ] মডেল দিয়ে টেস্ট করা হচ্ছে... অপেক্ষা করুন...`;
+
+        // ২. প্রাপ্ত সঠিক মডেলটি দিয়ে টেস্ট মেসেজ পাঠানো
+        const chatRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${GROQ_API_KEY.trim()}`
             },
             body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: "তুমি কে? এক লাইনে সুন্দর করে উত্তর দাও।" }]
-                }]
+                model: selectedModel,
+                messages: [
+                    { role: "system", content: "তুমি জামিয়া বাবুস সালামের সহকারী। সুন্দর বাংলায় কথা বলো।" },
+                    { role: "user", content: "আসসালামু আলাইকুম! তুমি কে?" }
+                ],
+                temperature: 0.6
             })
         });
 
-        const data = await response.json();
+        const chatData = await chatRes.json();
 
-        if (!response.ok) {
+        if (!chatRes.ok) {
             out.className = "error";
-            out.innerText = "❌ এরর:\n\n" + JSON.stringify(data, null, 2);
+            out.innerText += "\n\n❌ টেস্টে এরর:\n" + JSON.stringify(chatData, null, 2);
         } else {
             out.className = "success";
-            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            out.innerText = "✅ আলহামদুলিল্লাহ! সফল হয়েছে!\n\nAI-এর উত্তর:\n" + reply;
+            const reply = chatData.choices[0].message.content;
+            out.innerText = `🎉 আলহামদুলিল্লাহ! সফল হয়েছে!\n\n` +
+                            `কার্যকরী মডেলের নাম: ${selectedModel}\n\n` +
+                            `AI-এর উত্তর:\n${reply}`;
         }
 
     } catch (err) {
