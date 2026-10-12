@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মন্তব্য, পরামর্শ ও অভিযোগ | জামিয়া বাবুস সালাম</title>
+    
+    <!-- ফন্ট ও আইকন -->
+    <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        :root {
+            --primary: #0b5335;
+            --primary-dark: #073823;
+            --accent-gold: #c9933b;
+            --bg-light: #f8fafc;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: 'SolaimanLipi', sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            color: #1e293b;
+        }
+
+        /* পেজ হেডার ব্যানার */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            padding: 45px 20px;
+            text-align: center;
+        }
+        .page-header h2 { margin: 0 0 8px; font-size: 2.2rem; }
+        .breadcrumb { font-size: 14px; opacity: 0.9; }
+        .breadcrumb a { color: var(--accent-gold); text-decoration: none; }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* ফিডব্যাক লেআউট */
+        .feedback-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 30px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        /* বামপাশের তথ্য সেকশন */
+        .feedback-info {
+            background: linear-gradient(135deg, #0b5335, #073823);
+            color: #ffffff;
+            padding: 35px 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .feedback-info h3 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--accent-gold);
+        }
+        .feedback-info p {
+            font-size: 14.5px;
+            line-height: 1.8;
+            color: #d1fae5;
+        }
+        .contact-details {
+            margin-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 20px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .contact-item i {
+            color: var(--accent-gold);
+            font-size: 18px;
+        }
+
+        /* ডানপাশের ফর্ম সেকশন */
+        .form-box {
+            padding: 35px 30px;
+        }
+        .form-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+        }
+        .form-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #334155;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(11, 83, 53, 0.15);
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+        .submit-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        .submit-btn:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        /* স্ট্যাটাস মেসেজ */
+        .status-msg {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14.5px;
+            display: none;
+        }
+        .status-msg.success {
+            display: block;
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        .status-msg.error {
+            display: block;
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        /* রেসপনসিভ */
+        @media (max-width: 768px) {
+            .feedback-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .feedback-info {
+                padding: 25px 20px;
+            }
+            .form-box {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার (অটো লোড) -->
+    <div id="header-placeholder"></div>
+
+    <!-- পেজ ব্যানার -->
+    <section class="page-header">
+        <h2><i class="fa-solid fa-comments"></i> আপনার মতামত ও পরামর্শ</h2>
+        <div class="breadcrumb">
+            <a href="../index.html">মূলপাতা</a> / <span>মন্তব্য ও অভিযোগ</span>
+        </div>
+    </section>
+
+    <!-- মূল কন্টেন্ট -->
+    <div class="container">
+        <div class="feedback-wrapper">
+            
+            <!-- বামপাশে নির্দেশনা ও জরুরি যোগাযোগ -->
+            <div class="feedback-info">
+                <div>
+                    <h3>আপনার মতামত আমাদের অনুপ্রেরণা</h3>
+                    <p>
+                        জামিয়া বাবুস সালামের প্রাতিষ্ঠানিক, তালীমী বা প্রশাসনিক যেকোনো বিষয়ে আপনার গঠনমূলক পরামর্শ ও মতামত সাদরে গ্রহণ করা হয়। আপনার কোনো অভিযোগ থাকলে তাও নির্ভয়ে আমাদের জানাতে পারেন।
+                    </p>
+                </div>
+
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>উত্তরা, বিমানবন্দর সংলগ্ন, ঢাকা</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>jamiababussalam@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>আপনার প্রেরিত তথ্য সম্পূর্ণ গোপন রাখা হয়।</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ডানপাশে গুগল শিটে সংযুক্ত ফর্ম -->
+            <div class="form-box">
+                <div class="form-title">পরামর্শ বা অভিযোগ পাঠান</div>
+                <div class="form-subtitle">নিচের বক্সে আপনার সঠিক তথ্য দিয়ে ফরমটি পূরণ করুন</div>
+
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">আপনার নাম *</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="যেমন: মো: আরিফুল ইসলাম" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">ইমেইল ঠিকানা *</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">মোবাইল নম্বর (ঐচ্ছিক)</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="017XXXXXXXX">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">বার্তা / মন্তব্য / অভিযোগ *</label>
+                        <textarea id="message" name="message" class="form-control" placeholder="এখানে আপনার বার্তা বিস্তারিত লিখুন..." required></textarea>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="submit-btn">
+                        <i class="fa-solid fa-paper-plane"></i> সাবমিট করুন
+                    </button>
+                    <div id="statusMessage" class="status-msg"></div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ফুটার (অটো লোড) -->
+    <div id="footer-placeholder"></div>
+
+    <!-- স্ক্রিপ্ট -->
+    <script src="../main.js"></script>
+
+    <script>
+        // আপনার গুগল অ্যাপস স্ক্রিপ্ট ওয়েব অ্যাপ URL
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyd_G77aDG2WSTrCMz9yAgCr9XP5skC1femRhzqOI7doHAkQbwpW6Ejn-y2P7QY1aZ1/exec";
+
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('statusMessage');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // বাটন লোডিং স্টেট
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> পাঠানো হচ্ছে...';
+            statusMsg.className = "status-msg";
+            statusMsg.innerText = "";
+
+            const formData = new FormData(form);
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            })
+            .then(() => {
+                statusMsg.innerText = "ধন্যবাদ! আপনার বার্তাটি জামিয়া কর্তৃপক্ষের কাছে সফলভাবে পৌঁছেছে।";
+                statusMsg.classList.add('success');
+                form.reset();
+            })
+            .catch((error) => {
+                statusMsg.innerText = "দুঃখিত! বার্তা পাঠানো যায়নি। অনুগ্রহ করে ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।";
+                statusMsg.classList.add('error');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> সাবমিট করুন';
+            });
+        });
+    </script>
+</body>
+</html>
