@@ -7,7 +7,7 @@
             <div class="logo-text">
                 <h1>জামিয়া বাবুস সালাম</h1> <small>Jamia Babus Salam</small>
             </div>
-        </div> <button class="menu-toggle" id="menuToggle"> ☰ <span>মেনু</span> </button>
+        </div> <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navMenu" aria-label="ওপেন মেনু"> ☰ <span>মেনু</span> </button>
     </div>
 </header>
 
@@ -15,10 +15,10 @@
 <div class="nav-overlay" id="navOverlay"></div>
 
 <!-- ═══ সাইড মেনু ═══ -->
-<nav class="nav-menu" id="navMenu">
+<nav class="nav-menu" id="navMenu" role="navigation" aria-label="প্রধান সাইট মেনু" aria-hidden="true">
     <div class="nav-header">
         <h3>🕌 মেনু</h3>
-        <button class="nav-close" id="navClose">✕</button>
+        <button class="nav-close" id="navClose" aria-label="ক্লোজ মেনু">✕</button>
     </div>
 
     <!-- ══════ নিচ থেকে মেনু এডিট করুন ══════ -->
@@ -28,22 +28,22 @@
     </a>
 
     <div class="nav-section">
-        <div class="nav-section-title">
+        <div class="nav-section-title" role="button" tabindex="0" aria-expanded="false">
             <span><span class="icon">📢</span> নোটিশ ও বিজ্ঞপ্তি</span>
             <span class="arrow">▼</span>
         </div>
-        <div class="nav-submenu">
+        <div class="nav-submenu" aria-hidden="true">
             <a href="{{BASE}}pages/notice.html">নোটিশ</a>
             <a href="{{BASE}}pages/biggopti.html">বিজ্ঞপ্তি</a>
         </div>
     </div>
 
     <div class="nav-section">
-        <div class="nav-section-title">
+        <div class="nav-section-title" role="button" tabindex="0" aria-expanded="false">
             <span><span class="icon">🎓</span> একাডেমিক</span>
             <span class="arrow">▼</span>
         </div>
-        <div class="nav-submenu">
+        <div class="nav-submenu" aria-hidden="true">
             <a href="{{BASE}}pages/bidhi.html">বিধি ও আইন</a>
             <a href="{{BASE}}pages/syllabus.html">সিলেবাস</a>
             <a href="{{BASE}}pages/class-schedule.html">শ্রেণিসূচি</a>
@@ -52,11 +52,11 @@
     </div>
 
     <div class="nav-section">
-        <div class="nav-section-title">
+        <div class="nav-section-title" role="button" tabindex="0" aria-expanded="false">
             <span><span class="icon">🏛️</span> প্রাতিষ্ঠানিক</span>
             <span class="arrow">▼</span>
         </div>
-        <div class="nav-submenu">
+        <div class="nav-submenu" aria-hidden="true">
             <a href="{{BASE}}pages/porichalona.html">পরিচালনা পর্ষদ</a>
             <a href="{{BASE}}pages/bibhag.html">বিভাগসমূহ</a>
             <a href="{{BASE}}pages/about.html">আমাদের পরিচিতি</a>
@@ -67,11 +67,11 @@
     </div>
 
     <div class="nav-section">
-        <div class="nav-section-title">
+        <div class="nav-section-title" role="button" tabindex="0" aria-expanded="false">
             <span><span class="icon">📝</span> ভর্তি কার্যক্রম</span>
             <span class="arrow">▼</span>
         </div>
-        <div class="nav-submenu">
+        <div class="nav-submenu" aria-hidden="true">
             <a href="{{BASE}}pages/admission.html">ভর্তি তথ্য</a>
             <a href="{{BASE}}pages/admission-subjects.html">ভর্তি পরীক্ষার কিতাব ও যোগ্যতা</a>
             <a href="{{BASE}}pages/admission-fee.html">ভর্তি ফি ও খোরাকী</a>
@@ -80,22 +80,22 @@
     </div>
 
     <div class="nav-section">
-        <div class="nav-section-title">
-            <span><span class="icon">🌿</span> বাবুস সালাম ফাউন্ডেশন</span>
+        <div class="nav-section-title" role="button" tabindex="0" aria-expanded="false">
+            <span><span class="icon">🌿</span> বাবुस সালাম ফাউন্ডেশন</span>
             <span class="arrow">▼</span>
         </div>
-        <div class="nav-submenu">
+        <div class="nav-submenu" aria-hidden="true">
             <a href="{{BASE}}pages/foundation.html">কমপ্লেক্স ও ফাউন্ডেশন</a>
             <a href="{{BASE}}pages/branches.html">অধীনস্থ মাদরাসাসমূহ</a>
         </div>
     </div>
 
     <div class="nav-section">
-        <div class="nav-section-title">
+        <div class="nav-section-title" role="button" tabindex="0" aria-expanded="false">
             <span><span class="icon">🚩</span> বাবুস সালাম কাফেলা</span>
             <span class="arrow">▼</span>
         </div>
-        <div class="nav-submenu">
+        <div class="nav-submenu" aria-hidden="true">
             <a href="{{BASE}}pages/kafela.html">কাফেলা বিস্তারিত</a>
             <a href="{{BASE}}pages/hawarian.html">হাওয়ারিয়ান কাফেলা</a>
             <a href="{{BASE}}pages/kafela-form.html">কাফেলা সদস্য ফরম</a>
