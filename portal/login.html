@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাকাউন্টস পোর্টাল লগইন | জামিয়া বাবুস সালাম</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <style>
+        :root {
+            --primary: #0F5132;
+            --primary-light: #198754;
+            --accent: #FFD700;
+            --dark: #212529;
+            --light: #F8F9FA;
+            --border: #DEE2E6;
+        }
+
+        body {
+            font-family: 'SolaimanLipi', 'Noto Sans Bengali', Arial, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #0a3622 0%, #0F5132 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .login-card {
+            background: #ffffff;
+            border-radius: 12px;
+            max-width: 420px;
+            width: 100%;
+            padding: 35px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            border-top: 5px solid var(--accent);
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .login-card h2 {
+            margin: 0 0 6px 0;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+
+        .login-card p {
+            margin: 0 0 25px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-login {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-login:hover {
+            background: var(--primary-light);
+        }
+
+        .error-msg {
+            background: #FFEBEE;
+            color: #C62828;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            display: none;
+            border: 1px solid #FFCDD2;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <span class="logo-icon">🕌</span>
+        <h2>জামিয়া দারুল উলুম বাবুস সালাম</h2>
+        <p>অফিস ও হিসাব বিভাগ — অ্যাডমিন লগইন</p>
+
+        <!-- ভুল পাসওয়ার্ড দিলে মেসেজ -->
+        <div id="errMsg" class="error-msg">⚠️ ভুল ইউজারনেম বা পাসওয়ার্ড!</div>
+
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>ইমেইল (Email)</label>
+                <input type="email" id="username" placeholder="admin@example.com" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label>সিক্রেট পাসওয়ার্ড (Password)</label>
+                <input type="password" id="password" placeholder="পাসওয়ার্ড লিখুন" required autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="btn-login">🔒 লগইন করুন</button>
+        </form>
+
+        <a href="../index.html" class="back-link">← মূল ওয়েবসাইটে ফিরে যান</a>
+    </div>
+
+    <script>
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById("username").value.trim();
+            const pass = document.getElementById("password").value;
+            const errMsg = document.getElementById("errMsg");
+            errMsg.style.display = "none";
+            try {
+                const cred = await auth.signInWithEmailAndPassword(email, pass);
+                const a = await db.collection("admins").doc(cred.user.uid).get();
+                if (!a.exists) { await auth.signOut(); throw { code: "not-admin" }; }
+                location.href = "collect.html";
+            } catch (err) {
+                errMsg.textContent = err.code === "not-admin" ? "⚠️ এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই!"
+                    : err.code === "auth/too-many-requests" ? "⚠️ অনেকবার ভুল হয়েছে, কিছুক্ষণ পরে চেষ্টা করুন।"
+                    : "⚠️ ভুল ইমেইল বা পাসওয়ার্ড!";
+                errMsg.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

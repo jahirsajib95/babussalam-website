@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বিল ও খোরাকি কালেকশন | বাবুস সালাম পোর্টাল</title>
+
+    <!-- ফায়ারবেস লাইব্রেরি (CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- ফায়ারবেস কনফিগ ফাইল -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>requireAuth();</script>
+
+    <style>
+        :root {
+            --primary: #0F5132;
+            --primary-light: #198754;
+            --primary-dark: #0a3622;
+            --accent: #FFD700;
+            --dark: #212529;
+            --light: #F8F9FA;
+            --border: #DEE2E6;
+            --white: #FFFFFF;
+            --danger: #DC3545;
+        }
+
+        body {
+            font-family: 'SolaimanLipi', 'Noto Sans Bengali', Arial, sans-serif;
+            margin: 0;
+            background: #F0F4F2;
+            color: var(--dark);
+        }
+
+        /* হেডার */
+        .portal-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 14px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .portal-header h2 { margin: 0; font-size: 1.25rem; }
+        .portal-nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 12px;
+            font-weight: bold;
+            padding: 7px 14px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.15);
+            font-size: 0.92rem;
+        }
+        .portal-nav a.active { background: var(--accent); color: #000; }
+
+        .container {
+            max-width: 1050px;
+            margin: 22px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+        }
+
+        /* সার্চ বক্স গ্রিড */
+        .search-container {
+            background: #F4FAF6;
+            border: 1px solid #C8E6C9;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 22px;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1.5fr auto;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .form-group input, .form-group select {
+            padding: 11px 14px;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 11px 22px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: var(--primary-light); }
+        .btn-gold { background: var(--accent); color: #000; }
+        .btn-gold:hover { background: #e6c200; }
+        .btn-gray { background: #6c757d; }
+
+        /* ছাত্র প্রোফাইল সামারি */
+        .student-profile {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+        }
+
+        .profile-item span {
+            display: block;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .profile-item strong {
+            font-size: 1.05rem;
+            color: var(--dark);
+        }
+
+        /* বিল ইনপুট গ্রিড */
+        .billing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 15px;
+        }
+
+        .total-box {
+            background: #E8F5E9;
+            border: 1px solid #C8E6C9;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: right;
+            margin: 20px 0;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        /* ================= পপ-আপ প্রিভিউ মোডাল ================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: popIn 0.25s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #E8F5E9;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .preview-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .preview-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border);
+            font-size: 0.95rem;
+        }
+
+        .preview-list li strong {
+            color: var(--primary-dark);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* ================= প্রিন্ট রসিদ ডিজাইন ================= */
+        #receiptArea {
+            display: none;
+            background: #fff;
+            border: 1px dashed #333;
+            border-radius: 8px;
+            padding: 25px;
+            max-width: 520px;
+            margin: 20px auto;
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px dashed #444;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #receiptArea, #receiptArea * { visibility: visible; }
+            #receiptArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                border: none;
+                margin: 0;
+                padding: 10px;
+            }
+            .no-print { display: none !important; }
+            .modal-overlay { display: none !important; }
+        }
+
+        @media (max-width: 768px) {
+            .search-grid { grid-template-columns: 1fr; }
+            .portal-header { flex-direction: column; gap: 10px; text-align: center; }
+            .portal-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+            .portal-nav a { margin: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার বার -->
+    <header class="portal-header no-print">
+        <h2>🕌 জামিয়া বাবুস সালাম — একাউন্টস পোর্টাল</h2>
+        <nav class="portal-nav">
+            <a href="students.html">👥 ছাত্র তালিকা ও ইমপোর্ট</a>
+            <a href="collect.html" class="active">💰 বিল উত্তোলন</a>
+            <a href="reports.html">📊 রিপোর্ট সেন্টার</a>
+            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">লগআউট ✕</a>
+        </nav>
+    </header>
+
+    <div class="container no-print">
+
+        <div class="card">
+            <h3 style="margin-top: 0; color: var(--primary);">🔍 ছাত্র খুঁজুন ও বিল উত্তোলন করুন</h3>
+            
+            <!-- শিক্ষাবর্ষ ও দাখেলা নম্বর দিয়ে ফিল্টার সার্চ -->
+            <div class="search-container">
+                <div class="search-grid">
+                    
+                    <div class="form-group">
+                        <label>শিক্ষাবর্ষ নির্বাচন *</label>
+                        <select id="searchSession">
+                            <!-- ফায়ারবেস থেকে অটো লোড হবে এবং লেটেস্ট সিলেক্ট থাকবে -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>দাখেলা নম্বর লিখুন *</label>
+                        <input type="number" id="searchDakhela" placeholder="যেমন: ১, ২, ৫০০..." min="1" onkeypress="if(event.key === 'Enter') searchStudent()">
+                    </div>
+
+                    <div>
+                        <button class="btn" onclick="searchStudent()">🔍 ছাত্র খুঁজুন</button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align:right; margin-bottom:16px;"><button class="btn btn-gold" onclick="generateMonthlyBillForClass()">⚡ নির্বাচিত মাসের বিল সকল ছাত্রের ওপর ধার্য করুন</button></div>
+
+            <!-- ছাত্র প্রোফাইল সামারি বক্স -->
+            <div id="studentProfile" class="student-profile">
+                <div class="profile-grid">
+                    <div class="profile-item">
+                        <span>দাখেলা নম্বর</span>
+                        <strong id="pDakhela">-</strong>
+                    </div>
+                    <div class="profile-item">
+                        <span>ছাত্রের নাম</span>
+                        <strong id="pName">-</strong>
+                    </div>
+                    <div class="profile-item">
+                        <span>পিতার নাম</span>
+                        <strong id="pFather">-</strong>
+                    </div>
+                    <div class="profile-item">
+                        <span>জামাত</span>
+                        <strong id="pJamat">-</strong>
+                    </div>
+                    <div class="profile-item">
+                        <span>শিক্ষাবর্ষ</span>
+                        <strong id="pSession">-</strong>
+                    </div>
+                    <div class="profile-item">
+                        <span>বর্তমান বকেয়া</span>
+                        <strong id="pDue" style="color: red;">০ ৳</strong>
+                    </div>
+                </div>
+
+                <!-- বিল পরিশোধ ফর্ম -->
+                <h4 style="margin: 22px 0 10px 0; color: var(--primary); border-bottom: 1px dashed var(--border); padding-bottom: 6px;">
+                    💵 আদায়ের বিবরণী ও রসিদ
+                </h4>
+
+                <div class="billing-grid">
+                    <!-- রসিদ নং ইনপুট (ম্যানুয়াল) -->
+                    <div class="form-group">
+                        <label>রসিদ নং (হাতে লেখা বইয়ের নম্বর)</label>
+                        <input type="text" id="manualReceiptNo" placeholder="যেমন: ৫০১ বা B-102">
+                    </div>
+
+                    <!-- ইংরেজি সৌর মাস (চলতি মাস অটো সিলেক্ট) -->
+                    <div class="form-group">
+                        <label>মাসের নাম (ইংরেজি) *</label>
+                        <select id="billMonth">
+                            <option value="জানুয়ারি">জানুয়ারি</option>
+                            <option value="ফেব্রুয়ারি">ফেব্রুয়ারি</option>
+                            <option value="মার্চ">মার্চ</option>
+                            <option value="এপ্রিল">এপ্রিল</option>
+                            <option value="মে">মে</option>
+                            <option value="জুন">জুন</option>
+                            <option value="জুলাই">জুলাই</option>
+                            <option value="আগস্ট">আগস্ট</option>
+                            <option value="সেপ্টেম্বর">সেপ্টেম্বর</option>
+                            <option value="অক্টোবর">অক্টোবর</option>
+                            <option value="নভেম্বর">নভেম্বর</option>
+                            <option value="ডিসেম্বর">ডিসেম্বর</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>খোরাকি ফি (৳)</label>
+                        <input type="number" id="payKhoraki" oninput="calculateTotal()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>বিদ্যুৎ ও পানি বিল (৳)</label>
+                        <input type="number" id="payElectricity" oninput="calculateTotal()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>বিগত বকেয়া পরিশোধ (৳)</label>
+                        <input type="number" id="payDue" value="0" oninput="calculateTotal()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>পরিশোধের মাধ্যম</label>
+                        <select id="payMethod">
+                            <option value="ক্যাশ (নগদ)">ক্যাশ (নগদ)</option>
+                            <option value="বিকাশ">বিকাশ</option>
+                            <option value="নগদ">নগদ</option>
+                            <option value="ব্যাংক">ব্যাংক</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="total-box">
+                    মোট প্রদেয় টাকা: <span id="grandTotal">০</span> ৳
+                </div>
+
+                <div style="text-align: right;">
+                    <button class="btn" style="padding: 12px 28px; font-size: 1.05rem;" onclick="openConfirmPreviewModal()">
+                        👁️ টাকা জমা ও রসিদ প্রিভিউ দেখুন
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 👁️ পপ-আপ কনফার্মেশন প্রিভিউ মোডাল -->
+    <!-- ============================================================== -->
+    <div id="confirmModal" class="modal-overlay no-print">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>🔍 জমা নিশ্চিতকরণ প্রিভিউ</h3>
+                <small style="color: #666;">দয়া করে জমার তথ্যগুলো মিলিয়ে দেখে কনফার্ম করুন</small>
+            </div>
+
+            <ul class="preview-list">
+                <li><span>ছাত্রের নাম:</span> <strong id="mName">-</strong></li>
+                <li><span>দাখেলা ও জামাত:</span> <strong id="mDakhelaJamat">-</strong></li>
+                <li><span>শিক্ষাবর্ষ ও মাস:</span> <strong id="mSessionMonth">-</strong></li>
+                <li><span>বইয়ের রসিদ নং:</span> <strong id="mReceiptNo">-</strong></li>
+                <li><span>খোরাকি ফি:</span> <span id="mKhoraki">০ ৳</span></li>
+                <li><span>বিদ্যুৎ ও পানি বিল:</span> <span id="mElectricity">০ ৳</span></li>
+                <li><span>বকেয়া বাবদ পরিশোধ:</span> <span id="mDuePaid">০ ৳</span></li>
+                <li style="font-size: 1.15rem; border-top: 2px solid var(--primary); padding-top: 8px;">
+                    <span>সর্বমোট জমা:</span> <strong id="mTotal" style="color: var(--primary);">০ ৳</strong>
+                </li>
+                <li><span>পেমেন্ট মাধ্যম:</span> <span id="mMethod">-</span></li>
+            </ul>
+
+            <div class="modal-actions">
+                <button class="btn btn-gray" onclick="closeModal()">✕ সংশোধন করুন</button>
+                <button class="btn" id="btnConfirmPay" onclick="executeFinalPayment()">✓ ঠিক আছে (জমা ও প্রিন্ট)</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================== -->
+    <!-- 🖨️ প্রিন্ট যোগ্য মানি রসিদ (Money Receipt) -->
+    <!-- ============================================================== -->
+    <div id="receiptArea">
+        <div class="receipt-header">
+            <h3 style="margin: 0; color: #0F5132;">জামিয়া দারুল উলুম বাবুস সালাম</h3>
+            <p style="margin: 3px 0 0 0; font-size: 0.85rem;">বিমানবন্দর, ঢাকা-১২৩০ | হেল্পলাইন: ০১৬৪৬-৮৪৬০৭৭</p>
+            <h4 style="margin: 8px 0 0 0; text-decoration: underline;">মাসিক ফি আদায়ের রসিদ</h4>
+        </div>
+
+        <div class="receipt-row">
+            <span>ইনভয়েস নং: <strong id="rInvoiceNo">-</strong></span>
+            <span>তারিখ: <strong id="rDate">-</strong></span>
+        </div>
+        <div class="receipt-row">
+            <span>রসিদ নং: <strong id="rManualReceipt">-</strong></span>
+            <span>শিক্ষাবর্ষ: <strong id="rSession">-</strong></span>
+        </div>
+        <div class="receipt-row">
+            <span>দাখেলা নং: <strong id="rDakhela">-</strong></span>
+            <span>জামাত: <strong id="rJamat">-</strong></span>
+        </div>
+        <div class="receipt-row">
+            <span>ছাত্রের নাম: <strong id="rName">-</strong></span>
+            <span>পিতার নাম: <strong id="rFather">-</strong></span>
+        </div>
+        <div class="receipt-row" style="border-bottom: 1px dashed #666; padding-bottom: 6px;">
+            <span>পরিশোধের মাস: <strong id="rMonth">-</strong></span>
+            <span>মাধ্যম: <strong id="rMethod">-</strong></span>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <div class="receipt-row"><span>মাসিক খোরাকি ফি:</span> <span id="rKhoraki">০ ৳</span></div>
+            <div class="receipt-row"><span>বিদ্যুৎ ও পানি বিল:</span> <span id="rElectricity">০ ৳</span></div>
+            <div class="receipt-row"><span>বকেয়া বাবদ পরিশোধ:</span> <span id="rDuePaid">০ ৳</span></div>
+            <div class="receipt-row" style="font-size: 1.15rem; font-weight: bold; border-top: 1px solid #333; padding-top: 6px;">
+                <span>সর্বমোট আদায়:</span> <span id="rTotal">০ ৳</span>
+            </div>
+            <div class="receipt-row" style="color: red; margin-top: 4px;">
+                <span>অবশিষ্ট বকেয়া:</span> <span id="rRemainDue">০ ৳</span>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 40px; font-size: 0.85rem;">
+            <span>ছাত্র/অভিভাবকের স্বাক্ষর</span>
+            <span>আদায়কারীর স্বাক্ষর</span>
+        </div>
+
+        <div class="no-print" style="text-align: center; margin-top: 22px;">
+            <button class="btn" onclick="window.print()">🖨️ প্রিন্ট করুন</button>
+            <button class="btn btn-gray" onclick="document.getElementById('receiptArea').style.display='none'">বন্ধ করুন</button>
+        </div>
+    </div>
+
+
+    <!-- লজিক ও স্ক্রিপ্ট -->
+    <script>
+        let currentStudent = null;
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            await loadSearchSessions();
+            autoSelectCurrentMonth();
+        });
+
+        // ফায়ারবেস থেকে শিক্ষাবর্ষ লোড এবং লেটেস্ট সিলেক্ট করা
+        async function loadSearchSessions() {
+            const searchSession = document.getElementById("searchSession");
+            searchSession.innerHTML = "";
+
+            try {
+                const snapshot = await db.collection("academic_years").orderBy("year", "desc").get();
+                if (!snapshot.empty) {
+                    snapshot.docs.forEach((doc, idx) => {
+                        const yr = doc.data().year;
+                        searchSession.add(new Option(yr, yr, idx === 0, idx === 0));
+                    });
+                } else {
+                    searchSession.add(new Option("২০২৬-২৭", "২০২৬-২৭", true, true));
+                    searchSession.add(new Option("২০২৫-২৬", "২০২৫-২৬"));
+                }
+            } catch (e) {
+                searchSession.add(new Option("২০২৬-২৭", "২০২৬-২৭", true, true));
+                searchSession.add(new Option("২০২৫-২৬", "২০২৫-২৬"));
+            }
+        }
+
+        // বর্তমান ইংরেজি মাস অটো-সিলেক্ট করা
+        function autoSelectCurrentMonth() {
+            const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+            const currentMonthIndex = new Date().getMonth(); // 0 = Jan, 1 = Feb, etc.
+            const billMonth = document.getElementById("billMonth");
+            if (billMonth) {
+                billMonth.value = months[currentMonthIndex];
+            }
+        }
+
+        // ==========================================================
+        // শিক্ষাবর্ষ ও দাখেলা মিলিয়ে ছাত্র সার্চ
+        // ==========================================================
+        async function searchStudent() {
+            const session = document.getElementById("searchSession").value;
+            const inputVal = document.getElementById("searchDakhela").value.trim();
+            const dakhelaNum = parseInt(inputVal, 10);
+
+            if (!session) {
+                alert("অনুগ্রহ করে শিক্ষাবর্ষ নির্বাচন করুন!");
+                return;
+            }
+
+            if (isNaN(dakhelaNum)) {
+                alert("অনুগ্রহ করে সঠিক দাখেলা নম্বর লিখুন!");
+                return;
+            }
+
+            try {
+                // শিক্ষাবর্ষ এবং দাখেলা নম্বর মিলিয়ে ফায়ারবেস কুয়েরি
+                const querySnapshot = await db.collection("students")
+                    .where("session", "==", session)
+                    .where("dakhelaNum", "==", dakhelaNum)
+                    .limit(1)
+                    .get();
+
+                if (querySnapshot.empty) {
+                    alert(`শিক্ষাবর্ষ: ${session}-এ দাখেলা নং ${toBengaliNumber(dakhelaNum)} বিশিষ্ট কোনো ছাত্র পাওয়া যায়নি!`);
+                    document.getElementById("studentProfile").style.display = "none";
+                    currentStudent = null;
+                    return;
+                }
+
+                const doc = querySnapshot.docs[0];
+                currentStudent = { id: doc.id, ...doc.data() };
+                displayStudentProfile(currentStudent);
+
+            } catch (err) {
+                alert("ডাটাবেজ সমস্যা: " + err.message);
+            }
+        }
+
+        function displayStudentProfile(std) {
+            document.getElementById("pDakhela").innerText = toBengaliNumber(std.dakhelaNum);
+            document.getElementById("pName").innerText = std.name;
+            document.getElementById("pFather").innerText = std.fatherName || '-';
+            document.getElementById("pJamat").innerText = std.jamat;
+            document.getElementById("pSession").innerText = std.session || '-';
+            document.getElementById("pDue").innerText = `${toBengaliNumber(std.dueAmount || 0)} ৳`;
+
+            // ডিফল্ট মান বসানো
+            document.getElementById("payKhoraki").value = std.khoraki || 0;
+            document.getElementById("payElectricity").value = std.electricity || 0;
+            document.getElementById("payDue").value = 0;
+            document.getElementById("manualReceiptNo").value = "";
+
+            calculateTotal();
+            document.getElementById("studentProfile").style.display = "block";
+            window.scrollTo({ top: document.getElementById("studentProfile").offsetTop - 20, behavior: 'smooth' });
+        }
+
+        function calculateTotal() {
+            const k = Number(document.getElementById("payKhoraki").value) || 0;
+            const e = Number(document.getElementById("payElectricity").value) || 0;
+            const d = Number(document.getElementById("payDue").value) || 0;
+            const total = k + e + d;
+            document.getElementById("grandTotal").innerText = toBengaliNumber(total);
+            return total;
+        }
+
+        // ==========================================================
+        // পপ-আপ প্রিভিউ দেখানো
+        // ==========================================================
+        function openConfirmPreviewModal() {
+            if (!currentStudent) return;
+
+            const total = calculateTotal();
+            if (total <= 0) {
+                alert("আদায়ের মোট পরিমাণ ০ এর বেশি হতে হবে!");
+                return;
+            }
+
+            const khorakiPaid = Number(document.getElementById("payKhoraki").value) || 0;
+            const electPaid = Number(document.getElementById("payElectricity").value) || 0;
+            const duePaid = Number(document.getElementById("payDue").value) || 0;
+            const month = document.getElementById("billMonth").value;
+            const method = document.getElementById("payMethod").value;
+            const manualReceipt = document.getElementById("manualReceiptNo").value.trim() || 'প্রযোজ্য নয়';
+
+            // মোডালে তথ্য বসানো
+            document.getElementById("mName").innerText = currentStudent.name;
+            document.getElementById("mDakhelaJamat").innerText = `দাখেলা: ${toBengaliNumber(currentStudent.dakhelaNum)} | ${currentStudent.jamat}`;
+            document.getElementById("mSessionMonth").innerText = `${currentStudent.session} (${month})`;
+            document.getElementById("mReceiptNo").innerText = manualReceipt;
+            document.getElementById("mKhoraki").innerText = `${toBengaliNumber(khorakiPaid)} ৳`;
+            document.getElementById("mElectricity").innerText = `${toBengaliNumber(electPaid)} ৳`;
+            document.getElementById("mDuePaid").innerText = `${toBengaliNumber(duePaid)} ৳`;
+            document.getElementById("mTotal").innerText = `${toBengaliNumber(total)} ৳`;
+            document.getElementById("mMethod").innerText = method;
+
+            document.getElementById("confirmModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("confirmModal").style.display = "none";
+        }
+
+        // ==========================================================
+        // কনফার্ম বাটন চাপলে চূড়ান্ত পেমেন্ট ও অটোমেটিক প্রিন্ট
+        // ==========================================================
+        async function executeFinalPayment() {
+            const btn = document.getElementById("btnConfirmPay");
+            btn.disabled = true;
+            btn.innerText = "⏳ সেভ হচ্ছে...";
+
+            const khorakiPaid = Number(document.getElementById("payKhoraki").value) || 0;
+            const electPaid = Number(document.getElementById("payElectricity").value) || 0;
+            const duePaid = Number(document.getElementById("payDue").value) || 0;
+            const totalPaid = calculateTotal();
+            const month = document.getElementById("billMonth").value;
+            const method = document.getElementById("payMethod").value;
+            const manualReceipt = document.getElementById("manualReceiptNo").value.trim() || 'N/A';
+            
+            // সিস্টেম জেনারেটেড ইউনিক ইনভয়েস নম্বর
+            let invoiceNo;
+            const currentDate = new Date().toLocaleDateString('bn-BD');
+
+            // অবশিষ্ট বকেয়া হিসাব
+            const currentDue = currentStudent.dueAmount || 0;
+            let newDue;
+
+            try {
+                // ১. একটি অ্যাটমিক ট্রানজেকশন: সিরিয়াল ইনভয়েস, রসিদ নং ইউনিক চেক, লেনদেন সেভ ও বকেয়া হ্রাস
+                const stRef = db.collection("students").doc(currentStudent.id);
+                const cRef = db.collection("counters").doc("invoice");
+                const rcRef = manualReceipt !== 'N/A' ? db.collection("receipt_index").doc(normDigits(manualReceipt).replace(/[\/\s]/g, '_')) : null;
+                await db.runTransaction(async tx => {
+                    const [stSnap, cSnap, rcSnap] = await Promise.all([tx.get(stRef), tx.get(cRef), rcRef ? tx.get(rcRef) : Promise.resolve(null)]);
+                    if (rcSnap && rcSnap.exists) throw new Error("এই রসিদ নম্বর আগেই ব্যবহার করা হয়েছে!");
+                    const seq = (cSnap.exists ? cSnap.data().n : 0) + 1;
+                    invoiceNo = "INV-" + String(seq).padStart(6, "0");
+                    newDue = (Number(stSnap.data().dueAmount) || 0) - totalPaid; // নেগেটিভ = অগ্রিম জমা
+                    tx.set(cRef, { n: seq });
+                    if (rcRef) tx.set(rcRef, { invoiceNo: invoiceNo });
+                    tx.set(db.collection("transactions").doc(), {
+                        invoiceNo, manualReceiptNo: manualReceipt, studentId: currentStudent.id,
+                        dakhelaNum: currentStudent.dakhelaNum, name: currentStudent.name,
+                        fatherName: currentStudent.fatherName || '', jamat: currentStudent.jamat,
+                        session: currentStudent.session || '', month, khoraki: khorakiPaid,
+                        electricity: electPaid, duePaid, totalPaid, paymentMethod: method,
+                        collectedBy: auth.currentUser.email,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(), dateString: currentDate
+                    });
+                    tx.update(stRef, { dueAmount: newDue });
+                });
+
+                // ৩. প্রিন্ট রসিদে তথ্য সেট করা
+                document.getElementById("rInvoiceNo").innerText = invoiceNo;
+                document.getElementById("rManualReceipt").innerText = manualReceipt;
+                document.getElementById("rDate").innerText = currentDate;
+                document.getElementById("rDakhela").innerText = toBengaliNumber(currentStudent.dakhelaNum);
+                document.getElementById("rSession").innerText = currentStudent.session || '-';
+                document.getElementById("rName").innerText = currentStudent.name;
+                document.getElementById("rFather").innerText = currentStudent.fatherName || '-';
+                document.getElementById("rJamat").innerText = currentStudent.jamat;
+                document.getElementById("rMonth").innerText = month;
+                document.getElementById("rMethod").innerText = method;
+                document.getElementById("rKhoraki").innerText = `${toBengaliNumber(khorakiPaid)} ৳`;
+                document.getElementById("rElectricity").innerText = `${toBengaliNumber(electPaid)} ৳`;
+                document.getElementById("rDuePaid").innerText = `${toBengaliNumber(duePaid)} ৳`;
+                document.getElementById("rTotal").innerText = `${toBengaliNumber(totalPaid)} ৳`;
+                document.getElementById("rRemainDue").innerText = newDue < 0 ? `অগ্রিম ${toBengaliNumber(-newDue)} ৳` : `${toBengaliNumber(newDue)} ৳`;
+
+                // মোডাল বন্ধ
+                closeModal();
+
+                // রসিদ প্রদর্শন ও স্বয়ংক্রিয় প্রিন্ট ডায়ালগ ওপেন
+                document.getElementById("receiptArea").style.display = "block";
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                
+                setTimeout(() => {
+                    window.print();
+                }, 500);
+
+                // ফর্ম রিসেট
+                document.getElementById("studentProfile").style.display = "none";
+                document.getElementById("searchDakhela").value = "";
+
+            } catch (err) {
+                alert("পেমেন্ট ব্যর্থ হয়েছে: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "✓ ঠিক আছে (জমা ও প্রিন্ট)";
+            }
+        }
+        async function generateMonthlyBillForClass() {
+            const session = document.getElementById("searchSession").value;
+            const month = document.getElementById("billMonth").value;
+            const year = new Date().getFullYear();
+            const runRef = db.collection("billing_runs").doc(`${normDigits(session)}_${year}_${month}`);
+            if ((await runRef.get()).exists) {
+                alert(`${month} ${toBengaliNumber(year)}-এর বিল এই শিক্ষাবর্ষে আগেই ধার্য হয়েছে। দ্বিতীয়বার ধার্য করা যাবে না।`);
+                return;
+            }
+            if (!confirm(`শিক্ষাবর্ষ ${session}-এর সকল সক্রিয় ছাত্রের অ্যাকাউন্টে ${month} ${toBengaliNumber(year)} মাসের খোরাকি ও বিদ্যুৎ বিল বকেয়া হিসেবে যোগ হবে। নিশ্চিত?`)) return;
+            try {
+                // আগে লক রেকর্ড: মাঝপথে ব্যর্থ হলেও ডাবল চার্জ ঠেকাবে
+                await runRef.set({ session, month, year, status: "started", by: auth.currentUser.email, at: firebase.firestore.FieldValue.serverTimestamp() });
+                const snap = await db.collection("students").where("session", "==", session).get();
+                const docs = snap.docs.filter(d => (d.data().status || "active") === "active");
+                for (let i = 0; i < docs.length; i += 400) {
+                    const batch = db.batch();
+                    docs.slice(i, i + 400).forEach(d => {
+                        const x = d.data();
+                        batch.update(d.ref, { dueAmount: firebase.firestore.FieldValue.increment((Number(x.khoraki) || 0) + (Number(x.electricity) || 0)) });
+                    });
+                    await batch.commit();
+                }
+                await runRef.update({ status: "done", count: docs.length });
+                alert(`আলহামদুলিল্লাহ! ${toBengaliNumber(docs.length)} জন ছাত্রের অ্যাকাউন্টে ${month} মাসের বিল ধার্য হয়েছে।`);
+            } catch (e) {
+                alert("বিল ধার্য করতে সমস্যা: " + e.message + "\n\n⚠️ কিছু ছাত্রের বিল ইতোমধ্যে যোগ হয়ে থাকতে পারে। আবার চালানোর আগে রিপোর্ট দেখে নিন।");
+            }
+        }
+    </script>
+</body>
+</html>

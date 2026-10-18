@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ছাত্র ব্যবস্থাপনা ও বাল্ক ইমপোর্ট | বাবুস সালাম পোর্টাল</title>
+    
+    <!-- ফায়ারবেস লাইব্রেরি (CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- এক্সেল ফাইল পড়ার লাইব্রেরি -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- ফায়ারবেস কনফিগ ফাইল -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>requireAuth();</script>
+
+    <style>
+        :root {
+            --primary: #0F5132;
+            --primary-light: #198754;
+            --primary-dark: #0a3622;
+            --accent: #FFD700;
+            --dark: #212529;
+            --light: #F8F9FA;
+            --border: #DEE2E6;
+            --white: #FFFFFF;
+            --danger: #DC3545;
+        }
+
+        body {
+            font-family: 'SolaimanLipi', 'Noto Sans Bengali', Arial, sans-serif;
+            margin: 0;
+            background: #F0F4F2;
+            color: var(--dark);
+        }
+
+        /* হেডার */
+        .portal-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 14px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .portal-header h2 { margin: 0; font-size: 1.25rem; }
+        .portal-nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 12px;
+            font-weight: bold;
+            padding: 7px 14px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.15);
+            font-size: 0.92rem;
+        }
+        .portal-nav a.active { background: var(--accent); color: #000; }
+
+        .container {
+            max-width: 1250px;
+            margin: 22px auto;
+            padding: 0 15px;
+        }
+
+        /* কার্ড বক্স */
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+        }
+
+        .card-title {
+            margin: 0 0 16px 0;
+            color: var(--primary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #E8F5E9;
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* গ্রিড ফরম */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.88rem;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 9px 18px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: var(--primary-light); }
+        .btn-gold { background: var(--accent); color: #000; }
+        .btn-gold:hover { background: #e6c200; }
+        .btn-sm { padding: 5px 10px; font-size: 0.82rem; }
+
+        /* ড্রপ জোন */
+        .excel-upload-zone {
+            border: 2px dashed var(--primary-light);
+            background: #F4FAF6;
+            border-radius: 10px;
+            padding: 22px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        /* টেবিল */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+            white-space: nowrap;
+        }
+
+        table th, table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        table th {
+            background: #E8F5E9;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .badge {
+            background: #E8F5E9;
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .session-badge {
+            background: #FFF3CD;
+            color: #856404;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .action-btn-del {
+            background: #FFEBEB;
+            color: var(--danger);
+            border: 1px solid #FFCDD2;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.82rem;
+        }
+
+        /* নোটিফিকেশন বার */
+        #statusMsg {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+            font-weight: bold;
+        }
+        .success-box { background: #E8F5E9; color: var(--primary); border: 1px solid #C8E6C9; }
+        .error-box { background: #FFEBEE; color: var(--danger); border: 1px solid #FFCDD2; }
+
+        @media (max-width: 768px) {
+            .portal-header { flex-direction: column; gap: 10px; text-align: center; }
+            .portal-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+            .portal-nav a { margin: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার বার -->
+    <header class="portal-header">
+        <h2>🕌 জামিয়া বাবুস সালাম — একাউন্টস পোর্টাল</h2>
+        <nav class="portal-nav">
+            <a href="students.html" class="active">👥 ছাত্র তালিকা ও ইমপোর্ট</a>
+            <a href="collect.html">💰 বিল উত্তোলন</a>
+            <a href="reports.html">📊 রিপোর্ট সেন্টার</a>
+            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">লগআউট ✕</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- মেসেজ ডিসপ্লে -->
+        <div id="statusMsg"></div>
+
+        <!-- ============================================================== -->
+        <!-- 📥 ১. এক্সেল ফাইল থেকে এক ক্লিকে পুরো জামাত আপলোড -->
+        <!-- ============================================================== -->
+        <div class="card">
+            <div class="card-title">
+                <span>📁 এক্সেল ফাইল থেকে একসাথে ছাত্র ইমপোর্ট করুন (Bulk Import)</span>
+                <div>
+                    <button class="btn btn-gold btn-sm" onclick="downloadSampleExcel()">
+                        ⬇️ এক্সেল ডেমো ফরম্যাট ডাউনলোড
+                    </button>
+                    <button class="btn btn-sm" onclick="promptAddSession()" style="background: var(--primary-light);">
+                        ➕ নতুন শিক্ষাবর্ষ যুক্ত করুন
+                    </button>
+                </div>
+            </div>
+            
+            <p style="margin-top: 0; color: #555; font-size: 0.9rem;">
+                এক্সেলে সাজানো ছাত্রদের ফাইল (.xlsx / .csv) আপলোড করুন। ফাইলটিতে দাখেলা নং (১, ২, ৩...), জন্ম তারিখ ও শিক্ষাবর্ষ থাকবে।
+            </p>
+
+            <div class="excel-upload-zone" onclick="document.getElementById('excelFileInput').click()">
+                <span style="font-size: 2.2rem;">📊</span>
+                <h4 style="margin: 6px 0 2px 0; color: var(--primary);">এখানে ক্লিক করে এক্সেল ফাইল সিলেক্ট করুন</h4>
+                <p style="margin: 0; font-size: 0.85rem; color: #777;">সমর্থিত ফাইল: .xlsx, .xls, .csv</p>
+                <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display: none;" onchange="handleExcelUpload(event)">
+            </div>
+
+            <!-- প্রিভিউ টেবিল -->
+            <div id="previewArea" style="display: none;">
+                <h4 style="color: var(--primary); margin-bottom: 8px;">প্রিভিউ: <span id="previewCount">০</span> জন ছাত্র প্রস্তুত</h4>
+                <div class="table-responsive" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px;">
+                    <table id="previewTable">
+                        <thead>
+                            <tr>
+                                <th>দাখেলা নং</th>
+                                <th>ছাত্রের নাম</th>
+                                <th>পিতার নাম</th>
+                                <th>জন্ম তারিখ</th>
+                                <th>জামাত</th>
+                                <th>শিক্ষাবর্ষ</th>
+                                <th>খোরাকি</th>
+                                <th>বিদ্যুৎ</th>
+                                <th>পূর্ব বকেয়া</th>
+                                <th>মোবাইল নম্বর</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <button class="btn" id="confirmImportBtn" onclick="saveBulkStudentsToFirebase()">
+                    🚀 কনফার্ম করুন ও ফায়ারবেসে সেভ করুন
+                </button>
+            </div>
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- ✍️ ২. একজন ছাত্রের তথ্য সরাসরি এন্ট্রি ফরম -->
+        <!-- ============================================================== -->
+        <div class="card">
+            <div class="card-title">
+                <span>➕ নতুন ছাত্র ভর্তি / তথ্য এন্ট্রি</span>
+            </div>
+
+            <form id="singleStudentForm" onsubmit="saveSingleStudent(event)">
+                <div class="form-grid">
+                    
+                    <div class="form-group">
+                        <label>দাখেলা নম্বর (যেমন: ১, ২, ৫০০) *</label>
+                        <input type="number" id="stdDakhela" placeholder="১, ২, ৩..." min="1" step="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ছাত্রের পুরো নাম *</label>
+                        <input type="text" id="stdName" placeholder="ছাত্রের নাম" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>পিতার নাম</label>
+                        <input type="text" id="stdFather" placeholder="পিতার নাম">
+                    </div>
+
+                    <div class="form-group">
+                        <label>জন্ম তারিখ (দিন-মাস-সন)</label>
+                        <input type="date" id="stdDob">
+                    </div>
+
+                    <div class="form-group">
+                        <label>জামাত / বিভাগ *</label>
+                        <select id="stdJamat" required>
+                            <option value="">জামাত নির্বাচন করুন</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>শিক্ষাবর্ষ *</label>
+                        <select id="stdSession" required>
+                            <!-- ফায়ারবেস থেকে অটো লোড হবে -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>মাসিক খোরাকি ফি (৳)</label>
+                        <input type="number" id="stdKhoraki" value="2300" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>বিদ্যুৎ ও পানি বিল (৳)</label>
+                        <input type="number" id="stdElectricity" value="500" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>পূর্বের বকেয়া থাকলে (৳)</label>
+                        <input type="number" id="stdPrevDue" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>অভিভাবকের মোবাইল নম্বর</label>
+                        <input type="tel" id="stdPhone" placeholder="01XXXXXXXXX">
+                    </div>
+
+                </div>
+
+                <div style="margin-top: 16px;">
+                    <button type="submit" class="btn">💾 ছাত্র সংরক্ষণ করুন</button>
+                </div>
+            </form>
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- 📋 ৩. ছাত্রদের রেজিস্টার তালিকা ও সার্চ/ফিল্টার -->
+        <!-- ============================================================== -->
+        <div class="card">
+            <div class="card-title">
+                <span>👥 নিবন্ধিত ছাত্রদের তালিকা (<span id="totalStudentsCount">০</span> জন)</span>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    
+                    <!-- শিক্ষাবর্ষ ফিল্টার -->
+                    <select id="filterSession" onchange="filterStudentsTable()" style="padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border);">
+                        <option value="">সকল শিক্ষাবর্ষ</option>
+                    </select>
+
+                    <!-- জামাত ফিল্টার -->
+                    <select id="filterJamat" onchange="filterStudentsTable()" style="padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border);">
+                        <option value="">সকল জামাত</option>
+                    </select>
+
+                    <!-- সার্চ বক্স -->
+                    <input type="text" id="searchKeyword" onkeyup="filterStudentsTable()" placeholder="🔍 নাম বা দাখেলা খুঁজুন..." style="padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border);">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>দাখেলা নং</th>
+                            <th>নাম</th>
+                            <th>পিতার নাম</th>
+                            <th>জন্ম তারিখ</th>
+                            <th>জামাত</th>
+                            <th>শিক্ষাবর্ষ</th>
+                            <th>খোরাকি</th>
+                            <th>বিদ্যুৎ</th>
+                            <th>বর্তমান বকেয়া</th>
+                            <th>মোবাইল</th>
+                            <th>অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <tr>
+                            <td colspan="11" style="text-align: center; color: var(--gray);">ডাটাবেজ থেকে তথ্য লোড হচ্ছে...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- স্ক্রিপ্ট লজিক -->
+    <script>
+        let allStudentsList = [];
+        let parsedExcelData = [];
+        let activeSessionsList = ["২০২৫-২৬", "২০২৪-২৫"]; // ডিফল্ট ফলব্যাক
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            populateJamatDropdowns();
+            await loadAcademicSessions();
+            loadStudentsFromFirebase();
+        });
+
+        // জামাত ড্রপডাউন পূরণ
+        function populateJamatDropdowns() {
+            const stdJamatSelect = document.getElementById("stdJamat");
+            const filterJamatSelect = document.getElementById("filterJamat");
+
+            JAMAT_LIST.forEach(jamat => {
+                stdJamatSelect.add(new Option(jamat, jamat));
+                filterJamatSelect.add(new Option(jamat, jamat));
+            });
+        }
+
+        // ==========================================================
+        // ফায়ারবেস থেকে শিক্ষাবর্ষ লোড ও পরিচালনা
+        // ==========================================================
+        async function loadAcademicSessions() {
+            try {
+                const snapshot = await db.collection("academic_years").orderBy("year", "desc").get();
+                if (!snapshot.empty) {
+                    activeSessionsList = [];
+                    snapshot.forEach(doc => activeSessionsList.push(doc.data().year));
+                } else {
+                    // প্রথমবার ডাটাবেজে কালেকশন না থাকলে ডিফল্ট তৈরি করা
+                    await db.collection("academic_years").doc("2026-27").set({ year: "২০২৬-২৭", createdAt: new Date() });
+                    await db.collection("academic_years").doc("2025-26").set({ year: "২০২৫-২৬", createdAt: new Date() });
+                    activeSessionsList = ["২০২৬-২৭", "২০২৫-২৬"];
+                }
+            } catch (e) {
+                console.log("শিক্ষাবর্ষ ফলব্যাক থেকে নেওয়া হয়েছে:", e);
+            }
+
+            renderSessionDropdowns();
+        }
+
+        function renderSessionDropdowns() {
+            const stdSession = document.getElementById("stdSession");
+            const filterSession = document.getElementById("filterSession");
+
+            stdSession.innerHTML = "";
+            filterSession.innerHTML = `<option value="">সকল শিক্ষাবর্ষ</option>`;
+
+            activeSessionsList.forEach((sess, idx) => {
+                stdSession.add(new Option(sess, sess, idx === 0, idx === 0)); // ১ম টি অটো সিলেক্টেড
+                filterSession.add(new Option(sess, sess));
+            });
+        }
+
+        // নতুন শিক্ষাবর্ষ যুক্ত করার প্রম্পট
+        async function promptAddSession() {
+            const newYear = prompt("নতুন শিক্ষাবর্ষ লিখুন (যেমন: ২০২৬-২৭):");
+            if (newYear && newYear.trim() !== "") {
+                const cleanYear = newYear.trim();
+                const docId = cleanYear.replace(/[^০-৯0-9-]/g, "");
+                await db.collection("academic_years").doc(docId).set({
+                    year: cleanYear,
+                    createdAt: new Date()
+                });
+                showMessage(`নতুন শিক্ষাবর্ষ "${cleanYear}" যুক্ত হয়েছে!`);
+                await loadAcademicSessions();
+            }
+        }
+
+        // মেসেজ বক্স
+        function showMessage(msg, isSuccess = true) {
+            const el = document.getElementById("statusMsg");
+            el.className = isSuccess ? "success-box" : "error-box";
+            el.innerText = msg;
+            el.style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => { el.style.display = "none"; }, 5000);
+        }
+
+        // ==========================================================
+        // ফায়ারবেস থেকে ছাত্রদের তালিকা আনা
+        // ==========================================================
+        function loadStudentsFromFirebase() {
+            db.collection("students").orderBy("dakhelaNum", "asc").onSnapshot(snapshot => {
+                allStudentsList = [];
+                snapshot.forEach(doc => {
+                    allStudentsList.push({ id: doc.id, ...doc.data() });
+                });
+                renderStudentsTable(allStudentsList);
+                document.getElementById("totalStudentsCount").innerText = toBengaliNumber(allStudentsList.length);
+            }, error => {
+                console.error("ডাটা এরর:", error);
+                showMessage("ডাটাবেজ থেকে তথ্য লোড করতে সমস্যা!", false);
+            });
+        }
+
+        // টেবিল রেন্ডার
+        function renderStudentsTable(list) {
+            const tbody = document.getElementById("studentsTableBody");
+            tbody.innerHTML = "";
+
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:#888;">কোনো ছাত্রের তথ্য পাওয়া যায়নি।</td></tr>`;
+                return;
+            }
+
+            list.forEach(std => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><strong>${toBengaliNumber(std.dakhelaNum)}</strong></td>
+                    <td>${esc(std.name)}</td>
+                    <td>${esc(std.fatherName || '-')}</td>
+                    <td>${std.dob ? toBengaliNumber(std.dob) : '-'}</td>
+                    <td><span class="badge">${esc(std.jamat)}</span></td>
+                    <td><span class="session-badge">${esc(std.session || '-')}</span></td>
+                    <td>${toBengaliNumber(std.khoraki)} ৳</td>
+                    <td>${toBengaliNumber(std.electricity)} ৳</td>
+                    <td style="color:${(std.dueAmount || 0) > 0 ? 'red' : 'green'}; font-weight:bold;">
+                        ${toBengaliNumber(std.dueAmount || 0)} ৳
+                    </td>
+                    <td>${std.phone ? toBengaliNumber(std.phone) : '-'}</td>
+                    <td>
+                        <button class="action-btn-del" data-id="${esc(std.id)}" data-name="${esc(std.name)}" onclick="deleteStudent(this.dataset.id, this.dataset.name)">মুছুন</button>
+                        <button class="action-btn-del" style="background:#6c757d;" data-id="${esc(std.id)}" data-status="${(std.status || 'active')}" onclick="toggleStudentStatus(this.dataset.id, this.dataset.status)">${(std.status || 'active') === 'active' ? 'নিষ্ক্রিয়' : 'সক্রিয়'}</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ফিল্টারিং
+        function filterStudentsTable() {
+            const session = document.getElementById("filterSession").value;
+            const jamat = document.getElementById("filterJamat").value;
+            const keyword = normDigits(document.getElementById("searchKeyword").value.toLowerCase().trim());
+
+            const filtered = allStudentsList.filter(std => {
+                const matchSession = session === "" || std.session === session;
+                const matchJamat = jamat === "" || std.jamat === jamat;
+                const matchKeyword = std.name.toLowerCase().includes(keyword) || 
+                                     std.dakhelaNum.toString().includes(keyword);
+                return matchSession && matchJamat && matchKeyword;
+            });
+
+            renderStudentsTable(filtered);
+        }
+
+        // ==========================================================
+        // একক ছাত্র সেভ
+        // ==========================================================
+        async function saveSingleStudent(e) {
+            e.preventDefault();
+            const dakhelaNum = parseInt(document.getElementById("stdDakhela").value, 10);
+            const name = document.getElementById("stdName").value.trim();
+            const fatherName = document.getElementById("stdFather").value.trim();
+            const dob = document.getElementById("stdDob").value;
+            const jamat = document.getElementById("stdJamat").value;
+            const session = document.getElementById("stdSession").value;
+            const khoraki = Number(document.getElementById("stdKhoraki").value) || 0;
+            const electricity = Number(document.getElementById("stdElectricity").value) || 0;
+            const prevDue = Number(document.getElementById("stdPrevDue").value) || 0;
+            const phone = document.getElementById("stdPhone").value.trim();
+
+            try {
+                const docId = stdId(session, dakhelaNum);
+                if ((await db.collection("students").doc(docId).get()).exists) {
+                    showMessage("এই শিক্ষাবর্ষে এই দাখেলা নম্বর আগে থেকেই আছে!", false);
+                    return;
+                }
+                await db.collection("students").doc(docId).set({
+                    dakhelaNum: dakhelaNum,
+                    name: name,
+                    fatherName: fatherName,
+                    dob: dob,
+                    jamat: jamat,
+                    session: session,
+                    khoraki: khoraki,
+                    electricity: electricity,
+                    dueAmount: prevDue,
+                    status: "active",
+                    phone: phone,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showMessage(`আলহামদুলিল্লাহ! দাখেলা নং ${toBengaliNumber(dakhelaNum)} (${name}) সংরক্ষিত হয়েছে।`);
+                document.getElementById("singleStudentForm").reset();
+                document.getElementById("stdSession").value = session;
+            } catch (err) {
+                showMessage("সংরক্ষণ ব্যর্থ: " + err.message, false);
+            }
+        }
+
+        // ছাত্র ডিলিট
+        async function deleteStudent(id, name) {
+            const s = allStudentsList.find(x => x.id === id);
+            if (s && (Number(s.dueAmount) || 0) !== 0) { showMessage("বকেয়া/অগ্রিম থাকা ছাত্র মোছা যায় না — নিষ্ক্রিয় করুন।", false); return; }
+            if (confirm(`আপনি কি সত্যিই ছাত্র "${name}"-কে তালিকা থেকে মুছে ফেলতে চান?`)) {
+                await db.collection("students").doc(id).delete();
+                showMessage(`ছাত্র "${name}" সফলভাবে মুছে ফেলা হয়েছে।`);
+            }
+        }
+
+        // ==========================================================
+        // এক্সেল বাল্ক ইমপোর্ট লজিক
+        // ==========================================================
+        function handleExcelUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                if (jsonData.length === 0) {
+                    showMessage("ফাইলে কোনো তথ্য পাওয়া যায়নি!", false);
+                    return;
+                }
+
+                parsedExcelData = jsonData;
+                renderPreviewTable(jsonData);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function renderPreviewTable(data) {
+            const previewArea = document.getElementById("previewArea");
+            const tbody = document.querySelector("#previewTable tbody");
+            tbody.innerHTML = "";
+            document.getElementById("previewCount").innerText = toBengaliNumber(data.length);
+
+            data.slice(0, 15).forEach(row => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${esc(row["দাখেলা নং"] || row["dakhela"] || '-')}</td>
+                    <td>${esc(row["নাম"] || row["name"] || '-')}</td>
+                    <td>${esc(row["পিতার নাম"] || row["father"] || '-')}</td>
+                    <td>${esc(row["জন্ম তারিখ"] || row["dob"] || '-')}</td>
+                    <td>${esc(row["জামাত"] || row["jamat"] || '-')}</td>
+                    <td>${esc(row["শিক্ষাবর্ষ"] || row["session"] || activeSessionsList[0])}</td>
+                    <td>${esc(row["খোরাকি"] || row["khoraki"] || '0')}</td>
+                    <td>${esc(row["বিদ্যুৎ"] || row["electricity"] || '0')}</td>
+                    <td>${esc(row["বকেয়া"] || row["due"] || '0')}</td>
+                    <td>${esc(row["মোবাইল"] || row["phone"] || '-')}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            previewArea.style.display = "block";
+        }
+
+        async function saveBulkStudentsToFirebase() {
+            const btn = document.getElementById("confirmImportBtn");
+            btn.disabled = true; btn.innerText = "⏳ ডাটা সেভ হচ্ছে... অপেক্ষা করুন...";
+            try {
+                const defaultSession = activeSessionsList[0];
+                const seen = new Set(), rows = [], errors = [];
+                parsedExcelData.forEach((row, i) => {
+                    const n = parseInt(normDigits(row["দাখেলা নং"] || row["dakhela"]), 10);
+                    const name = String(row["নাম"] || row["name"] || "").trim();
+                    const session = String(row["শিক্ষাবর্ষ"] || row["session"] || defaultSession).trim();
+                    const jamat = String(row["জামাত"] || row["jamat"] || "").trim();
+                    if (isNaN(n) || !name) return errors.push(`সারি ${i + 2}: দাখেলা নং বা নাম নেই`);
+                    if (!JAMAT_LIST.includes(jamat)) return errors.push(`সারি ${i + 2}: জামাত "${jamat}" তালিকায় নেই`);
+                    const key = stdId(session, n);
+                    if (seen.has(key)) return errors.push(`সারি ${i + 2}: দাখেলা নং ${n} ফাইলে দুইবার আছে`);
+                    seen.add(key); rows.push({ key, n, name, session, jamat, row });
+                });
+                const exist = new Set();
+                for (let i = 0; i < rows.length; i += 100)
+                    await Promise.all(rows.slice(i, i + 100).map(async r => { if ((await db.collection("students").doc(r.key).get()).exists) exist.add(r.key); }));
+                let added = 0, updated = 0;
+                for (let i = 0; i < rows.length; i += 400) {
+                    const batch = db.batch();
+                    rows.slice(i, i + 400).forEach(r => {
+                        const x = r.row;
+                        const base = {
+                            dakhelaNum: r.n, name: r.name, fatherName: String(x["পিতার নাম"] || x["father"] || "").trim(),
+                            dob: String(x["জন্ম তারিখ"] || x["dob"] || "").trim(), jamat: r.jamat, session: r.session,
+                            khoraki: Number(normDigits(x["খোরাকি"] || x["khoraki"])) || 0,
+                            electricity: Number(normDigits(x["বিদ্যুৎ"] || x["electricity"])) || 0,
+                            phone: normDigits(x["মোবাইল"] || x["phone"] || "").trim(),
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+                        const ref = db.collection("students").doc(r.key);
+                        if (exist.has(r.key)) { batch.set(ref, base, { merge: true }); updated++; } // বকেয়া/স্ট্যাটাস অক্ষত থাকে
+                        else { batch.set(ref, { ...base, dueAmount: Number(normDigits(x["বকেয়া"] || x["due"])) || 0, status: "active" }); added++; }
+                    });
+                    await batch.commit();
+                }
+                showMessage(`✅ নতুন ${toBengaliNumber(added)} জন, হালনাগাদ ${toBengaliNumber(updated)} জন, বাদ ${toBengaliNumber(errors.length)} টি সারি।`);
+                if (errors.length) alert("বাদ পড়া সারি:\n" + errors.slice(0, 15).join("\n") + (errors.length > 15 ? "\n..." : ""));
+                document.getElementById("previewArea").style.display = "none";
+                document.getElementById("excelFileInput").value = "";
+            } catch (err) {
+                showMessage("বাল্ক ইমপোর্টে সমস্যা: " + err.message, false);
+            } finally {
+                btn.disabled = false; btn.innerText = "🚀 কনফার্ম করুন ও ফায়ারবেসে সেভ করুন";
+            }
+        }
+
+
+        // ডেমো এক্সেল ডাউনলোড
+        function downloadSampleExcel() {
+            const sampleData = [
+                { "দাখেলা নং": 1, "নাম": "আব্দুল্লাহ আল মামুন", "পিতার নাম": "মুহাম্মদ আলী", "জন্ম তারিখ": "15-08-2010", "জামাত": "ফযীলত ২য় বর্ষ (মেশকাত)", "শিক্ষাবর্ষ": activeSessionsList[0], "খোরাকি": 2300, "বিদ্যুৎ": 500, "বকেয়া": 0, "মোবাইল": "01711000000" },
+                { "দাখেলা নং": 2, "নাম": "মুহাম্মদ হাসান", "পিতার নাম": "রফিকুল ইসলাম", "জন্ম তারিখ": "10-02-2011", "জামাত": "ফযীলত ২য় বর্ষ (মেশকাত)", "শিক্ষাবর্ষ": activeSessionsList[0], "খোরাকি": 2300, "বিদ্যুৎ": 500, "বকেয়া": 500, "মোবাইল": "01811000000" },
+                { "দাখেলা নং": 3, "নাম": "মুহাম্মদ উসমান", "পিতার নাম": "আব্দুর রহমান", "জন্ম তারিখ": "22-11-2012", "জামাত": "হিফজুল কুরআন বিভাগ", "শিক্ষাবর্ষ": activeSessionsList[0], "খোরাকি": 3500, "বিদ্যুৎ": 1000, "বকেয়া": 0, "মোবাইল": "01911000000" }
+            ];
+            const ws = XLSX.utils.json_to_sheet(sampleData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Students");
+            XLSX.writeFile(wb, "BabusSalam_Student_Sample.xlsx");
+        }
+        // ছাত্রকে নিষ্ক্রিয় করার ফাংশন
+async function toggleStudentStatus(id, currentStatus) {
+    const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+    const msg = newStatus === 'inactive' ? 'ছাত্রকে নিষ্ক্রিয়/ছাড়প্রাপ্ত করতে চান?' : 'ছাত্রকে পুনরায় সক্রিয় করতে চান?';
+    if (confirm(msg)) {
+        await db.collection("students").doc(id).update({ status: newStatus });
+        alert("স্ট্যাটাস আপডেট হয়েছে!");
+    }
+}
+    </script>
+</body>
+</html>
