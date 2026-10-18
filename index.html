@@ -5,11 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- গুগল ও লোকাল ফন্টস -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <!-- গুগল ফন্টস -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css"> -->
 
     <!-- FontAwesome আইকন -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -22,7 +21,7 @@
     <meta name="description"
         content="জামিয়া বাবুস সালাম (Jamia Babus Salam) ১৯৯৬ সাল থেকে দ্বীনি শিক্ষায় নিবেদিত। ভর্তি তথ্য, পরিচালনা পরিষদ, নিয়মাবলী ও সেবা সংক্রান্ত যাবতীয় তথ্য।">
     <meta name="keywords"
-        content="জামিয়া বাবুস সালাম, বাবুস সালাম, বাবুস সালাম বিমানবন্দর ঢাকা, বাবুস সালাম এয়ারপোর্ট, jamia babus salam, babus salam, babus salam madrasa, babus salam foundation, বাবুস সালাম মাদ্রাসা, জামিয়া বাবুস সালাম ফাউন্ডেশন, বাবুস সালাম ভর্তি, বাবুস সালাম ভর্তি তথ্য, babus salam admission, babus salam notice, babus salam result, babus salam syllabus, babus salam teachers, babus salam airport, babus salam foundation, babus salam madrasah, babus salam madrasa, babus salam school, babus salam college, babus salam university, babus salam campus, babus salam education, babus salam islamic education, babus salam islamic school, babus salam islamic college, babus salam islamic university, babus salam islamic campus, babus salam islamic foundation, babus salam islamic madrasa, babus salam islamic madrasah, babus salam islamic education center, বাবুস সালাম ফলাফল">
+        content="জামিয়া বাবুস সালাম, বাবুস সালাম, বাবুস সালাম মাদ্রাসা, বাবুস সালাম বিমানবন্দর ঢাকা, জামিয়া বাবুস সালাম ফাউন্ডেশন, বাবুস সালাম ভর্তি, বাবুস সালাম ফলাফল, jamia babus salam, babus salam madrasa, babus salam foundation, babus salam admission, babus salam notice, babus salam result, babus salam syllabus, babus salam teachers, babus salam airport">
     <meta name="author" content="Jamia Babus Salam">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://jamiababussalam.com/">
@@ -35,14 +34,13 @@
     <meta property="og:image" content="https://jamiababussalam.com/images/banner.jpg">
     <meta property="og:site_name" content="Jamia Babus Salam">
 
-
     <!-- গুগল স্ট্রাকচার্ড ডেটা (Schema Markup) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "EducationalOrganization",
       "name": "জামিয়া বাবুস সালাম",
-      "alternateName": ["Jamia Babus Salam", "জামিয়া বাবুস সালাম", "Babus Salam", "Babus Salam Foundation", "বাবুস সালাম মাদ্রাসা", "Babus Salam Madrasah", "বাবুস সালাম বিমানবন্দর", "Babus Salam Airport"],
+      "alternateName": ["Jamia Babus Salam", "Babus Salam", "Babus Salam Foundation", "বাবুস সালাম মাদ্রাসা", "Babus Salam Madrasah", "বাবুস সালাম বিমানবন্দর", "Babus Salam Airport"],
       "url": "https://jamiababussalam.com/",
       "logo": "https://jamiababussalam.com/images/banner.jpg",
       "foundingDate": "1996"
@@ -64,7 +62,7 @@
         }
 
         body {
-            font-family: 'SolaimanLipi', Arial, sans-serif;
+            font-family: 'SolaimanLipi', 'Hind Siliguri', 'Noto Sans Bengali', 'Kalpurush', Arial, sans-serif;
             background-color: var(--bg-light);
             color: var(--text-dark);
             margin: 0;
@@ -328,7 +326,7 @@
         /* ── মাদরাসার নীতিমালা ও বিধি-বিধান ── */
         .rules-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
             gap: 24px;
         }
 
@@ -402,7 +400,7 @@
         /* ── নোটিশ কার্ড ── */
         .notice-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
             gap: 20px;
             margin-bottom: 25px;
         }
@@ -414,6 +412,10 @@
             border: 1px solid #edf2f7;
             box-shadow: var(--card-shadow);
             border-left: 5px solid #94a3b8;
+        }
+
+        .notice-card h4 {
+            margin: 0;
         }
 
         .notice-card.urgent {
@@ -450,6 +452,24 @@
         .notice-badge.general {
             background: #dcfce7;
             color: #15803d;
+        }
+
+        .notice-date {
+            font-size: 13px;
+            color: #64748b;
+            margin: 4px 0 8px;
+        }
+
+        .notice-desc {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .notice-status {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
         }
 
         /* ── পরিসংখ্যান ── */
@@ -489,6 +509,8 @@
             border: 1px dashed var(--accent-gold);
             display: inline-block;
             text-align: left;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .bank-info-box h5 {
@@ -497,7 +519,25 @@
             font-size: 16px;
         }
 
+        /* ═══ হেডার সবসময় স্ক্রিনের উপরে আটকে রাখা ═══ */
+        #header-placeholder {
+            position: sticky;
+            top: 0;
+            z-index: 99999;
+            width: 100%;
+        }
+
+        .header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ── রেসপন্সিভ ── */
         @media (max-width: 768px) {
+            .hero {
+                background-attachment: scroll; /* মোবাইলে fixed ব্যাকগ্রাউন্ড সমস্যা করে */
+            }
+
             .hero h2 {
                 font-size: 2rem;
             }
@@ -521,33 +561,6 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
-        /* ═══ হেডার ও ব্রেকিং নিউজ সবসময় উপরে ফিক্সড রাখার নিয়ম ═══ */
-        #header-placeholder {
-            position: sticky;
-            top: 0;
-            z-index: 9999;
-            /* যেন সব কনটেন্টের উপরে ভাসে */
-            width: 100%;
-        }
-
-        .header {
-            background-color: #ffffff;
-            /* হেডার স্ক্রল করার সময় পেছনের লেখা যাতে না দেখা যায় */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        /* ═══ হেডার ও ব্রেকিং নিউজ সবসময় স্ক্রিনের উপরে আটকে রাখা ═══ */
-#header-placeholder {
-    position: sticky;
-    top: 0;
-    z-index: 99999;
-    width: 100%;
-}
-
-.header {
-    background-color: var(--white, #ffffff);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
     </style>
 </head>
 
@@ -562,7 +575,7 @@
             </div>
             <div class="live-chip">
                 <i class="fa-regular fa-clock"></i>
-                <span id="live-time">সময় লোড হচ্ছে...</span>
+                <span id="live-time">সময় লোড হচ্ছে...</span>
             </div>
         </div>
     </div>
@@ -609,7 +622,7 @@
                 <i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড
             </a>
             <a href="pages/fatwa.html" class="btn btn-primary">
-                <i class="fa-solid fa-circle-question"></i> ফাতাওয়া ও জিজ্ঞাসা
+                <i class="fa-solid fa-circle-question"></i> ফাতাওয়া ও জিজ্ঞাসা
             </a>
         </div>
     </section>
@@ -644,7 +657,7 @@
         </div>
     </div>
 
-    <!-- ═══ ২. জামিয়া পরিচিতি ও লক্ষ্য ═══ -->
+    <!-- ═══ ২. জামিয়া পরিচিতি ও লক্ষ্য ═══ -->
     <section class="container intro-section" style="padding-top: 20px;">
         <div class="section-title">
             <h2>আমাদের পরিচিতি ও লক্ষ্য</h2>
@@ -652,19 +665,19 @@
         </div>
         <div class="intro-grid">
             <div class="intro-image">
-                <img src="images/gallery/01-campus.jpg" alt="জামিয়া বাবুস সালাম ক্যাম্পাস"
+                <img src="images/gallery/01-campus.jpg" alt="জামিয়া বাবুস সালাম ক্যাম্পাস" loading="lazy"
                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=700&q=80';">
             </div>
             <div class="intro-content">
                 <h3 style="color:var(--primary-dark); margin-top:0;">দারুল উলুম দেওবন্দের আদর্শে প্রতিষ্ঠিত</h3>
                 <p>
-                    রাজধানী ঢাকার বিমানবন্দর সংলগ্ন উত্তরা এলাকায় ১৯৯৬ সালে প্রতিষ্ঠিত <strong>জামিয়া বাবুস
-                        সালাম</strong> দীর্ঘ ২৮ বছর ধরে আহলুস সুন্নাহ ওয়াল জামাআতের আকিদা ও দারুল উলুম দেওবন্দের
-                    নীতিমালার ওপর ভিত্তি করে পরিচালিত হয়ে আসছে।
+                    রাজধানী ঢাকার বিমানবন্দর সংলগ্ন উত্তরা এলাকায় ১৯৯৬ সালে প্রতিষ্ঠিত <strong>জামিয়া বাবুস
+                        সালাম</strong> দীর্ঘ <span id="years-count">৩০</span> বছর ধরে আহলুস সুন্নাহ ওয়াল জামাআতের আকিদা ও দারুল উলুম
+                    দেওবন্দের নীতিমালার ওপর ভিত্তি করে পরিচালিত হয়ে আসছে।
                 </p>
                 <p>
                     <strong>প্রধান লক্ষ্য:</strong> শিক্ষার্থীদের পবিত্র কুরআন-সুন্নাহর সঠিক ইলম দান করা, আত্মশুদ্ধি
-                    নিশ্চিত করা এবং যুগোপযোগী দাওয়াতী যোগ্যতাসম্পন্ন আদর্শ আলেম ও দাঈ হিসেবে গড়ে তোলা।
+                    নিশ্চিত করা এবং যুগোপযোগী দাওয়াতী যোগ্যতাসম্পন্ন আদর্শ আলেম ও দাঈ হিসেবে গড়ে তোলা।
                 </p>
                 <a href="pages/about.html" class="btn btn-green">
                     বিস্তারিত পরিচিতি <i class="fa-solid fa-arrow-right-long"></i>
@@ -678,38 +691,38 @@
         <div class="container" style="padding:0;">
             <div class="section-title">
                 <h2>শিক্ষা বিভাগসমূহ</h2>
-                <p class="section-subtitle">মক্তব স্তর থেকে সর্বোচ্চ দাওরায়ে হাদিস ও উচ্চতর গবেষণা বিভাগ</p>
+                <p class="section-subtitle">মক্তব স্তর থেকে সর্বোচ্চ দাওরায়ে হাদিস ও উচ্চতর গবেষণা বিভাগ</p>
             </div>
             <div class="dept-grid">
                 <div class="dept-card">
                     <div class="dept-icon-wrap"><i class="fa-solid fa-book-open-reader"></i></div>
                     <h4>নূরানী ও নাযেরা</h4>
-                    <p>সহীহ মাখরাজ অনুযায়ী কুরআন শিক্ষা এবং প্রাথমিক দোয়া ও মাসায়েল প্রশিক্ষণ।</p>
+                    <p>সহীহ মাখরাজ অনুযায়ী কুরআন শিক্ষা এবং প্রাথমিক দোয়া ও মাসায়েল প্রশিক্ষণ।</p>
                 </div>
                 <div class="dept-card">
                     <div class="dept-icon-wrap"><i class="fa-solid fa-book-quran"></i></div>
                     <h4>হিফজুল কুরআন</h4>
-                    <p>আন্তর্জাতিক মানের তিলাওয়াত ও হুসনে সওতের সাথে সম্পূর্ণ কুরআন মুখস্থকরণ।</p>
+                    <p>আন্তর্জাতিক মানের তিলাওয়াত ও হুসনে সওতের সাথে সম্পূর্ণ কুরআন মুখস্থকরণ।</p>
                 </div>
                 <div class="dept-card">
                     <div class="dept-icon-wrap"><i class="fa-solid fa-graduation-cap"></i></div>
                     <h4>কিতাব বিভাগ</h4>
-                    <p>ইবতিদাইয়্যাহ থেকে শরহে বেকায়া ও জালালাইন জামাত পর্যন্ত গভীর দ্বীনি জ্ঞানার্জন।</p>
+                    <p>ইবতিদাইয়্যাহ থেকে শরহে বেকায়া ও জালালাইন জামাত পর্যন্ত গভীর দ্বীনি জ্ঞানার্জন।</p>
                 </div>
                 <div class="dept-card">
                     <div class="dept-icon-wrap"><i class="fa-solid fa-mosque"></i></div>
-                    <h4>দাওরায়ে হাদিস (মাস্টার্স)</h4>
-                    <p>সিহাহ সিত্তাহসহ হাদিসের মূল গ্রন্থসমূহের চূড়ান্ত সনদ প্রদানকারী সর্বোচ্চ শ্রেণি।</p>
+                    <h4>দাওরায়ে হাদিস (মাস্টার্স)</h4>
+                    <p>সিহাহ সিত্তাহসহ হাদিসের মূল গ্রন্থসমূহের চূড়ান্ত সনদ প্রদানকারী সর্বোচ্চ শ্রেণি।</p>
                 </div>
                 <div class="dept-card">
                     <div class="dept-icon-wrap"><i class="fa-solid fa-scale-balanced"></i></div>
                     <h4>মারকাযুল ইফতা</h4>
-                    <p>উচ্চতর ফিকাহ ও আধুনিক অর্থনৈতিক ও সমকালীন বিষয়ে ফতোয়া গবেষণা বিভাগ।</p>
+                    <p>উচ্চতর ফিকাহ ও আধুনিক অর্থনৈতিক ও সমকালীন বিষয়ে ফতোয়া গবেষণা বিভাগ।</p>
                 </div>
                 <div class="dept-card">
                     <div class="dept-icon-wrap"><i class="fa-solid fa-language"></i></div>
                     <h4>দাওয়াহ ও ভাষা শিক্ষা</h4>
-                    <p>আরবি ও বাংলা ভাষায় সাহিত্যচর্চা, উপস্থিত বক্তৃতা এবং দাওয়াত প্রশিক্ষণ।</p>
+                    <p>আরবি ও বাংলা ভাষায় সাহিত্যচর্চা, উপস্থিত বক্তৃতা এবং দাওয়াত প্রশিক্ষণ।</p>
                 </div>
             </div>
         </div>
@@ -720,7 +733,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>পরিচালনা ও সাংগঠনিক কাঠামো</h2>
-                <p class="section-subtitle">সুষ্ঠু ও স্বচ্ছ পরিচালনায় জামিয়ার দায়িত্বপ্রাপ্ত পরিষদসমূহ</p>
+                <p class="section-subtitle">সুষ্ঠু ও স্বচ্ছ পরিচালনায় জামিয়ার দায়িত্বপ্রাপ্ত পরিষদসমূহ</p>
             </div>
             <div class="admin-grid">
                 <div class="admin-card">
@@ -736,9 +749,9 @@
                     <h4><i class="fa-solid fa-user-tie" style="color:var(--accent-gold);"></i> মজলিসে আমেলা (নির্বাহী
                         কমিটি)</h4>
                     <ul>
-                        <li>দৈনন্দিন আর্থিক হিসাব, অবকাঠামোগত উন্নয়ন ও সার্বিক তত্ত্বাবধান।</li>
+                        <li>দৈনন্দিন আর্থিক হিসাব, অবকাঠামোগত উন্নয়ন ও সার্বিক তত্ত্বাবধান।</li>
                         <li>উস্তাদ ও কর্মকর্তা-কর্মচারীদের কার্যক্রম তদারকি।</li>
-                        <li>জরুরি সিদ্ধান্ত গ্রহণ ও দ্রুত বাস্তবায়ন।</li>
+                        <li>জরুরি সিদ্ধান্ত গ্রহণ ও দ্রুত বাস্তবায়ন।</li>
                     </ul>
                 </div>
                 <div class="admin-card">
@@ -746,7 +759,7 @@
                         বিভাগ</h4>
                     <ul>
                         <li>ক্লাস উপস্থিতি, মাসিক ও ত্রৈমাসিক পরীক্ষা গ্রহণ।</li>
-                        <li>শিক্ষার্থীদের পাঁচ ওয়াক্ত নামাজ ও সুন্নতি আমলের নিবিড় পর্যবেক্ষণ।</li>
+                        <li>শিক্ষার্থীদের পাঁচ ওয়াক্ত নামাজ ও সুন্নতি আমলের নিবিড় পর্যবেক্ষণ।</li>
                         <li>দুর্বল শিক্ষার্থীদের জন্য অতিরিক্ত ক্লাসের ব্যবস্থা।</li>
                     </ul>
                 </div>
@@ -754,7 +767,7 @@
         </div>
     </section>
 
-    <!-- ═══ ৫. মাদরাসার নিয়মাবলী ও নীতিমালা ═══ -->
+    <!-- ═══ ৫. মাদরাসার নিয়মাবলী ও নীতিমালা ═══ -->
     <section class="container">
         <div class="section-title">
             <h2>মাদরাসার সাধারণ নীতিমালা ও বিধি-বিধান</h2>
@@ -766,17 +779,17 @@
                 <ol>
                     <li>প্রত্যেক শিক্ষার্থীকে পাঁচ ওয়াক্ত নামাজ জামাতের সাথে তাকবীরে উলার সাথে আদায় করতে হবে।</li>
                     <li>পোশাক-পরিচ্ছদ, চুল ও চালচলন সুন্নাত মোতাবেক হতে হবে।</li>
-                    <li>অপ্রয়োজনীয় ঘোরাঘুরি ও রাজনীতি সম্পূর্ণ নিষিদ্ধ।</li>
+                    <li>অপ্রয়োজনীয় ঘোরাঘুরি ও রাজনীতি সম্পূর্ণ নিষিদ্ধ।</li>
                     <li>উস্তাদ ও সহপাঠীদের সাথে সদাচরণ ও নম্রতা বজায় রাখতে হবে।</li>
                 </ol>
             </div>
             <div class="rule-card">
                 <h4><i class="fa-solid fa-mobile-screen-button"></i> ডিজিটাল ডিভাইস ও ছুটি সংক্রান্ত</h4>
                 <ol>
-                    <li>মাদরাসায় অধ্যয়নকালীন সাধারণ শিক্ষার্থীদের স্মার্টফোন রাখা সম্পূর্ণ নিষিদ্ধ।</li>
-                    <li>কর্তৃপক্ষের লিখিত অনুমতি ছাড়া মাদরাসা ক্যাম্পাসের বাইরে যাওয়া নিষেধ।</li>
-                    <li>অসুস্থতা বা জরুরি প্রয়োজনে অভিভাবকের উপস্থিতিতে ছুটি মঞ্জুর করা হবে।</li>
-                    <li>ছুটি শেষে নির্দিষ্ট তারিখ ও সময়ের মধ্যে মাদরাসায় উপস্থিত হতে হবে।</li>
+                    <li>মাদরাসায় অধ্যয়নকালীন সাধারণ শিক্ষার্থীদের স্মার্টফোন রাখা সম্পূর্ণ নিষিদ্ধ।</li>
+                    <li>কর্তৃপক্ষের লিখিত অনুমতি ছাড়া মাদরাসা ক্যাম্পাসের বাইরে যাওয়া নিষেধ।</li>
+                    <li>অসুস্থতা বা জরুরি প্রয়োজনে অভিভাবকের উপস্থিতিতে ছুটি মঞ্জুর করা হবে।</li>
+                    <li>ছুটি শেষে নির্দিষ্ট তারিখ ও সময়ের মধ্যে মাদরাসায় উপস্থিত হতে হবে।</li>
                 </ol>
             </div>
             <div class="rule-card">
@@ -785,45 +798,24 @@
                     <li>রাত ১০:০০ টার মধ্যে ঘুমানো এবং তাহাজ্জুদ ও ফজরের জন্য যথাসময়ে জাগ্রত হওয়া।</li>
                     <li>খাবারের সময় অপচয় না করা এবং সুন্নতি শিষ্টাচার মেনে আহার করা।</li>
                     <li>নিজ নিজ কক্ষ ও খাট-বিছানা পরিষ্কার-পরিচ্ছন্ন রাখার দায়িত্ব শিক্ষার্থীর।</li>
-                    <li>বোর্ডিং কার্ড ছাড়া খাবার পরিবেশন করা হবে না।</li>
+                    <li>বোর্ডিং কার্ড ছাড়া খাবার পরিবেশন করা হবে না।</li>
                 </ol>
             </div>
         </div>
     </section>
 
-    <!-- ═══ ৬. সাম্প্রতিক নোটিশ ═══ -->
+    <!-- ═══ ৬. সাম্প্রতিক নোটিশ (data.json থেকে ডায়নামিক) ═══ -->
     <section
         style="background: #ffffff; padding: 60px 20px; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
         <div class="container" style="padding:0;">
             <div class="section-title">
                 <h2>সাম্প্রতিক নোটিশ ও ঘোষণা</h2>
             </div>
-            <div class="notice-list">
-                <div class="notice-card urgent">
-                    <span class="notice-badge urgent">জরুরি ভর্তি বিজ্ঞপ্তি</span>
-                    <h4>নতুন শিক্ষাবর্ষে ভর্তি কার্যক্রম ২০২৫</h4>
-                    <p style="font-size:13px; color:#64748b; margin:4px 0 8px;"><i class="fa-regular fa-clock"></i> ১৫
-                        জানুয়ারি, ২০২৫</p>
-                    <p style="font-size:14px; margin:0;">আসন্ন শিক্ষাবর্ষে নূরানী, হিফজ ও কিতাব বিভাগে সীমিত আসনে ভর্তি
-                        চলছে। বিস্তারিত জানতে অফিসে যোগাযোগ করুন।</p>
-                </div>
-                <div class="notice-card exam">
-                    <span class="notice-badge exam">পরীক্ষা সংক্রান্ত</span>
-                    <h4>বার্ষিক পরীক্ষার রুটিন প্রকাশ</h4>
-                    <p style="font-size:13px; color:#64748b; margin:4px 0 8px;"><i class="fa-regular fa-clock"></i> ১০
-                        জানুয়ারি, ২০২৫</p>
-                    <p style="font-size:14px; margin:0;">আগামী ১ মার্চ থেকে সকল বিভাগের বার্ষিক পরীক্ষা অনুষ্ঠিত হবে।
-                        রুটিন মাদরাসা নোটিশ বোর্ডে টানানো হয়েছে।</p>
-                </div>
-                <div class="notice-card general">
-                    <span class="notice-badge general">সাধারণ নোটিশ</span>
-                    <h4>অভিভাবক সম্মেলন ২০২৫</h4>
-                    <p style="font-size:13px; color:#64748b; margin:4px 0 8px;"><i class="fa-regular fa-clock"></i> ৫
-                        জানুয়ারি, ২০২৫</p>
-                    <p style="font-size:14px; margin:0;">শিক্ষার্থীদের সার্বিক মূল্যায়ন ও তালীমী উন্নতির লক্ষ্যে আগামী
-                        ২৫ জানুয়ারি অভিভাবক সম্মেলন অনুষ্ঠিত হবে।</p>
-                </div>
+
+            <div class="notice-list" id="homeNoticeList">
+                <div class="notice-status">নোটিশ লোড হচ্ছে...</div>
             </div>
+
             <div style="text-align: center;">
                 <a href="pages/notice.html" class="btn btn-green">
                     সকল নোটিশ দেখুন <i class="fa-solid fa-arrow-right-long"></i>
@@ -864,7 +856,7 @@
         </div>
     </section>
 
-    <!-- ═══ ৮. অনুদান ও সাদাকায়ে জারিয়া ═══ -->
+    <!-- ═══ ৮. অনুদান ও সাদাকায়ে জারিয়া ═══ -->
     <section class="cta-section">
         <div class="container" style="text-align:center; padding:0;">
             <i class="fa-solid fa-hand-holding-heart" style="font-size: 50px; color:#ef4444; margin-bottom: 15px;"></i>
@@ -885,7 +877,7 @@
                     ০১XXXXXXXXX</p>
             </div>
 
-            <div style="margin-top: 25px;">
+            <div style="margin-top: 25px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                 <a href="pages/donate.html" class="btn btn-primary">
                     <i class="fa-solid fa-heart"></i> অনলাইন অনুদান
                 </a>
@@ -899,113 +891,107 @@
     <!-- ═══ ফুটার (অটো লোড) ═══ -->
     <div id="footer-placeholder"></div>
 
-    <!-- ═══ লাইভ ডেট ও টাইম জাভাস্ক্রিপ্ট ═══ -->
+    <!-- ═══ লাইভ ডেট ও টাইম + বছর গণনা ═══ -->
     <script>
-        function updateBanglaDateTime() {
-            const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        const toBn = (num) => num.toString().replace(/\d/g, d => bnDigits[d]);
 
-            const toBn = (num) =>
-                num.toString().replace(/\d/g, d => bnDigits[d]);
+        const bnDays = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
+        const bnMonths = [
+            'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
+            'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
+        ];
 
-            const days = [
-                'রবিবার',
-                'সোমবার',
-                'মঙ্গলবার',
-                'বুধবার',
-                'বৃহস্পতিবার',
-                'শুক্রবার',
-                'শনিবার'
-            ];
-
-            const months = [
-                'জানুয়ারি',
-                'ফেব্রুয়ারি',
-                'মার্চ',
-                'এপ্রিল',
-                'মে',
-                'জুন',
-                'জুলাই',
-                'আগস্ট',
-                'সেপ্টেম্বর',
-                'অক্টোবর',
-                'নভেম্বর',
-                'ডিসেম্বর'
-            ];
-
-            const now = new Date();
-
-            // =========================
-            // তারিখ
-            // =========================
-            const dayName = days[now.getDay()];
-            const date = toBn(now.getDate());
-            const month = months[now.getMonth()];
-            const year = toBn(now.getFullYear());
-
-            document.getElementById('live-date').innerText =
-                `${dayName}, ${date} ${month} ${year}`;
-
-
-            // =========================
-            // সময়
-            // =========================
-            let hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-
-            // সময়ের ধরন নির্ধারণ
-            let timePeriod;
-
-            if (hours >= 0 && hours < 4) {
-                timePeriod = 'মধ্যরাত';
-            }
-            else if (hours >= 4 && hours < 6) {
-                timePeriod = 'ভোর';
-            }
-            else if (hours >= 6 && hours < 12) {
-                timePeriod = 'সকাল';
-            }
-            else if (hours >= 12 && hours < 15) {
-                timePeriod = 'দুপুর';
-            }
-            else if (hours >= 15 && hours < 18) {
-                timePeriod = 'বিকেল';
-            }
-            else if (hours >= 18 && hours < 20) {
-                timePeriod = 'সন্ধ্যা';
-            }
-            else if (hours >= 20 && hours < 24) {
-                timePeriod = 'রাত';
-            }
-
-            // ১২ ঘণ্টার সময়
-            let displayHours = hours % 12;
-            displayHours = displayHours === 0 ? 12 : displayHours;
-
-            const strHours = toBn(
-                displayHours < 10 ? '0' + displayHours : displayHours
-            );
-
-            const strMinutes = toBn(
-                minutes < 10 ? '0' + minutes : minutes
-            );
-
-            const strSeconds = toBn(
-                seconds < 10 ? '0' + seconds : seconds
-            );
-
-            document.getElementById('live-time').innerText =
-                `${timePeriod}, ${strHours}:${strMinutes}:${strSeconds}`;
+        function getTimePeriod(h) {
+            if (h < 4) return 'মধ্যরাত';
+            if (h < 6) return 'ভোর';
+            if (h < 12) return 'সকাল';
+            if (h < 15) return 'দুপুর';
+            if (h < 18) return 'বিকেল';
+            if (h < 20) return 'সন্ধ্যা';
+            return 'রাত';
         }
 
-        // প্রতি সেকেন্ডে সময় আপডেট
-        setInterval(updateBanglaDateTime, 1000);
+        function updateBanglaDateTime() {
+            const now = new Date();
 
-        // পেজ লোড হওয়ার সঙ্গে সঙ্গে সময় দেখাবে
+            // তারিখ
+            document.getElementById('live-date').innerText =
+                `${bnDays[now.getDay()]}, ${toBn(now.getDate())} ${bnMonths[now.getMonth()]} ${toBn(now.getFullYear())}`;
+
+            // সময় (১২ ঘণ্টা)
+            const hours = now.getHours();
+            const h12 = hours % 12 === 0 ? 12 : hours % 12;
+            const pad = (n) => toBn(String(n).padStart(2, '0'));
+
+            document.getElementById('live-time').innerText =
+                `${getTimePeriod(hours)}, ${pad(h12)}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        }
+
+        setInterval(updateBanglaDateTime, 1000);
         updateBanglaDateTime();
+
+        // প্রতিষ্ঠার (১৯৯৬) পর থেকে কত বছর — প্রতি বছর নিজে থেকে আপডেট হবে
+        const yearsEl = document.getElementById('years-count');
+        if (yearsEl) yearsEl.innerText = toBn(new Date().getFullYear() - 1996);
     </script>
 
+    <!-- ═══ data.json থেকে সাম্প্রতিক নোটিশ লোড ═══ -->
+    <script>
+        (function () {
+            const LIMIT = 3; // কয়টি নোটিশ দেখাবে
 
+            const badgeLabels = {
+                urgent: 'জরুরি',
+                exam: 'পরীক্ষা সংক্রান্ত',
+                general: 'সাধারণ নোটিশ'
+            };
+
+            const list = document.getElementById('homeNoticeList');
+
+            function escapeHTML(str) {
+                const div = document.createElement('div');
+                div.textContent = str == null ? '' : str;
+                return div.innerHTML;
+            }
+
+            function showMessage(msg) {
+                list.innerHTML = '<div class="notice-status">' + msg + '</div>';
+            }
+
+            function renderHomeNotices(notices) {
+                list.innerHTML = '';
+
+                notices.slice(0, LIMIT).forEach(n => {
+                    const type = badgeLabels[n.type] ? n.type : 'general';
+                    const card = document.createElement('div');
+                    card.className = 'notice-card ' + type;
+                    card.innerHTML = `
+                        <span class="notice-badge ${type}">${badgeLabels[type]}</span>
+                        <h4>${escapeHTML(n.title)}</h4>
+                        <p class="notice-date"><i class="fa-regular fa-clock"></i> ${escapeHTML(n.date)}</p>
+                        <p class="notice-desc">${escapeHTML(n.desc)}</p>
+                    `;
+                    list.appendChild(card);
+                });
+            }
+
+            // index.html রুটে আছে, তাই পাথ 'data.json' (pages/ ফোল্ডারে হলে '../data.json')
+            fetch('data.json', { cache: 'no-cache' })
+                .then(res => {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.notices && data.notices.length > 0) {
+                        renderHomeNotices(data.notices);
+                    } else {
+                        showMessage('বর্তমানে কোনো নোটিশ নেই।');
+                    }
+                })
+                .catch(() => showMessage('নোটিশ লোড করা যায়নি।'));
+        })();
+    </script>
 
     <script src="main.js"></script>
 </body>
