@@ -1,13 +1,19 @@
+<!-- ফাইল লোকেশন: babussalam-website/portal/login.html -->
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>অ্যাকাউন্টস পোর্টাল লগইন | জামিয়া বাবুস সালাম</title>
+    <title>হিসাবরক্ষক লগইন | জামিয়া বাবুস সালাম পোর্টাল</title>
+
+    <!-- ফায়ারবেস লাইব্রেরি (CDN) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- কনফিগারেশন ফাইল -->
     <script src="firebase-config.js"></script>
+
     <style>
         :root {
             --primary: #0F5132;
@@ -42,21 +48,22 @@
         }
 
         .logo-icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
+            font-size: 3.2rem;
+            margin-bottom: 8px;
             display: inline-block;
         }
 
         .login-card h2 {
             margin: 0 0 6px 0;
             color: var(--primary);
-            font-size: 1.4rem;
+            font-size: 1.45rem;
+            font-weight: 700;
         }
 
         .login-card p {
             margin: 0 0 25px 0;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .form-group {
@@ -67,7 +74,7 @@
         .form-group label {
             display: block;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-bottom: 6px;
             color: var(--dark);
         }
@@ -77,14 +84,16 @@
             padding: 12px 14px;
             border: 1px solid var(--border);
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: 1.05rem;
             box-sizing: border-box;
             outline: none;
+            font-family: 'SolaimanLipi', sans-serif;
             transition: border-color 0.2s;
         }
 
         .form-group input:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 81, 50, 0.15);
         }
 
         .btn-login {
@@ -97,8 +106,9 @@
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
+            font-family: 'SolaimanLipi', sans-serif;
             transition: background 0.2s;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .btn-login:hover {
@@ -108,20 +118,22 @@
         .error-msg {
             background: #FFEBEE;
             color: #C62828;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
-            margin-bottom: 16px;
-            font-size: 0.9rem;
+            margin-bottom: 18px;
+            font-size: 0.95rem;
             display: none;
             border: 1px solid #FFCDD2;
+            text-align: left;
         }
 
         .back-link {
-            display: block;
-            margin-top: 20px;
+            display: inline-block;
+            margin-top: 22px;
             color: var(--primary);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 600;
         }
         .back-link:hover { text-decoration: underline; }
     </style>
@@ -131,44 +143,80 @@
     <div class="login-card">
         <span class="logo-icon">🕌</span>
         <h2>জামিয়া দারুল উলুম বাবুস সালাম</h2>
-        <p>অফিস ও হিসাব বিভাগ — অ্যাডমিন লগইন</p>
+        <p>হিসাব ও বিলিং পোর্টাল — কর্মকর্তা লগইন</p>
 
-        <!-- ভুল পাসওয়ার্ড দিলে মেসেজ -->
-        <div id="errMsg" class="error-msg">⚠️ ভুল ইউজারনেম বা পাসওয়ার্ড!</div>
+        <!-- ত্রুটি বার্তা প্রদর্শনের বক্স -->
+        <div id="errMsg" class="error-msg"></div>
 
-        <form onsubmit="handleLogin(event)">
+        <form onsubmit="handleMobileLogin(event)">
             <div class="form-group">
-                <label>ইমেইল (Email)</label>
-                <input type="email" id="username" placeholder="admin@example.com" required autocomplete="username">
+                <label>মোবাইল নম্বর (Mobile Number) *</label>
+                <input type="tel" id="mobileNumber" placeholder="যেমন: 01711000000" required autocomplete="tel">
             </div>
 
             <div class="form-group">
-                <label>সিক্রেট পাসওয়ার্ড (Password)</label>
-                <input type="password" id="password" placeholder="পাসওয়ার্ড লিখুন" required autocomplete="current-password">
+                <label>পাসওয়ার্ড (Password) *</label>
+                <input type="password" id="userPassword" placeholder="পাসওয়ার্ড লিখুন" required autocomplete="current-password">
             </div>
 
-            <button type="submit" class="btn-login">🔒 লগইন করুন</button>
+            <button type="submit" id="loginBtn" class="btn-login">🔒 লগইন করুন</button>
         </form>
 
         <a href="../index.html" class="back-link">← মূল ওয়েবসাইটে ফিরে যান</a>
     </div>
 
     <script>
-        async function handleLogin(e) {
+        // মোবাইল নম্বর দিয়ে লগইন প্রসেসর
+        async function handleMobileLogin(e) {
             e.preventDefault();
-            const email = document.getElementById("username").value.trim();
-            const pass = document.getElementById("password").value;
+            const btn = document.getElementById("loginBtn");
             const errMsg = document.getElementById("errMsg");
             errMsg.style.display = "none";
+
+            const rawMobile = document.getElementById("mobileNumber").value.trim();
+            const password = document.getElementById("userPassword").value;
+            const cleanMobile = normDigits(rawMobile);
+
+            if (!/^01[3-9]\d{8}$/.test(cleanMobile)) {
+                errMsg.textContent = "⚠️ অনুগ্রহ করে সঠিক ১১ ডিজিটের মোবাইল নম্বর প্রদান করুন!";
+                errMsg.style.display = "block";
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "⏳ যাচাই করা হচ্ছে...";
+
             try {
-                const cred = await auth.signInWithEmailAndPassword(email, pass);
-                const a = await db.collection("admins").doc(cred.user.uid).get();
-                if (!a.exists) { await auth.signOut(); throw { code: "not-admin" }; }
-                location.href = "collect.html";
-            } catch (err) {
-                errMsg.textContent = err.code === "not-admin" ? "⚠️ এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই!"
-                    : err.code === "auth/too-many-requests" ? "⚠️ অনেকবার ভুল হয়েছে, কিছুক্ষণ পরে চেষ্টা করুন।"
-                    : "⚠️ ভুল ইমেইল বা পাসওয়ার্ড!";
+                // ফায়ারবেস অথেন্টিকেশন ইমেইল ফরম্যাটে মোবাইল ম্যাপ করা
+                // অভ্যন্তরীণভাবে phone@babussalam.local হিসেবে প্রসেস হবে
+                const authEmail = `${cleanMobile}@babussalam.local`;
+
+                const userCred = await auth.signInWithEmailAndPassword(authEmail, password);
+                
+                // এডমিন পারমিশন ও রোল ভেরিফিকেশন
+                const adminDoc = await db.collection("admins").doc(userCred.user.uid).get();
+                if (!adminDoc.exists) {
+                    await auth.signOut();
+                    throw new Error("not_authorized");
+                }
+
+                // সফল হলে সরাসরি বিল উত্তোলন পেজে প্রবেশ করবে
+                window.location.replace("collect.html");
+
+            } catch (error) {
+                console.error("লগইন এরর:", error);
+                btn.disabled = false;
+                btn.innerText = "🔒 লগইন করুন";
+
+                if (error.message === "not_authorized") {
+                    errMsg.textContent = "⚠️ আপনার মোবাইল নম্বরটি হিসাবরক্ষণ প্যানেলে নিবন্ধিত নয়!";
+                } else if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password" || error.code === "auth/invalid-credential") {
+                    errMsg.textContent = "⚠️ মোবাইল নম্বর অথবা পাসওয়ার্ড ভুল হয়েছে!";
+                } else if (error.code === "auth/too-many-requests") {
+                    errMsg.textContent = "⚠️ অনেকবার ভুল চেষ্টা করা হয়েছে! কিছুক্ষণ পরে চেষ্টা করুন।";
+                } else {
+                    errMsg.textContent = "⚠️ লগইন ব্যর্থ: " + error.message;
+                }
                 errMsg.style.display = "block";
             }
         }

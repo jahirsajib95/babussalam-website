@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>অনলাইন পেমেন্ট অনুমোদন | জামিয়া বাবুস সালাম পোর্টাল</title>
+    <title>অনলাইন পেমেন্ট অনুমোদন (দ্বৈত-খাত) | জামিয়া বাবুস সালাম পোর্টাল</title>
 
     <!-- ফায়ারবেস লাইব্রেরি (CDN) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -36,39 +36,56 @@
             color: var(--dark);
         }
 
-        /* পোর্টাল হেডার */
         .portal-header {
             background: var(--primary);
             color: var(--white);
-            padding: 14px 25px;
+            padding: 12px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .portal-header h2 { margin: 0; font-size: 1.25rem; }
+        .portal-header h2 { margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
+
+        .portal-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .portal-nav a {
             color: #fff;
             text-decoration: none;
-            margin-left: 10px;
             font-weight: bold;
-            padding: 7px 13px;
+            padding: 7px 12px;
             border-radius: 6px;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.14);
             font-size: 0.92rem;
             transition: all 0.2s;
+            white-space: nowrap;
         }
         .portal-nav a.active { background: var(--accent); color: #000; }
-        .portal-nav a:hover { background: rgba(255,255,255,0.25); }
+        .portal-nav a:hover:not(.active) { background: rgba(255,255,255,0.25); }
+
+        .user-tag {
+            background: rgba(0,0,0,0.25);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            border: 1px solid rgba(255,215,0,0.3);
+        }
 
         .container {
-            max-width: 1250px;
+            max-width: 1350px;
             margin: 22px auto;
             padding: 0 15px;
         }
 
-        /* স্ট্যাটিস্টিকস কার্ড গ্রিড */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -95,7 +112,6 @@
         .stat-details span { font-size: 0.88rem; color: #666; display: block; margin-bottom: 4px; }
         .stat-details strong { font-size: 1.35rem; color: var(--dark); }
 
-        /* কার্ড কনটেইনার */
         .card {
             background: var(--white);
             border-radius: 10px;
@@ -118,7 +134,6 @@
             gap: 10px;
         }
 
-        /* ফিল্টার ও ট্যাব বাটনসমূহ */
         .filter-bar {
             display: flex;
             justify-content: space-between;
@@ -164,10 +179,7 @@
             max-width: 100%;
         }
 
-        /* টেবিল ডিজাইন */
-        .table-responsive {
-            overflow-x: auto;
-        }
+        .table-responsive { overflow-x: auto; }
 
         table {
             width: 100%;
@@ -188,7 +200,6 @@
             font-weight: 700;
         }
 
-        /* ব্যাজ */
         .badge {
             display: inline-block;
             padding: 3px 9px;
@@ -212,7 +223,6 @@
         }
         .trx-copy-box:hover { background: #E2E8F0; }
 
-        /* বাটনসমূহ */
         .btn {
             border: none;
             padding: 8px 14px;
@@ -232,7 +242,7 @@
         .btn-reject:hover { background: #F8D7DA; }
         .btn-receipt { background: #2C3E50; color: #fff; }
 
-        /* ================= প্রিন্ট রসিদ ডিজাইন ================= */
+        /* প্রিন্ট রসিদ ডিজাইন */
         #approvalReceiptArea {
             display: none;
             background: #fff;
@@ -260,22 +270,13 @@
         @media print {
             body * { visibility: hidden; }
             #approvalReceiptArea, #approvalReceiptArea * { visibility: visible; }
-            #approvalReceiptArea {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                border: none;
-                margin: 0;
-                padding: 15px;
-            }
+            #approvalReceiptArea { position: absolute; left: 0; top: 0; width: 100%; border: none; margin: 0; padding: 15px; }
             .no-print { display: none !important; }
         }
 
         @media (max-width: 768px) {
             .portal-header { flex-direction: column; gap: 10px; text-align: center; }
-            .portal-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
-            .portal-nav a { margin: 0; }
+            .portal-nav { justify-content: center; }
             .filter-bar { flex-direction: column; align-items: stretch; }
             .search-box { width: 100%; }
         }
@@ -285,21 +286,20 @@
 
     <!-- হেডার বার -->
     <header class="portal-header no-print">
-        <h2>🕌 জামিয়া বাবুস সালাম — একাউন্টস পোর্টাল</h2>
+        <h2>🕌 জামিয়া বাবুস সালাম — একাউন্টস</h2>
         <nav class="portal-nav">
-            <a href="students.html">👥 ছাত্র তালিকা ও ইমপোর্ট</a>
+            <span class="user-tag">👤 <span id="activeStaffDisplay">লোড হচ্ছে...</span></span>
+            <a href="students.html">👥 ছাত্র তালিকা</a>
             <a href="collect.html">💰 বিল উত্তোলন</a>
-            <a href="approvals.html" class="active">📲 অনলাইন পেমেন্ট ভেরিফিকেশন</a>
+            <a href="approvals.html" class="active">📲 অনলাইন পেমেন্ট</a>
             <a href="reports.html">📊 রিপোর্ট সেন্টার</a>
-            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">লগআউট ✕</a>
+            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">✕ লগআউট</a>
         </nav>
     </header>
 
     <div class="container no-print">
 
-        <!-- ============================================================== -->
-        <!-- 📊 ১. ওভারভিউ মেট্রিক্স কার্ডসমূহ -->
-        <!-- ============================================================== -->
+        <!-- ১. ওভারভিউ মেট্রিক্স কার্ড -->
         <div class="stats-grid">
             <div class="stat-card pending">
                 <span class="stat-icon">⏳</span>
@@ -334,16 +334,13 @@
             </div>
         </div>
 
-        <!-- ============================================================== -->
-        <!-- 📋 ২. অনলাইন পেমেন্ট রিকোয়েস্ট তালিকা -->
-        <!-- ============================================================== -->
+        <!-- ২. পেমেন্ট রিকোয়েস্ট তালিকা (দ্বৈত-খাত কলামসহ) -->
         <div class="card">
             <div class="card-title">
-                <span>📲 অভিভাবকদের অনলাইন পেমেন্ট ভেরিফিকেশন তালিকা</span>
-                <button class="btn btn-approve" onclick="fetchPaymentsRealtime()">🔄 রিফ্রেশ করুন</button>
+                <span>📲 অভিভাবকদের অনলাইন ফি অনুমোদন তালিকা (খাতওয়ারি ব্রেকডাউন)</span>
+                <button class="btn btn-approve" onclick="fetchPaymentsRealtime()">🔄 রিফ্রেশ</button>
             </div>
 
-            <!-- ফিল্টার বার -->
             <div class="filter-bar">
                 <div class="tab-group">
                     <button class="tab-btn active" onclick="switchFilterTab('pending', this)">⏳ অপেক্ষমাণ (Pending)</button>
@@ -355,26 +352,25 @@
                 <input type="text" id="filterKeyword" onkeyup="renderPaymentsTable()" placeholder="🔍 TrxID, মোবাইল বা ছাত্রের নাম..." class="search-box">
             </div>
 
-            <!-- টেবিল -->
             <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
                             <th>তারিখ ও সময়</th>
-                            <th>ট্র্যাকিং রেফারেন্স</th>
-                            <th>দাখেলা ও শিক্ষাবর্ষ</th>
+                            <th>রেফারেন্স নং</th>
+                            <th>দাখেলা ও সেশন</th>
                             <th>ছাত্রের নাম ও জামাত</th>
-                            <th>মাধ্যম ও প্রেরক নম্বর</th>
-                            <th>TrxID (কপি করতে ক্লিক)</th>
-                            <th style="text-align: right;">টাকার পরিমাণ</th>
-                            <th>বর্তমান স্ট্যাটাস</th>
+                            <th>মাধ্যম ও প্রেরক</th>
+                            <th>TrxID</th>
+                            <th style="text-align: right; color: #991B1B;">খোরাকি</th>
+                            <th style="text-align: right; color: #C2410C;">বিদ্যুৎ</th>
+                            <th style="text-align: right; color: var(--primary);">সর্বমোট</th>
+                            <th>স্ট্যাটাস</th>
                             <th style="text-align: center;">অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody id="paymentsTableBody">
-                        <tr>
-                            <td colspan="9" style="text-align: center; color: #888;">ডাটাবেজ থেকে তথ্য লোড হচ্ছে...</td>
-                        </tr>
+                        <tr><td colspan="11" style="text-align: center; color: #888;">ডাটাবেজ লোড হচ্ছে...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -383,9 +379,7 @@
 
     </div>
 
-    <!-- ============================================================== -->
-    <!-- 🖨️ প্রিন্ট যোগ্য মানি রসিদ (অনুমোদনের পর তাৎক্ষণিক প্রিন্ট) -->
-    <!-- ============================================================== -->
+    <!-- ৩. প্রিন্ট যোগ্য মানি রসিদ (দ্বৈত-খাত লাইনসহ) -->
     <div id="approvalReceiptArea">
         <div class="receipt-header">
             <h3 style="margin: 0; color: #0F5132;">জামিয়া দারুল উলুম বাবুস সালাম</h3>
@@ -398,7 +392,7 @@
             <span>তারিখ: <strong id="rDate">-</strong></span>
         </div>
         <div class="receipt-row">
-            <span>ট্র্যাকিং আইডি: <strong id="rTrackRef">-</strong></span>
+            <span>রেফারেন্স আইডি: <strong id="rTrackRef">-</strong></span>
             <span>শিক্ষাবর্ষ: <strong id="rSession">-</strong></span>
         </div>
         <div class="receipt-row">
@@ -414,18 +408,37 @@
             <span>প্রেরক নম্বর: <strong id="rSender">-</strong></span>
         </div>
 
+        <!-- খাতওয়ারি ব্রেকডাউন -->
         <div style="margin-top: 10px;">
-            <div class="receipt-row" style="font-size: 1.15rem; font-weight: bold; border-top: 1px solid #333; padding-top: 6px;">
-                <span>পরিশোধিত টাকা:</span> <span id="rTotalPaid">০ ৳</span>
+            <div class="receipt-row">
+                <span>খোরাকি ফি বাবদ আদায়:</span>
+                <strong id="rKhPaid">০ ৳</strong>
+            </div>
+            <div class="receipt-row" style="font-size: 0.85rem; color: #666; margin-top:-4px;">
+                <span>(অবশিষ্ট খোরাকি বকেয়া):</span>
+                <span id="rRemainKh">০ ৳</span>
+            </div>
+
+            <div class="receipt-row" style="margin-top: 6px;">
+                <span>বিদ্যুৎ ও পানি বিল বাবদ আদায়:</span>
+                <strong id="rElPaid">০ ৳</strong>
+            </div>
+            <div class="receipt-row" style="font-size: 0.85rem; color: #666; margin-top:-4px;">
+                <span>(অবশিষ্ট বিদ্যুৎ বকেয়া):</span>
+                <span id="rRemainEl">০ ৳</span>
+            </div>
+
+            <div class="receipt-row" style="font-size: 1.15rem; font-weight: bold; border-top: 1px solid #333; padding-top: 6px; margin-top: 6px;">
+                <span>সর্বমোট আদায়:</span> <span id="rTotalPaid">০ ৳</span>
             </div>
             <div class="receipt-row" style="color: red; margin-top: 4px;">
-                <span>হালনাগাদ বকেয়া:</span> <span id="rRemainingDue">০ ৳</span>
+                <span>মোট অবশিষ্ট বকেয়া:</span> <span id="rRemainingDue">০ ৳</span>
             </div>
         </div>
 
         <div style="display: flex; justify-content: space-between; margin-top: 40px; font-size: 0.85rem;">
-            <span>অনলাইন ভেরিফাইড (স্বাক্ষর অপ্রয়োজনীয়)</span>
-            <span>অনুমোদনকারীর স্বাক্ষর</span>
+            <span>অনলাইন ভেরিফাইড</span>
+            <span>অনুমোদনকারী: <strong id="rApprovedBy">-</strong></span>
         </div>
 
         <div class="no-print" style="text-align: center; margin-top: 22px;">
@@ -434,10 +447,7 @@
         </div>
     </div>
 
-
-    <!-- ============================================================== -->
-    <!-- স্ক্রিপ্ট লজিক ও ফায়ারবেস ইন্টিগ্রেশন -->
-    <!-- ============================================================== -->
+    <!-- স্ক্রিপ্ট লজিক -->
     <script>
         let allPaymentsList = [];
         let currentStatusFilter = 'pending';
@@ -446,16 +456,12 @@
             fetchPaymentsRealtime();
         });
 
-        // ১. ফায়ারবেস থেকে রিয়েলটাইমে পেমেন্ট তথ্য আনা
         function fetchPaymentsRealtime() {
             db.collection("online_payments")
                 .orderBy("submittedAt", "desc")
                 .onSnapshot(snapshot => {
                     allPaymentsList = [];
-                    let pendingCount = 0;
-                    let pendingSum = 0;
-                    let approvedCount = 0;
-                    let rejectedCount = 0;
+                    let pendingCount = 0, pendingSum = 0, approvedCount = 0, rejectedCount = 0;
 
                     snapshot.forEach(doc => {
                         const data = { docId: doc.id, ...doc.data() };
@@ -474,7 +480,6 @@
                         }
                     });
 
-                    // ড্যাশবোর্ড আপডেট
                     document.getElementById("statPendingCount").innerText = `${toBengaliNumber(pendingCount)} টি`;
                     document.getElementById("statPendingAmount").innerText = `${toBengaliNumber(pendingSum)} ৳`;
                     document.getElementById("statApprovedCount").innerText = `${toBengaliNumber(approvedCount)} টি`;
@@ -482,12 +487,10 @@
 
                     renderPaymentsTable();
                 }, error => {
-                    console.error("ডাটাবেজ সমস্যা:", error);
-                    alert("অনলাইন পেমেন্ট লোড করতে সমস্যা: " + error.message);
+                    console.error("ডাটা এরর:", error);
                 });
         }
 
-        // ২. ফিল্টার ট্যাব পরিবর্তন
         function switchFilterTab(status, btnElement) {
             currentStatusFilter = status;
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -495,20 +498,16 @@
             renderPaymentsTable();
         }
 
-        // ৩. টেবিল রেন্ডার করা
         function renderPaymentsTable() {
             const tbody = document.getElementById("paymentsTableBody");
             const keyword = normDigits(document.getElementById("filterKeyword").value.toLowerCase().trim());
             tbody.innerHTML = "";
 
             let filtered = allPaymentsList;
-
-            // স্ট্যাটাস ফিল্টারিং
             if (currentStatusFilter !== 'all') {
                 filtered = filtered.filter(item => (item.status || 'pending') === currentStatusFilter);
             }
 
-            // কিওয়ার্ড সার্চিং (TrxID, ফোন, নাম, রেফারেন্স)
             if (keyword) {
                 filtered = filtered.filter(item => {
                     const t = (item.trxId || '').toLowerCase();
@@ -521,7 +520,7 @@
             }
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: #888; padding: 25px;">কোনো পেমেন্ট রেকর্ড পাওয়া যায়নি।</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: #888; padding: 25px;">কোনো পেমেন্ট রেকর্ড পাওয়া যায়নি।</td></tr>`;
                 return;
             }
 
@@ -533,19 +532,21 @@
                 else if (status === 'approved') statusBadge = '<span class="badge badge-approved">✓ অনুমোদিত</span>';
                 else if (status === 'rejected') statusBadge = '<span class="badge badge-rejected">✕ বাতিলকৃত</span>';
 
-                // সাবমিশন টাইম
                 let timeStr = p.dateString || '-';
                 if (p.submittedAt && p.submittedAt.toDate) {
                     timeStr = p.submittedAt.toDate().toLocaleString('bn-BD', { dateStyle: 'short', timeStyle: 'short' });
                 }
 
-                // অ্যাকশন বাটন লজিক
+                const kh = Number(p.khorakiAmount) || 0;
+                const el = Number(p.electricityAmount) || 0;
+                const tot = Number(p.amount) || (kh + el);
+
                 let actionsHtml = '';
                 if (status === 'pending') {
                     actionsHtml = `
                         <div style="display: flex; gap: 6px; justify-content: center;">
-                            <button class="btn btn-approve" onclick="approveOnlinePayment('${p.docId}')">✓ অনুমোদন</button>
-                            <button class="btn btn-reject" onclick="rejectOnlinePayment('${p.docId}')">✕ বাতিল</button>
+                            <button class="btn btn-approve" onclick="approveOnlinePaymentWithPin('${p.docId}')">✓ অনুমোদন</button>
+                            <button class="btn btn-reject" onclick="rejectOnlinePaymentWithPin('${p.docId}')">✕ বাতিল</button>
                         </div>
                     `;
                 } else if (status === 'approved') {
@@ -555,7 +556,7 @@
                         </div>
                     `;
                 } else {
-                    actionsHtml = `<small style="color:var(--danger);">${esc(p.rejectionReason || 'তথ্য সঠিক নয়')}</small>`;
+                    actionsHtml = `<small style="color:var(--danger);">${esc(p.rejectionReason || 'বাতিল')}</small>`;
                 }
 
                 tr.innerHTML = `
@@ -565,12 +566,14 @@
                     <td>${esc(p.name)}<br><small style="color:#666;">${esc(p.jamat)}</small></td>
                     <td><strong>${esc(p.paymentMethod)}</strong><br><small>${toBengaliNumber(p.senderPhone)}</small></td>
                     <td>
-                        <span class="trx-copy-box" title="ক্লিক করে কপি করুন" onclick="copyTrx('${esc(p.trxId)}')">
+                        <span class="trx-copy-box" title="কপি করতে ক্লিক করুন" onclick="copyTrx('${esc(p.trxId)}')">
                             📋 ${esc(p.trxId)}
                         </span>
                     </td>
+                    <td style="text-align: right; font-weight: bold; color: #991B1B;">${toBengaliNumber(kh)} ৳</td>
+                    <td style="text-align: right; font-weight: bold; color: #C2410C;">${toBengaliNumber(el)} ৳</td>
                     <td style="text-align: right; font-weight: bold; color: var(--primary); font-size: 1.05rem;">
-                        ${toBengaliNumber(p.amount)} ৳
+                        ${toBengaliNumber(tot)} ৳
                     </td>
                     <td>${statusBadge}</td>
                     <td>${actionsHtml}</td>
@@ -580,29 +583,31 @@
             });
         }
 
-        // ৪. ট্রানজেকশন আইডি ক্লিপবোর্ডে কপি
         function copyTrx(trx) {
             navigator.clipboard.writeText(trx).then(() => {
-                alert(`TrxID "${trx}" ক্লিপবোর্ডে কপি করা হয়েছে!`);
-            }).catch(e => {
-                alert("কপি করা যায়নি: " + e.message);
+                alert(`TrxID "${trx}" কপি করা হয়েছে!`);
             });
         }
 
         // ==========================================================
-        // ⚡ ৫. নিরাপদ অ্যাটমিক ট্রানজেকশনে পেমেন্ট অনুমোদন (Approval Logic)
+        // পিন সহ অ্যাটমিক অনুমোদন (খোরাকি ও বিদ্যুৎ আলাদা সমন্বয়)
         // ==========================================================
-        async function approveOnlinePayment(docId) {
+        async function approveOnlinePaymentWithPin(docId) {
             const payItem = allPaymentsList.find(x => x.docId === docId);
             if (!payItem) return;
 
-            if (!confirm(`আপনি কি ছাত্র "${payItem.name}"-এর ${toBengaliNumber(payItem.amount)} ৳ অনলাইন পেমেন্ট অনুমোদন করতে চান?\n\nঅনুমোদন করলে স্বয়ংক্রিয়ভাবে ইনভয়েস জেনারেট হবে এবং বকেয়া থেকে সমন্বয় হবে।`)) {
-                return;
-            }
+            const kh = Number(payItem.khorakiAmount) || 0;
+            const el = Number(payItem.electricityAmount) || 0;
+            const tot = Number(payItem.amount) || (kh + el);
+
+            const hasPin = await verifyUserPin(`অনলাইন পেমেন্ট (${toBengaliNumber(tot)} ৳) অনুমোদন`);
+            if (!hasPin) return;
+
+            const cashierName = currentStaffUser ? (currentStaffUser.name || currentStaffUser.phone) : auth.currentUser.email;
 
             try {
                 let generatedInvoiceNo;
-                let updatedDue;
+                let updatedKhDue, updatedElDue, updatedTotalDue;
                 let fatherName = '-';
                 const currentDate = new Date().toLocaleDateString('bn-BD');
 
@@ -610,34 +615,38 @@
                     const payRef = db.collection("online_payments").doc(docId);
                     const paySnap = await tx.get(payRef);
 
-                    if (!paySnap.exists) throw new Error("আবেদনের তথ্য ডাটাবেজে পাওয়া যায়নি!");
+                    if (!paySnap.exists) throw new Error("আবেদন ডাটাবেজে নেই!");
                     const currentData = paySnap.data();
-                    if (currentData.status !== 'pending') throw new Error("এই আবেদনটি ইতোমধ্যে অন্য কেউ প্রসেস করে ফেলেছেন!");
+                    if (currentData.status !== 'pending') throw new Error("এই আবেদনটি আগেই প্রসেস করা হয়েছে!");
 
                     const stRef = db.collection("students").doc(payItem.studentId);
                     const cRef = db.collection("counters").doc("invoice");
 
                     const [stSnap, cSnap] = await Promise.all([tx.get(stRef), tx.get(cRef)]);
-                    if (!stSnap.exists) throw new Error("ছাত্রের রেকর্ড ডাটাবেজে পাওয়া যায়নি!");
+                    if (!stSnap.exists) throw new Error("ছাত্রের তথ্য পাওয়া যায়নি!");
 
                     const stdData = stSnap.data();
                     fatherName = stdData.fatherName || '-';
 
-                    // ক্রমিক ইনভয়েস নম্বর তৈরি
                     const seq = (cSnap.exists ? cSnap.data().n : 0) + 1;
                     generatedInvoiceNo = "INV-" + String(seq).padStart(6, "0");
 
-                    // বকেয়া সমন্বয়
-                    const curDue = Number(stdData.dueAmount) || 0;
-                    updatedDue = curDue - Number(payItem.amount);
+                    // দ্বৈত বকেয়া হ্রাস
+                    const curKh = Number(stdData.dueKhoraki) || 0;
+                    const curEl = Number(stdData.dueElectricity) || 0;
 
-                    // ১. ইনভয়েস কাউন্টার আপডেট
+                    updatedKhDue = curKh - kh;
+                    updatedElDue = curEl - el;
+                    updatedTotalDue = updatedKhDue + updatedElDue;
+
                     tx.set(cRef, { n: seq });
+                    tx.update(stRef, {
+                        dueKhoraki: updatedKhDue,
+                        dueElectricity: updatedElDue,
+                        dueAmount: updatedTotalDue
+                    });
 
-                    // ২. ছাত্রের বকেয়া আপডেট
-                    tx.update(stRef, { dueAmount: updatedDue });
-
-                    // ৩. অফিসিয়াল ট্রানজেকশন টেবিলে স্বয়ংক্রিয় এন্ট্রি
+                    // ট্রানজেকশনে আলাদা সেভ
                     const newTxRef = db.collection("transactions").doc();
                     tx.set(newTxRef, {
                         invoiceNo: generatedInvoiceNo,
@@ -649,30 +658,27 @@
                         jamat: payItem.jamat,
                         session: payItem.session || '',
                         month: new Date().toLocaleDateString('bn-BD', { month: 'long' }),
-                        khoraki: 0,
-                        electricity: 0,
-                        duePaid: Number(payItem.amount),
-                        totalPaid: Number(payItem.amount),
+                        khorakiPaid: kh,
+                        electricityPaid: el,
+                        totalPaid: tot,
                         paymentMethod: payItem.paymentMethod,
                         senderPhone: payItem.senderPhone,
                         trxId: payItem.trxId,
-                        collectedBy: auth.currentUser.email,
+                        collectedBy: cashierName,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                         dateString: currentDate
                     });
 
-                    // ৪. অনলাইন আবেদনের স্ট্যাটাস পরিবর্তন
                     tx.update(payRef, {
                         status: 'approved',
                         invoiceNo: generatedInvoiceNo,
-                        approvedBy: auth.currentUser.email,
+                        approvedBy: cashierName,
                         approvedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 });
 
-                alert(`আলহামদুলিল্লাহ! পেমেন্ট সফলভাবে অনুমোদিত হয়েছে। ইনভয়েস নং: ${generatedInvoiceNo}`);
+                alert(`আলহামদুলিল্লাহ! পেমেন্ট অনুমোদিত হয়েছে। ইনভয়েস নং: ${generatedInvoiceNo}`);
 
-                // রসিদ প্রিভিউ ওপেন
                 showApprovalReceipt({
                     invoiceNo: generatedInvoiceNo,
                     trackingRef: payItem.trackingRef,
@@ -684,43 +690,43 @@
                     paymentMethod: payItem.paymentMethod,
                     trxId: payItem.trxId,
                     senderPhone: payItem.senderPhone,
-                    amount: payItem.amount,
-                    remainingDue: updatedDue,
+                    khorakiPaid: kh,
+                    electricityPaid: el,
+                    totalPaid: tot,
+                    remainKh: updatedKhDue,
+                    remainEl: updatedElDue,
+                    remainTotal: updatedTotalDue,
+                    approvedBy: cashierName,
                     date: currentDate
                 });
 
             } catch (err) {
-                alert("অনুমোদন ব্যর্থ হয়েছে: " + err.message);
+                alert("অনুমোদন ব্যর্থ: " + err.message);
             }
         }
 
-        // ==========================================================
-        // ❌ ৬. আবেদন বাতিল (Reject Logic)
-        // ==========================================================
-        async function rejectOnlinePayment(docId) {
-            const payItem = allPaymentsList.find(x => x.docId === docId);
-            if (!payItem) return;
+        async function rejectOnlinePaymentWithPin(docId) {
+            const hasPin = await verifyUserPin("আবেদনটি বাতিল");
+            if (!hasPin) return;
 
-            const reason = prompt("আবেদনটি বাতিলের কারণ লিখুন (যেমন: TrxID মিলেনি বা ভুল তথ্য):", "ভুল ট্রানজেকশন আইডি");
-            if (reason === null) return; // ক্যানসেল করলে কিছু হবে না
+            const reason = prompt("বাতিলের কারণ লিখুন:", "ভুল ট্রানজেকশন আইডি");
+            if (reason === null) return;
+
+            const cashierName = currentStaffUser ? (currentStaffUser.name || currentStaffUser.phone) : auth.currentUser.email;
 
             try {
                 await db.collection("online_payments").doc(docId).update({
                     status: 'rejected',
                     rejectionReason: reason.trim() || 'তথ্য সঠিক নয়',
-                    rejectedBy: auth.currentUser.email,
+                    rejectedBy: cashierName,
                     rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
-                alert("আবেদনটি সফলভাবে বাতিল করা হয়েছে।");
+                alert("আবেদনটি বাতিল করা হয়েছে।");
             } catch (err) {
-                alert("বাতিল করতে ব্যর্থ: " + err.message);
+                alert("বাতিল করতে সমস্যা: " + err.message);
             }
         }
 
-        // ==========================================================
-        // 🖨️ ৭. রসিদ পপুলেট ও প্রিন্ট
-        // ==========================================================
         function showApprovalReceipt(data) {
             document.getElementById("rInvNo").innerText = data.invoiceNo;
             document.getElementById("rDate").innerText = data.date;
@@ -732,10 +738,15 @@
             document.getElementById("rFather").innerText = data.fatherName || '-';
             document.getElementById("rMethodTrx").innerText = `${data.paymentMethod} (${data.trxId})`;
             document.getElementById("rSender").innerText = toBengaliNumber(data.senderPhone);
-            document.getElementById("rTotalPaid").innerText = `${toBengaliNumber(data.amount)} ৳`;
-            document.getElementById("rRemainingDue").innerText = data.remainingDue < 0 
-                ? `অগ্রিম ${toBengaliNumber(-data.remainingDue)} ৳` 
-                : `${toBengaliNumber(data.remainingDue)} ৳`;
+
+            document.getElementById("rKhPaid").innerText = `${toBengaliNumber(data.khorakiPaid)} ৳`;
+            document.getElementById("rRemainKh").innerText = `${toBengaliNumber(data.remainKh)} ৳`;
+            document.getElementById("rElPaid").innerText = `${toBengaliNumber(data.electricityPaid)} ৳`;
+            document.getElementById("rRemainEl").innerText = `${toBengaliNumber(data.remainEl)} ৳`;
+
+            document.getElementById("rTotalPaid").innerText = `${toBengaliNumber(data.totalPaid)} ৳`;
+            document.getElementById("rRemainingDue").innerText = `${toBengaliNumber(data.remainTotal)} ৳`;
+            document.getElementById("rApprovedBy").innerText = data.approvedBy || '-';
 
             const receiptArea = document.getElementById("approvalReceiptArea");
             receiptArea.style.display = "block";
@@ -746,16 +757,19 @@
             const payItem = allPaymentsList.find(x => x.docId === docId);
             if (!payItem) return;
 
-            // ছাত্রের হালনাগাদ তথ্য আনতে
-            let fatherName = '-';
-            let curDue = 0;
+            let fatherName = '-', curKh = 0, curEl = 0;
             try {
                 const sDoc = await db.collection("students").doc(payItem.studentId).get();
                 if (sDoc.exists) {
                     fatherName = sDoc.data().fatherName || '-';
-                    curDue = sDoc.data().dueAmount || 0;
+                    curKh = sDoc.data().dueKhoraki || 0;
+                    curEl = sDoc.data().dueElectricity || 0;
                 }
             } catch(e) {}
+
+            const kh = Number(payItem.khorakiAmount) || 0;
+            const el = Number(payItem.electricityAmount) || 0;
+            const tot = Number(payItem.amount) || (kh + el);
 
             showApprovalReceipt({
                 invoiceNo: payItem.invoiceNo || 'N/A',
@@ -768,14 +782,17 @@
                 paymentMethod: payItem.paymentMethod,
                 trxId: payItem.trxId,
                 senderPhone: payItem.senderPhone,
-                amount: payItem.amount,
-                remainingDue: curDue,
+                khorakiPaid: kh,
+                electricityPaid: el,
+                totalPaid: tot,
+                remainKh: curKh,
+                remainEl: curEl,
+                remainTotal: curKh + curEl,
+                approvedBy: payItem.approvedBy || '-',
                 date: payItem.dateString || new Date().toLocaleDateString('bn-BD')
             });
 
-            setTimeout(() => {
-                window.print();
-            }, 400);
+            setTimeout(() => { window.print(); }, 400);
         }
     </script>
 </body>

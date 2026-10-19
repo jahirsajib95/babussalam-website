@@ -1,25 +1,28 @@
+<!-- ফাইল লোকেশন: babussalam-website/portal/pay.html -->
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>অনলাইন ফি পেমেন্ট | জামিয়া দারুল উলুম বাবুস সালাম</title>
+    <title>অনলাইন ফি পেমেন্ট (দ্বৈত-খাত) | জামিয়া দারুল উলুম বাবুস সালাম</title>
 
     <!-- ফায়ারবেস লাইব্রেরি (CDN) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <!-- ফায়ারবেস কনফিগ ফাইল -->
+    <!-- কনফিগারেশন ফাইল (পাবলিক পেজ, লগইন গার্ড নেই) -->
     <script src="firebase-config.js"></script>
 
     <style>
         :root {
             --primary: #0F5132;
             --primary-light: #198754;
+            --primary-dark: #0a3622;
             --accent: #FFD700;
             --dark: #212529;
             --light: #F8F9FA;
             --border: #DEE2E6;
+            --danger: #DC3545;
         }
 
         body {
@@ -33,7 +36,7 @@
             background: linear-gradient(135deg, #0a3622 0%, #0F5132 100%);
             color: #fff;
             text-align: center;
-            padding: 35px 20px;
+            padding: 35px 20px 45px 20px;
             border-bottom: 4px solid var(--accent);
         }
 
@@ -41,7 +44,7 @@
         .pay-header p { margin: 0; opacity: 0.9; font-size: 0.95rem; }
 
         .container {
-            max-width: 650px;
+            max-width: 680px;
             margin: -25px auto 40px auto;
             padding: 0 15px;
         }
@@ -76,6 +79,11 @@
             font-family: inherit;
         }
 
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
         .btn {
             background: var(--primary);
             color: #fff;
@@ -86,11 +94,18 @@
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
+            font-family: inherit;
             transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         .btn:hover { background: var(--primary-light); }
+        .btn-gold { background: var(--accent); color: #000; }
+        .btn-gold:hover { background: #e6c200; }
 
-        /* ছাত্র প্রোফাইল ফলাফল */
+        /* বকেয়া বিবরণী কার্ড */
         .due-card {
             background: #FFFDF0;
             border: 2px dashed #F59E0B;
@@ -100,19 +115,57 @@
             display: none;
         }
 
-        .due-amount-box {
-            background: #FEF2F2;
-            border: 1px solid #FCA5A5;
-            color: #DC2626;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: bold;
+        /* দ্বৈত বকেয়া গ্রিড */
+        .dual-due-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
             margin: 15px 0;
         }
 
-        /* বিকাশ/নগদ নম্বর বক্স */
+        .due-box {
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .due-box.khoraki {
+            background: #FEF2F2;
+            border: 1px solid #FCA5A5;
+            color: #991B1B;
+        }
+        .due-box.electricity {
+            background: #FFF7ED;
+            border: 1px solid #FDBA74;
+            color: #C2410C;
+        }
+        .due-box span { font-size: 0.85rem; display: block; font-weight: 600; margin-bottom: 4px; }
+        .due-box strong { font-size: 1.35rem; }
+
+        .total-due-strip {
+            background: #FEE2E2;
+            color: #DC2626;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        /* দ্বৈত-খাত পেমেন্ট ইনপুট বক্স */
+        .dual-pay-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .pay-input-card {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
         .mfs-box {
             background: #F8FAFC;
             border: 1px solid var(--border);
@@ -125,14 +178,61 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--border);
+            padding: 10px 12px;
+            background: #fff;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mfs-item:hover { border-color: var(--primary); background: #F4FAF6; }
+
+        .copy-tag {
+            font-size: 0.8rem;
+            background: #E8F5E9;
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
         }
 
         .success-voucher {
             display: none;
             text-align: center;
+            padding: 24px;
+        }
+
+        .voucher-slip {
+            background: #F4FAF6;
+            border: 2px dashed #A7F3D0;
+            border-radius: 8px;
             padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        .back-home:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .dual-due-grid, .dual-pay-inputs { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            .voucher-slip, .voucher-slip * { visibility: visible; }
+            .voucher-slip { position: absolute; left: 0; top: 0; width: 100%; border: 1px solid #000; }
         }
     </style>
 </head>
@@ -140,14 +240,14 @@
 
     <header class="pay-header">
         <h2>🕌 জামিয়া দারুল উলুম বাবুস সালাম</h2>
-        <p>ছাত্রদের মাসিক খোরাকি ও বিদ্যুৎ বিল অনলাইন পেমেন্ট পোর্টাল</p>
+        <p>ছাত্রদের মাসিক খোরাকি ও বিদ্যুৎ বিল অনলাইন পরিশোধ পোর্টাল</p>
     </header>
 
     <div class="container">
         
         <!-- ১. ছাত্র অনুসন্ধান ফরম -->
         <div class="card" id="searchCard">
-            <h3 style="margin-top: 0; color: var(--primary); text-align: center;">ছাত্রের বকেয়া তথ্য অনুসন্ধান</h3>
+            <h3 style="margin-top: 0; color: var(--primary); text-align: center;">🔍 ছাত্রের বকেয়া তথ্য অনুসন্ধান</h3>
 
             <div class="form-group">
                 <label>শিক্ষাবর্ষ নির্বাচন করুন *</label>
@@ -156,14 +256,16 @@
 
             <div class="form-group">
                 <label>ছাত্রের দাখেলা নম্বর লিখুন *</label>
-                <input type="number" id="pDakhela" placeholder="যেমন: ১, ২, ৫০০..." min="1" required>
+                <input type="number" id="pDakhela" placeholder="যেমন: ১, ২, ৫০০..." min="1" required onkeypress="if(event.key === 'Enter') fetchStudentForPayment()">
             </div>
 
             <button class="btn" onclick="fetchStudentForPayment()">🔍 বকেয়া দেখুন</button>
+
+            <a href="../index.html" class="back-home">← মূল ওয়েবসাইটে ফিরে যান</a>
         </div>
 
 
-        <!-- ২. বকেয়া প্রদর্শন ও পেমেন্ট সাবমিশন ফরম -->
+        <!-- ২. বকেয়া বিবরণ ও দ্বৈত-খাত পেমেন্ট ফরম -->
         <div class="card due-card" id="paymentSection">
             <h4 style="margin: 0 0 10px 0; color: var(--primary-dark); border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
                 👤 ছাত্রের পরিচয় ও বকেয়া বিবরণ
@@ -176,99 +278,180 @@
                 <div>শিক্ষাবর্ষ: <strong id="resSession">-</strong></div>
             </div>
 
-            <div class="due-amount-box">
-                মোট প্রদেয় বকেয়া: <span id="resDue">০</span> ৳
+            <!-- দ্বৈত বকেয়া কার্ড (খোরাকি ও বিদ্যুৎ আলাদা) -->
+            <div class="dual-due-grid">
+                <div class="due-box khoraki">
+                    <span>🍚 খোরাকি বকেয়া</span>
+                    <strong id="resDueKhoraki">০ ৳</strong>
+                </div>
+                <div class="due-box electricity">
+                    <span>⚡ বিদ্যুৎ ও পানি বকেয়া</span>
+                    <strong id="resDueElectricity">০ ৳</strong>
+                </div>
             </div>
 
-            <!-- পেমেন্ট নাম্বার বক্স -->
-            <div class="mfs-box">
-                <div style="font-weight: bold; margin-bottom: 8px; color: var(--primary);">📲 টাকা পাঠানোর নম্বরসমূহ:</div>
-                <div class="mfs-item">
-                    <span>বিকাশ (পার্সোনাল): <strong>০১৮১৬-১৮৩৪৬৯</strong></span>
-                    <small>Send Money</small>
-                </div>
-                <div class="mfs-item">
-                    <span>নগদ (পার্সোনাল): <strong>০১৬৪৬-৮৪৬০৭৭</strong></span>
-                    <small>Send Money</small>
-                </div>
-                <small style="color: #666; display: block; margin-top: 8px;">
-                    * বিকাশ বা নগদে টাকা পাঠিয়ে নিচের ফর্মে তথ্য পূরণ করে জমা দিন।
-                </small>
+            <div class="total-due-strip">
+                সর্বমোট প্রদেয় বকেয়া: <span id="resTotalDue">০</span> ৳
             </div>
 
-            <!-- অভিভাবকের জমার ফর্ম -->
-            <form id="onlinePayForm" onsubmit="submitOnlinePayment(event)">
-                <div class="form-group">
-                    <label>পরিশোধকৃত টাকার পরিমাণ (৳) *</label>
-                    <input type="number" id="payAmount" placeholder="টাকার পরিমাণ লিখুন" required>
+            <!-- বকেয়া না থাকলে বার্তা -->
+            <div id="noDueNotice" style="display: none; background: #D1E7DD; color: #0F5132; padding: 14px; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 15px;">
+                🎉 আলহামদুলিল্লাহ! এই ছাত্রের খোরাকি বা বিদ্যুৎ বাবদ কোনো বকেয়া নেই। অগ্রিম ফি নেওয়া হয় না।
+            </div>
+
+            <!-- পেমেন্ট এরিয়া -->
+            <div id="paymentActionArea">
+                <div class="mfs-box">
+                    <div style="font-weight: bold; margin-bottom: 8px; color: var(--primary);">📲 টাকা পাঠানোর নম্বরসমূহ (কপি করতে ক্লিক করুন):</div>
+                    
+                    <div class="mfs-item" onclick="copyNumber('01816183469', 'বিকাশ')">
+                        <div>
+                            <span>বিকাশ (পার্সোনাল): <strong>০১৮১৬-১৮৩৪৬৯</strong></span>
+                            <small style="display: block; color: #666;">Send Money করুন</small>
+                        </div>
+                        <span class="copy-tag">📋 কপি করুন</span>
+                    </div>
+
+                    <div class="mfs-item" onclick="copyNumber('01646846077', 'নগদ')">
+                        <div>
+                            <span>নগদ (পার্সোনাল): <strong>০১৬৪৬-৮৪৬০৭৭</strong></span>
+                            <small style="display: block; color: #666;">Send Money করুন</small>
+                        </div>
+                        <span class="copy-tag">📋 কপি করুন</span>
+                    </div>
+
+                    <small style="color: #666; display: block; margin-top: 6px;">
+                        * টাকা পাঠিয়ে নিচে যে খাতে যত পাঠিয়েছেন তা পৃথক ঘরে লিখে TrxID সাবমিট করুন।
+                    </small>
                 </div>
 
-                <div class="form-group">
-                    <label>পেমেন্ট মাধ্যম *</label>
-                    <select id="payVia" required>
-                        <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
-                        <option value="নগদ (Nagad)">নগদ (Nagad)</option>
-                        <option value="রকেট (Rocket)">রকেট (Rocket)</option>
-                        <option value="ব্যাংক (Bank)">ব্যাংক একাউন্ট</option>
-                    </select>
-                </div>
+                <form id="onlinePayForm" onsubmit="submitOnlinePayment(event)">
+                    
+                    <!-- খাতভিত্তিক পরিশোধ ইনপুট (খোরাকি ও বিদ্যুৎ আলাদা) -->
+                    <div class="dual-pay-inputs">
+                        <div class="pay-input-card">
+                            <label style="font-weight: bold; color: #991B1B; font-size: 0.9rem;">🍚 খোরাকি বাবদ দিচ্ছেন (৳)</label>
+                            <input type="number" id="payKhoraki" min="0" placeholder="০" oninput="calculateParentTotal()">
+                            <small id="hintPayKh" style="color: red; font-size: 0.8rem; display: none;"></small>
+                        </div>
 
-                <div class="form-group">
-                    <label>যে নম্বর থেকে টাকা পাঠিয়েছেন (বিকাশ/নগদ নং) *</label>
-                    <input type="tel" id="senderPhone" placeholder="01XXXXXXXXX" required>
-                </div>
+                        <div class="pay-input-card">
+                            <label style="font-weight: bold; color: #C2410C; font-size: 0.9rem;">⚡ বিদ্যুৎ বিল বাবদ দিচ্ছেন (৳)</label>
+                            <input type="number" id="payElectricity" min="0" placeholder="০" oninput="calculateParentTotal()">
+                            <small id="hintPayEl" style="color: red; font-size: 0.8rem; display: none;"></small>
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label>ট্রানজেকশন আইডি (TrxID) *</label>
-                    <input type="text" id="trxId" placeholder="যেমন: BL87XKJ..." required>
-                </div>
+                    <div style="background: #E8F5E9; padding: 10px 14px; border-radius: 8px; font-weight: bold; color: var(--primary-dark); margin-bottom: 15px; text-align: right;">
+                        মোট প্রেরিত টাকা: <span id="parentGrandTotal">০</span> ৳
+                    </div>
 
-                <button type="submit" class="btn" id="btnSubmitPay" style="background: #27AE60;">
-                    ✓ পেমেন্ট তথ্য সাবমিট করুন
+                    <div class="form-group">
+                        <label>পেমেন্ট মাধ্যম *</label>
+                        <select id="payVia" required>
+                            <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
+                            <option value="নগদ (Nagad)">নগদ (Nagad)</option>
+                            <option value="রকেট (Rocket)">রকেট (Rocket)</option>
+                            <option value="ব্যাংক একাউন্ট">ব্যাংক একাউন্ট</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>যে নম্বর থেকে টাকা পাঠিয়েছেন (বিকাশ/নগদ নম্বর) *</label>
+                        <input type="tel" id="senderPhone" placeholder="01XXXXXXXXX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ট্রানজেকশন আইডি (TrxID) *</label>
+                        <input type="text" id="trxId" placeholder="যেমন: BL87XKJ..." required>
+                    </div>
+
+                    <button type="submit" class="btn" id="btnSubmitPay" style="background: #27AE60;">
+                        ✓ পেমেন্ট তথ্য সাবমিট করুন
+                    </button>
+                </form>
+            </div>
+
+            <div style="text-align: center; margin-top: 15px;">
+                <button class="btn btn-gold" style="width: auto; padding: 6px 16px; font-size: 0.9rem;" onclick="resetSearch()">
+                    🔍 অন্য ছাত্র খুঁজুন
                 </button>
-            </form>
+            </div>
         </div>
 
 
-        <!-- ৩. সফল হওয়ার ভাউচার -->
+        <!-- ৩. সফল ভাউচার স্লিপ -->
         <div class="card success-voucher" id="successVoucher">
-            <span style="font-size: 3rem; color: #27AE60;">🎉</span>
-            <h3 style="color: var(--primary);">পেমেন্ট তথ্য সফলভাবে গ্রহণ করা হয়েছে!</h3>
-            <p style="color: #555; line-height: 1.6;">
-                আপনার ট্রানজেকশন আইডিটি জামিয়ার হিসাব বিভাগে পাঠানো হয়েছে। অফিস থেকে ভেরিফাই করার সাথে সাথেই আপনার ছেলের বকেয়া পরিশোধ সম্পন্ন হয়ে যাবে।
+            <span style="font-size: 3.5rem; color: #27AE60;">🎉</span>
+            <h3 style="color: var(--primary); margin: 6px 0;">পেমেন্ট তথ্য সফলভাবে গ্রহণ করা হয়েছে!</h3>
+            <p style="color: #555; font-size: 0.92rem; line-height: 1.6; margin: 0;">
+                আপনার TrxID জামিয়ার হিসাব বিভাগে জমা হয়েছে। হিসাবরক্ষক যাচাই করার পর সংশ্লিষ্ট খাতে টাকা স্বয়ংক্রিয়ভাবে সমন্বয় হয়ে যাবে।
             </p>
-            <div style="background: var(--light); padding: 15px; border-radius: 8px; margin: 15px 0;">
-                <div>ট্র্যাকিং রেফারেন্স: <strong id="vRef">-</strong></div>
-                <div>টাকার পরিমাণ: <strong id="vAmount">-</strong> ৳</div>
+
+            <div class="voucher-slip" id="printableSlip">
+                <div style="text-align: center; border-bottom: 1px dashed #444; padding-bottom: 6px; margin-bottom: 8px;">
+                    <strong style="font-size: 1.1rem; color: #0F5132;">জামিয়া দারুল উলুম বাবুস সালাম</strong><br>
+                    <small>অনলাইন পেমেন্ট ট্র্যাকিং স্লিপ (দ্বৈত-খাত)</small>
+                </div>
+                <div>রেফারেন্স নং: <strong id="vRef">-</strong></div>
+                <div>তারিখ: <strong id="vDate">-</strong></div>
+                <div>ছাত্রের নাম: <strong id="vName">-</strong> (দাখেলা: <span id="vDakhela">-</span>)</div>
+                <div>জামাত ও শিক্ষাবর্ষ: <span id="vJamatSession">-</span></div>
+                
+                <div style="border-top: 1px dashed #999; margin-top: 6px; padding-top: 6px;">
+                    <div>খোরাকি বাবদ পরিশোধ: <strong id="vKhAmount">০ ৳</strong></div>
+                    <div>বিদ্যুৎ বিল বাবদ পরিশোধ: <strong id="vElAmount">০ ৳</strong></div>
+                    <div style="font-size: 1.15rem; color: green; font-weight: bold; margin-top: 4px;">
+                        সর্বমোট পরিশোধ: <span id="vTotalAmount">০ ৳</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 6px;">পেমেন্ট মাধ্যম: <span id="vMethod">-</span> (TrxID: <strong id="vTrx">-</strong>)</div>
+                <div>প্রেরক মোবাইল নং: <span id="vSender">-</span></div>
+                <div style="margin-top: 6px; font-size: 0.85rem; color: #555;">স্ট্যাটাস: <strong>অপেক্ষমাণ (Pending Verification)</strong></div>
             </div>
-            <button class="btn" onclick="location.reload()">আরেকটি পেমেন্ট করুন</button>
+
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-gold" style="width: auto;" onclick="window.print()">🖨️ স্লিপ প্রিন্ট / সংরক্ষণ</button>
+                <button class="btn" style="width: auto;" onclick="location.reload()">আরেকটি পেমেন্ট করুন</button>
+            </div>
         </div>
 
     </div>
 
+    <!-- স্ক্রিপ্ট লজিক -->
     <script>
         let matchedStudent = null;
+
         document.addEventListener("DOMContentLoaded", async () => {
             const sel = document.getElementById("pSession");
             try {
                 const snap = await db.collection("academic_years").orderBy("year", "desc").get();
-                if (snap.empty) throw new Error("empty");
-                sel.innerHTML = "";
-                // সর্বশেষ (প্রথম) শিক্ষাবর্ষ অটো সিলেক্টেড
-                snap.docs.forEach((d, i) => sel.add(new Option(d.data().year, d.data().year, i === 0, i === 0)));
+                if (!snap.empty) {
+                    sel.innerHTML = "";
+                    snap.docs.forEach((d, i) => sel.add(new Option(d.data().year, d.data().year, i === 0, i === 0)));
+                } else {
+                    sel.innerHTML = '<option value="২০২৬-২৭">২০২৬-২৭</option><option value="২০২৫-২৬">২০২৫-২৬</option>';
+                }
             } catch (e) {
-                sel.innerHTML = '<option value="">শিক্ষাবর্ষ লোড করা যায়নি — পেজ রিফ্রেশ করুন</option>';
+                sel.innerHTML = '<option value="২০২৬-২৭">২০২৬-২৭</option>';
             }
         });
 
-        // ছাত্র অনুসন্ধান
+        function copyNumber(num, provider) {
+            navigator.clipboard.writeText(num).then(() => {
+                alert(`মাদ্রাসার ${provider} নম্বর (${num}) কপি করা হয়েছে!`);
+            }).catch(() => {
+                alert(`নম্বর: ${num}`);
+            });
+        }
+
         async function fetchStudentForPayment() {
             const session = document.getElementById("pSession").value;
-            if (!session) { alert("শিক্ষাবর্ষ লোড হয়নি, পেজ রিফ্রেশ করুন!"); return; }
-            const dakhelaNum = parseInt(document.getElementById("pDakhela").value, 10);
+            const dakhelaNum = parseInt(normDigits(document.getElementById("pDakhela").value), 10);
 
-            if (isNaN(dakhelaNum)) {
-                alert("সঠিক দাখেলা নম্বর লিখুন!");
+            if (!session || isNaN(dakhelaNum)) {
+                alert("শিক্ষাবর্ষ ও সঠিক দাখেলা নম্বর লিখুন!");
                 return;
             }
 
@@ -282,20 +465,59 @@
                 if (snap.empty) {
                     alert(`শিক্ষাবর্ষ ${session}-এ দাখেলা নং ${toBengaliNumber(dakhelaNum)} বিশিষ্ট কোনো ছাত্র পাওয়া যায়নি!`);
                     document.getElementById("paymentSection").style.display = "none";
+                    matchedStudent = null;
                     return;
                 }
 
                 matchedStudent = { id: snap.docs[0].id, ...snap.docs[0].data() };
 
+                const dueKh = Number(matchedStudent.dueKhoraki) || 0;
+                const dueEl = Number(matchedStudent.dueElectricity) || 0;
+                const totalDue = dueKh + dueEl;
+
                 document.getElementById("resName").innerText = matchedStudent.name;
                 document.getElementById("resFather").innerText = matchedStudent.fatherName || '-';
                 document.getElementById("resJamat").innerText = matchedStudent.jamat;
                 document.getElementById("resSession").innerText = matchedStudent.session;
-                document.getElementById("resDue").innerText = toBengaliNumber(matchedStudent.dueAmount || 0);
 
-                // ডিফল্ট পে অ্যামাউন্ট
-                document.getElementById("payAmount").value = matchedStudent.dueAmount > 0 ? matchedStudent.dueAmount : ((Number(matchedStudent.khoraki) || 0) + (Number(matchedStudent.electricity) || 0));
+                document.getElementById("resDueKhoraki").innerText = `${toBengaliNumber(dueKh)} ৳`;
+                document.getElementById("resDueElectricity").innerText = `${toBengaliNumber(dueEl)} ৳`;
+                document.getElementById("resTotalDue").innerText = `${toBengaliNumber(totalDue)} ৳`;
 
+                const actionArea = document.getElementById("paymentActionArea");
+                const noDueNotice = document.getElementById("noDueNotice");
+                const inKh = document.getElementById("payKhoraki");
+                const inEl = document.getElementById("payElectricity");
+
+                if (totalDue <= 0) {
+                    actionArea.style.display = "none";
+                    noDueNotice.style.display = "block";
+                } else {
+                    actionArea.style.display = "block";
+                    noDueNotice.style.display = "none";
+
+                    // খোরাকি ফিল্ড সেট
+                    if (dueKh <= 0) {
+                        inKh.value = 0;
+                        inKh.disabled = true;
+                    } else {
+                        inKh.disabled = false;
+                        inKh.value = dueKh;
+                        inKh.max = dueKh;
+                    }
+
+                    // বিদ্যুৎ ফিল্ড সেট
+                    if (dueEl <= 0) {
+                        inEl.value = 0;
+                        inEl.disabled = true;
+                    } else {
+                        inEl.disabled = false;
+                        inEl.value = dueEl;
+                        inEl.max = dueEl;
+                    }
+                }
+
+                calculateParentTotal();
                 document.getElementById("paymentSection").style.display = "block";
                 window.scrollTo({ top: document.getElementById("paymentSection").offsetTop - 20, behavior: 'smooth' });
 
@@ -304,20 +526,55 @@
             }
         }
 
-        // পেমেন্ট তথ্য সাবমিট করা
+        function calculateParentTotal() {
+            if (!matchedStudent) return { kh: 0, el: 0, total: 0 };
+
+            const maxKh = Number(matchedStudent.dueKhoraki) || 0;
+            const maxEl = Number(matchedStudent.dueElectricity) || 0;
+
+            const inKh = document.getElementById("payKhoraki");
+            const inEl = document.getElementById("payElectricity");
+
+            let kh = Number(normDigits(inKh.value)) || 0;
+            let el = Number(normDigits(inEl.value)) || 0;
+
+            if (kh > maxKh) { inKh.value = maxKh; kh = maxKh; }
+            if (el > maxEl) { inEl.value = maxEl; el = maxEl; }
+
+            const total = kh + el;
+            document.getElementById("parentGrandTotal").innerText = toBengaliNumber(total);
+            document.getElementById("btnSubmitPay").disabled = (total <= 0);
+
+            return { kh, el, total };
+        }
+
+        function resetSearch() {
+            document.getElementById("paymentSection").style.display = "none";
+            document.getElementById("pDakhela").value = "";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         async function submitOnlinePayment(e) {
             e.preventDefault();
             if (!matchedStudent) return;
 
-            const amount = Number(document.getElementById("payAmount").value) || 0;
+            const { kh, el, total } = calculateParentTotal();
             const method = document.getElementById("payVia").value;
-            const senderPhone = document.getElementById("senderPhone").value.trim();
+            const senderPhone = normDigits(document.getElementById("senderPhone").value.trim());
             const trxId = document.getElementById("trxId").value.trim();
 
-            if (!/^01[3-9]\d{9}$/.test(normDigits(senderPhone))) { alert("সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন!"); return; }
-            if (trxId.length < 6) { alert("ট্রানজেকশন আইডি সঠিক নয়!"); return; }
-            if (amount <= 0 || amount > 100000) {
-                alert("টাকার পরিমাণ সঠিক নয়!");
+            if (!/^01[3-9]\d{8}$/.test(senderPhone)) {
+                alert("সঠিক ১১ ডিজিটের মোবাইল নম্বর প্রদান করুন!");
+                return;
+            }
+
+            if (trxId.length < 6) {
+                alert("সঠিক ট্রানজেকশন আইডি (TrxID) লিখুন!");
+                return;
+            }
+
+            if (total <= 0) {
+                alert("কমপক্ষে একটি খাতের টাকার পরিমাণ দিন!");
                 return;
             }
 
@@ -326,34 +583,57 @@
             btn.innerText = "⏳ তথ্য পাঠানো হচ্ছে...";
 
             const trackingRef = "ONL-" + Date.now().toString().slice(-6);
+            const docKey = "TRX_" + trxId.toUpperCase().replace(/[^A-Z0-9]/g, "");
 
             try {
-                // অনলাইন পেন্ডিং পেমেন্ট রিকোয়েস্টে সেভ করা
-                await db.collection("online_payments").doc("TRX_" + trxId.toUpperCase().replace(/[^A-Z0-9]/g, "")).set({ // একই TrxID দ্বিতীয়বার জমা হবে না
+                const existing = await db.collection("online_payments").doc(docKey).get();
+                if (existing.exists) {
+                    throw new Error("এই TrxID-টি পূর্বে একবার জমা দেওয়া হয়েছে! দয়া করে সঠিক TrxID দিন।");
+                }
+
+                const currentDateStr = new Date().toLocaleString('bn-BD', { dateStyle: 'medium', timeStyle: 'short' });
+
+                // খোরাকি ও বিদ্যুৎ আলাদা ফিল্ডে সংরক্ষণ
+                await db.collection("online_payments").doc(docKey).set({
                     trackingRef: trackingRef,
                     studentId: matchedStudent.id,
                     dakhelaNum: matchedStudent.dakhelaNum,
                     name: matchedStudent.name,
                     jamat: matchedStudent.jamat,
                     session: matchedStudent.session,
-                    amount: amount,
+                    khorakiAmount: kh,
+                    electricityAmount: el,
+                    amount: total,
                     paymentMethod: method,
                     senderPhone: senderPhone,
                     trxId: trxId,
-                    status: "pending", // অফিস থেকে অ্যাপ্রুভ করবে
+                    status: "pending",
                     submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    dateString: new Date().toLocaleDateString('bn-BD')
+                    dateString: currentDateStr
                 });
 
-                // ভাউচার দেখানো
                 document.getElementById("searchCard").style.display = "none";
                 document.getElementById("paymentSection").style.display = "none";
+
                 document.getElementById("vRef").innerText = trackingRef;
-                document.getElementById("vAmount").innerText = toBengaliNumber(amount);
+                document.getElementById("vDate").innerText = currentDateStr;
+                document.getElementById("vName").innerText = matchedStudent.name;
+                document.getElementById("vDakhela").innerText = toBengaliNumber(matchedStudent.dakhelaNum);
+                document.getElementById("vJamatSession").innerText = `${matchedStudent.jamat} (${matchedStudent.session})`;
+                
+                document.getElementById("vKhAmount").innerText = `${toBengaliNumber(kh)} ৳`;
+                document.getElementById("vElAmount").innerText = `${toBengaliNumber(el)} ৳`;
+                document.getElementById("vTotalAmount").innerText = `${toBengaliNumber(total)} ৳`;
+
+                document.getElementById("vMethod").innerText = method;
+                document.getElementById("vSender").innerText = toBengaliNumber(senderPhone);
+                document.getElementById("vTrx").innerText = trxId;
+
                 document.getElementById("successVoucher").style.display = "block";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
 
             } catch (err) {
-                alert(err.code === "permission-denied" ? "এই ট্রানজেকশন আইডি আগেই জমা দেওয়া হয়েছে অথবা তথ্য সঠিক নয়।" : "পেমেন্ট সাবমিট করতে সমস্যা: " + err.message);
+                alert("পেমেন্ট সাবমিট ব্যর্থ: " + err.message);
                 btn.disabled = false;
                 btn.innerText = "✓ পেমেন্ট তথ্য সাবমিট করুন";
             }

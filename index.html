@@ -1,3 +1,4 @@
+<!-- ফাইল লোকেশন: babussalam-website/index.html -->
 <!DOCTYPE html>
 <html lang="bn">
 
@@ -71,13 +72,13 @@
             line-height: 1.7;
         }
 
-        /* ── লাইভ টাইম ও ডেট বার ── */
+        /* ── লাইভ টাইম ও ডেট বার + পোর্টাল কুইক বাটন ── */
         .live-bar-container {
             background: #062a1a;
             color: #e2e8f0;
             border-bottom: 2px solid var(--accent-gold);
-            padding: 8px 15px;
-            font-size: 14px;
+            padding: 6px 15px;
+            font-size: 13.5px;
         }
 
         .live-bar-content {
@@ -90,17 +91,62 @@
             gap: 10px;
         }
 
+        .live-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
         .live-chip {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: rgba(255, 255, 255, 0.08);
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 20px;
             border: 1px solid rgba(201, 147, 59, 0.3);
         }
 
         .live-chip i {
+            color: var(--accent-gold);
+        }
+
+        /* টপ-বারের পোর্টাল ও পেমেন্ট বাটন */
+        .top-portal-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .top-btn-pay {
+            background: var(--accent-gold);
+            color: #000;
+        }
+        .top-btn-pay:hover {
+            background: #dfaa47;
+            transform: scale(1.03);
+        }
+
+        .top-btn-portal {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .top-btn-portal:hover {
+            background: rgba(255, 255, 255, 0.28);
             color: var(--accent-gold);
         }
 
@@ -229,11 +275,11 @@
             max-width: 650px;
         }
 
-        /* ── দ্রুত প্রবেশ (Quick Access) ── */
+        /* ── দ্রুত প্রবেশ (Quick Access Grid) ── */
         .quick-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 14px;
             margin-top: -35px;
             position: relative;
             z-index: 10;
@@ -242,7 +288,7 @@
         .quick-card {
             background: #ffffff;
             border-radius: 12px;
-            padding: 20px 10px;
+            padding: 18px 8px;
             text-align: center;
             text-decoration: none;
             color: var(--text-dark);
@@ -262,13 +308,21 @@
         }
 
         .quick-card i {
-            font-size: 24px;
+            font-size: 22px;
             color: var(--primary);
         }
 
         .quick-card span {
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 600;
+        }
+
+        .quick-card.highlight {
+            background: #FFFDF0;
+            border: 1.5px solid var(--accent-gold);
+        }
+        .quick-card.highlight i {
+            color: #B45309;
         }
 
         /* ── পরিচিতি সেকশন ── */
@@ -535,7 +589,7 @@
         /* ── রেসপন্সিভ ── */
         @media (max-width: 768px) {
             .hero {
-                background-attachment: scroll; /* মোবাইলে fixed ব্যাকগ্রাউন্ড সমস্যা করে */
+                background-attachment: scroll;
             }
 
             .hero h2 {
@@ -554,6 +608,12 @@
             .live-bar-content {
                 justify-content: center;
             }
+
+            .top-portal-links {
+                width: 100%;
+                justify-content: center;
+                margin-top: 4px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -566,16 +626,28 @@
 
 <body>
 
-    <!-- ═══ লাইভ ডেট ও টাইম টপ-বার ═══ -->
+    <!-- ═══ লাইভ ডেট ও টাইম টপ-বার + অনলাইন পেমেন্ট ও পোর্টাল কুইক লিংক ═══ -->
     <div class="live-bar-container">
         <div class="live-bar-content">
-            <div class="live-chip">
-                <i class="fa-regular fa-calendar-days"></i>
-                <span id="live-date">তারিখ লোড হচ্ছে...</span>
+            <div class="live-left">
+                <div class="live-chip">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span id="live-date">তারিখ লোড হচ্ছে...</span>
+                </div>
+                <div class="live-chip">
+                    <i class="fa-regular fa-clock"></i>
+                    <span id="live-time">সময় লোড হচ্ছে...</span>
+                </div>
             </div>
-            <div class="live-chip">
-                <i class="fa-regular fa-clock"></i>
-                <span id="live-time">সময় লোড হচ্ছে...</span>
+
+            <!-- শীর্ষ ডানপাশের দ্রুত বাটনসমূহ -->
+            <div class="top-portal-links">
+                <a href="portal/pay.html" class="top-btn top-btn-pay" title="অভিভাবকদের জন্য ঘরে বসে ফি পরিশোধের পেজ">
+                    <i class="fa-solid fa-credit-card"></i> অনলাইন ফি প্রদান
+                </a>
+                <a href="portal/login.html" class="top-btn top-btn-portal" title="হিসাবরক্ষক ও অফিস কর্মকর্তাদের জন্য">
+                    <i class="fa-solid fa-lock"></i> হিসাব পোর্টাল
+                </a>
             </div>
         </div>
     </div>
@@ -586,24 +658,24 @@
     <!-- ═══ ব্রেকিং নিউজ (শুধু হোমপেইজে) ═══ -->
     <div class="breaking-news">
         <span class="marquee-content">
-            <a href="pages/about.html" class="news-item">
-                📢 ওয়েবসাইট বানানোর কাজ চলমান, অনেক পেইজ ও তথ্য অনুপস্থিত।
+            <a href="portal/pay.html" class="news-item" style="color: #FFD700; font-weight: bold;">
+                💳 এখন ঘরে বসেই বিকাশ/নগদে মাসিক খোরাকি ও বিদ্যুৎ বিল পরিশোধ করা যাবে।
+            </a>
+            <span class="news-separator">◆</span>
+            <a href="pages/admission.html" class="news-item">
+                📝 নতুন শিক্ষাবর্ষে ভর্তি চলছে — বিস্তারিত জানুন।
             </a>
             <span class="news-separator">◆</span>
             <a href="pages/result.html" class="news-item">
-                🎓 দ্বিতীয় মাসিক পরীক্ষার ফলাফল প্রকাশিত।
-            </a>
-            <span class="news-separator">◆</span>
-            <a href="pages/kafela-form.html" class="news-item">
-                🕌 বাবুস সালাম কাফেলায় যোগ দিন।
+                🎓 পরীক্ষার ফলাফল প্রকাশিত হয়েছে।
             </a>
             <span class="news-separator">◆</span>
             <a href="pages/notice.html" class="news-item">
                 📌 সর্বশেষ নোটিশগুলো দেখুন।
             </a>
             <span class="news-separator">◆</span>
-            <a href="pages/admission.html" class="news-item">
-                📝 নতুন ভর্তি চলছে — বিস্তারিত জানুন।
+            <a href="pages/kafela-form.html" class="news-item">
+                🕌 বাবুস সালাম কাফেলায় যোগ দিন।
             </a>
         </span>
     </div>
@@ -615,6 +687,9 @@
         <p class="tagline">ইলমে ওহীর আলোয় আলোকিত সমাজ গড়ার প্রত্যয়ে — ১৯৯৬ সাল থেকে দারুল উলুম দেওবন্দের পূর্ণ আদর্শে
             পরিচালিত একটি আদর্শ দ্বীনি বিদ্যাপীঠ</p>
         <div class="hero-buttons">
+            <a href="portal/pay.html" class="btn btn-primary" style="background:#FFD700; color:#000;">
+                <i class="fa-solid fa-credit-card"></i> অনলাইন ফি পরিশোধ
+            </a>
             <a href="pages/admission.html" class="btn btn-primary">
                 <i class="fa-solid fa-user-plus"></i> ভর্তি তথ্য
             </a>
@@ -627,9 +702,14 @@
         </div>
     </section>
 
-    <!-- ═══ দ্রুত প্রবেশ (Quick Access) ═══ -->
+    <!-- ═══ দ্রুত প্রবেশ (Quick Access Grid) ═══ -->
     <div class="container" style="padding-top:0; padding-bottom: 40px;">
         <div class="quick-grid">
+            <!-- হাইলাইট করা অনলাইন পেমেন্ট বাটন -->
+            <a href="portal/pay.html" class="quick-card highlight">
+                <i class="fa-solid fa-credit-card" style="color: #b45309;"></i>
+                <span style="color: #92400e;">অনলাইন ফি</span>
+            </a>
             <a href="pages/admission.html" class="quick-card">
                 <i class="fa-solid fa-file-signature"></i>
                 <span>অনলাইন ভর্তি</span>
@@ -653,6 +733,11 @@
             <a href="pages/donate.html" class="quick-card">
                 <i class="fa-solid fa-hand-holding-dollar"></i>
                 <span>অনুদান তহবিল</span>
+            </a>
+            <!-- কর্মকর্তা হিসাব পোর্টাল বাটন -->
+            <a href="portal/login.html" class="quick-card" style="background: #F0FDF4; border-color: #86EFAC;">
+                <i class="fa-solid fa-lock" style="color: #15803D;"></i>
+                <span style="color: #15803D;">হিসাব পোর্টাল</span>
             </a>
         </div>
     </div>
@@ -915,11 +1000,9 @@
         function updateBanglaDateTime() {
             const now = new Date();
 
-            // তারিখ
             document.getElementById('live-date').innerText =
                 `${bnDays[now.getDay()]}, ${toBn(now.getDate())} ${bnMonths[now.getMonth()]} ${toBn(now.getFullYear())}`;
 
-            // সময় (১২ ঘণ্টা)
             const hours = now.getHours();
             const h12 = hours % 12 === 0 ? 12 : hours % 12;
             const pad = (n) => toBn(String(n).padStart(2, '0'));
@@ -931,7 +1014,6 @@
         setInterval(updateBanglaDateTime, 1000);
         updateBanglaDateTime();
 
-        // প্রতিষ্ঠার (১৯৯৬) পর থেকে কত বছর — প্রতি বছর নিজে থেকে আপডেট হবে
         const yearsEl = document.getElementById('years-count');
         if (yearsEl) yearsEl.innerText = toBn(new Date().getFullYear() - 1996);
     </script>
@@ -939,7 +1021,7 @@
     <!-- ═══ data.json থেকে সাম্প্রতিক নোটিশ লোড ═══ -->
     <script>
         (function () {
-            const LIMIT = 3; // কয়টি নোটিশ দেখাবে
+            const LIMIT = 3;
 
             const badgeLabels = {
                 urgent: 'জরুরি',
@@ -976,7 +1058,6 @@
                 });
             }
 
-            // index.html রুটে আছে, তাই পাথ 'data.json' (pages/ ফোল্ডারে হলে '../data.json')
             fetch('data.json', { cache: 'no-cache' })
                 .then(res => {
                     if (!res.ok) throw new Error('HTTP ' + res.status);

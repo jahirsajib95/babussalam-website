@@ -1,19 +1,20 @@
+<!-- ফাইল লোকেশন: babussalam-website/portal/reports.html -->
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>রিপোর্ট সেন্টার ও স্টেটমেন্ট | বাবুস সালাম পোর্টাল</title>
+    <title>রিপোর্ট সেন্টার ও দ্বৈত-খাত স্টেটমেন্ট | বাবুস সালাম পোর্টাল</title>
 
     <!-- ফায়ারবেস লাইব্রেরি (CDN) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <!-- এক্সেল ডাউনলোডের জন্য SheetJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-    <!-- ফায়ারবেস কনফিগ ফাইল -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <!-- কনফিগারেশন ফাইল ও অথ গার্ড -->
     <script src="firebase-config.js"></script>
     <script>requireAuth();</script>
 
@@ -37,42 +38,61 @@
             color: var(--dark);
         }
 
-        /* হেডার */
         .portal-header {
             background: var(--primary);
             color: var(--white);
-            padding: 14px 25px;
+            padding: 12px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .portal-header h2 { margin: 0; font-size: 1.25rem; }
+        .portal-header h2 { margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
+
+        .portal-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .portal-nav a {
             color: #fff;
             text-decoration: none;
-            margin-left: 12px;
             font-weight: bold;
-            padding: 7px 14px;
+            padding: 7px 12px;
             border-radius: 6px;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.14);
             font-size: 0.92rem;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
         .portal-nav a.active { background: var(--accent); color: #000; }
+        .portal-nav a:hover:not(.active) { background: rgba(255,255,255,0.25); }
+
+        .user-tag {
+            background: rgba(0,0,0,0.25);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            border: 1px solid rgba(255,215,0,0.3);
+        }
 
         .container {
-            max-width: 1250px;
+            max-width: 1350px;
             margin: 22px auto;
             padding: 0 15px;
         }
 
-        /* ড্যাশবোর্ড মেট্রিক্স কার্ড গ্রিড */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 22px;
         }
 
         .stat-card {
@@ -85,30 +105,15 @@
             gap: 16px;
             box-shadow: 0 3px 8px rgba(0,0,0,0.03);
         }
-
-        .stat-card.total-students { border-left: 5px solid #2980B9; }
-        .stat-card.total-collected { border-left: 5px solid var(--primary); }
-        .stat-card.total-due { border-left: 5px solid var(--danger); }
+        .stat-card.students { border-left: 5px solid #2980B9; }
+        .stat-card.collected { border-left: 5px solid var(--primary); }
+        .stat-card.due { border-left: 5px solid var(--danger); }
         .stat-card.defaulters { border-left: 5px solid #D35400; }
 
-        .stat-icon {
-            font-size: 2.2rem;
-            line-height: 1;
-        }
+        .stat-icon { font-size: 2.2rem; line-height: 1; }
+        .stat-details span { font-size: 0.88rem; color: #666; display: block; margin-bottom: 4px; }
+        .stat-details strong { font-size: 1.35rem; color: var(--dark); }
 
-        .stat-details span {
-            font-size: 0.88rem;
-            color: #666;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .stat-details strong {
-            font-size: 1.4rem;
-            color: var(--dark);
-        }
-
-        /* ফিল্টার ও কন্ট্রোল কার্ড */
         .card {
             background: var(--white);
             border-radius: 10px;
@@ -120,8 +125,8 @@
 
         .filter-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 12px;
             align-items: flex-end;
         }
 
@@ -133,11 +138,11 @@
         .form-group label {
             font-weight: 600;
             font-size: 0.88rem;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .form-group input, .form-group select {
-            padding: 10px 12px;
+            padding: 9px 12px;
             border: 1px solid var(--border);
             border-radius: 6px;
             font-size: 0.95rem;
@@ -148,7 +153,7 @@
             background: var(--primary);
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 18px;
             font-size: 0.95rem;
             font-weight: bold;
             border-radius: 6px;
@@ -163,8 +168,8 @@
         .btn-gold { background: var(--accent); color: #000; }
         .btn-gold:hover { background: #e6c200; }
         .btn-print { background: #2C3E50; color: #fff; }
+        .btn-sm { padding: 4px 8px; font-size: 0.82rem; }
 
-        /* রিপোর্ট এরিয়া ও টেবিল */
         .report-paper {
             background: #fff;
             border: 1px solid var(--border);
@@ -181,24 +186,9 @@
             margin-bottom: 20px;
         }
 
-        .report-header h2 {
-            margin: 0;
-            color: var(--primary);
-            font-size: 1.5rem;
-        }
-
-        .report-header p {
-            margin: 4px 0 0 0;
-            color: #555;
-            font-size: 0.9rem;
-        }
-
-        .report-header h4 {
-            margin: 10px 0 0 0;
-            color: var(--dark);
-            font-size: 1.15rem;
-            text-decoration: underline;
-        }
+        .report-header h2 { margin: 0; color: var(--primary); font-size: 1.5rem; }
+        .report-header p { margin: 4px 0 0 0; color: #555; font-size: 0.9rem; }
+        .report-header h4 { margin: 10px 0 0 0; color: var(--dark); font-size: 1.15rem; text-decoration: underline; }
 
         .report-meta {
             display: flex;
@@ -206,11 +196,11 @@
             font-size: 0.9rem;
             margin-bottom: 12px;
             color: #555;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        .table-responsive {
-            overflow-x: auto;
-        }
+        .table-responsive { overflow-x: auto; }
 
         table {
             width: 100%;
@@ -224,26 +214,29 @@
             text-align: left;
         }
 
-        table th {
-            background: #E8F5E9;
-            color: var(--primary-dark);
-            font-weight: bold;
+        table th { background: #E8F5E9; color: var(--primary-dark); font-weight: bold; }
+        table tfoot td { background: #F4FAF6; font-weight: bold; font-size: 1rem; }
+
+        .student-ledger-card {
+            background: #F8FAFC;
+            border: 2px dashed #CBD5E1;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .ledger-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
         }
 
-        table tfoot td {
-            background: #F4FAF6;
-            font-weight: bold;
-            font-size: 1rem;
-        }
-
-        /* সিগনেচার সেকশন */
         .signature-area {
             display: none;
             justify-content: space-between;
             margin-top: 60px;
             padding-top: 10px;
         }
-
         .sig-box {
             text-align: center;
             border-top: 1px dashed #444;
@@ -252,18 +245,24 @@
             font-weight: bold;
         }
 
-        /* ================= A4 সাইজ প্রিন্ট সিএসএস ================= */
+        #reprintReceiptModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.65);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
         @page { size: A4 landscape; margin: 10mm; }
         @media print {
             body { background: #fff !important; }
             .no-print, .portal-header, .stats-grid, .card, .btn { display: none !important; }
             .container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
-            .report-paper {
-                border: none !important;
-                box-shadow: none !important;
-                padding: 0 !important;
-                width: 100% !important;
-            }
+            .report-paper { border: none !important; box-shadow: none !important; padding: 0 !important; }
             .signature-area { display: flex !important; }
             table th { background: #eee !important; color: #000 !important; }
             table th, table td { border: 1px solid #333 !important; }
@@ -271,8 +270,7 @@
 
         @media (max-width: 768px) {
             .portal-header { flex-direction: column; gap: 10px; text-align: center; }
-            .portal-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
-            .portal-nav a { margin: 0; }
+            .portal-nav { justify-content: center; }
         }
     </style>
 </head>
@@ -280,23 +278,22 @@
 
     <!-- হেডার বার -->
     <header class="portal-header no-print">
-        <h2>🕌 জামিয়া বাবুস সালাম — একাউন্টস পোর্টাল</h2>
+        <h2>🕌 জামিয়া বাবুস সালাম — একাউন্টস</h2>
         <nav class="portal-nav">
-            <a href="students.html">👥 ছাত্র তালিকা ও ইমপোর্ট</a>
+            <span class="user-tag">👤 <span id="activeStaffDisplay">লোড হচ্ছে...</span></span>
+            <a href="students.html">👥 ছাত্র তালিকা</a>
             <a href="collect.html">💰 বিল উত্তোলন</a>
+            <a href="approvals.html">📲 অনলাইন পেমেন্ট</a>
             <a href="reports.html" class="active">📊 রিপোর্ট সেন্টার</a>
-            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">লগআউট ✕</a>
-
+            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">✕ লগআউট</a>
         </nav>
     </header>
 
     <div class="container">
 
-        <!-- ============================================================== -->
-        <!-- 📊 ১. লাইভ ড্যাশবোর্ড ওভারভিউ কার্ডসমূহ -->
-        <!-- ============================================================== -->
+        <!-- ১. ওভারভিউ মেট্রিক্স কার্ড -->
         <div class="stats-grid no-print">
-            <div class="stat-card total-students">
+            <div class="stat-card students">
                 <span class="stat-icon">👥</span>
                 <div class="stat-details">
                     <span>মোট নিবন্ধিত ছাত্র</span>
@@ -304,7 +301,7 @@
                 </div>
             </div>
 
-            <div class="stat-card total-collected">
+            <div class="stat-card collected">
                 <span class="stat-icon">💵</span>
                 <div class="stat-details">
                     <span>সর্বমোট আদায়</span>
@@ -312,7 +309,7 @@
                 </div>
             </div>
 
-            <div class="stat-card total-due">
+            <div class="stat-card due">
                 <span class="stat-icon">⚠️</span>
                 <div class="stat-details">
                     <span>মোট বকেয়া পরিমাণ</span>
@@ -329,57 +326,52 @@
             </div>
         </div>
 
-
-        <!-- ============================================================== -->
-        <!-- 🔍 ২. রিপোর্ট তৈরির ফিল্টার বক্স -->
-        <!-- ============================================================== -->
+        <!-- ২. ফিল্টারিং কন্ট্রোল প্যানেল -->
         <div class="card no-print">
             <div class="filter-grid">
                 
-                <!-- রিপোর্টের ধরন -->
                 <div class="form-group" style="grid-column: span 1;">
-                    <label>রিপোর্টের ধরন নির্বাচন করুন *</label>
-                    <select id="reportType" onchange="handleReportTypeChange()">
-                        <option value="due_list">🚨 বকেয়া তালিকা রিপোর্ট</option>
-                        <option value="student_list">👥 জামাতভিত্তিক ছাত্র তালিকা</option>
-                        <option value="monthly_collection">📅 মাসভিত্তিক আদায় বিবরণী</option>
+                    <label>রিপোর্টের ধরন *</label>
+                    <select id="reportType" onchange="handleReportTypeSwitch()">
+                        <option value="due_list">🚨 বকেয়া তালিকা (খোরাকি ও বিদ্যুৎ আলাদা কলাম)</option>
+                        <option value="student_ledger">👤 একক ছাত্রের লেজার (দ্বৈত-খাত হিস্ট্রি)</option>
+                        <option value="monthly_collection">📅 খাতওয়ারি আদায় বিবরণী (খোরাকি ও বিদ্যুৎ)</option>
+                        <option value="user_collection">👤 কর্মকর্তা ভিত্তিক আদায় হিসাব</option>
                         <option value="all_transactions">🧾 সকল ট্রানজেকশন রেজিস্টার</option>
                     </select>
                 </div>
 
+                <!-- একক ছাত্র সার্চের দাখেলা ফিল্টার -->
+                <div class="form-group" id="groupStudentSearch" style="display: none;">
+                    <label>ছাত্রের দাখেলা নম্বর *</label>
+                    <input type="number" id="filterDakhela" placeholder="দাখেলা নং লিখুন (যেমন: ১, ২)">
+                </div>
+
                 <!-- শিক্ষাবর্ষ ফিল্টার -->
-                <div class="form-group">
+                <div class="form-group" id="groupSession">
                     <label>শিক্ষাবর্ষ *</label>
-                    <select id="filterSession">
-                        <!-- ফায়ারবেস থেকে অটো লোড হবে -->
-                    </select>
+                    <select id="filterSession"></select>
                 </div>
 
                 <!-- জামাত ফিল্টার -->
-                <div class="form-group">
+                <div class="form-group" id="groupJamat">
                     <label>জামাত / বিভাগ</label>
-                    <select id="filterJamat">
-                        <option value="">সকল জামাত</option>
-                    </select>
+                    <select id="filterJamat"><option value="">সকল জামাত</option></select>
                 </div>
 
-                <!-- মাস ফিল্টার (শুধু আদায় রিপোর্টের জন্য সক্রিয় হবে) -->
-                <div class="form-group" id="monthFilterGroup">
-                    <label>মাসের নাম (ইংরেজি)</label>
-                    <select id="filterMonth">
-                        <option value="">সকল মাস</option>
-                        <option value="জানুয়ারি">জানুয়ারি</option>
-                        <option value="ফেব্রুয়ারি">ফেব্রুয়ারি</option>
-                        <option value="মার্চ">মার্চ</option>
-                        <option value="এপ্রিল">এপ্রিল</option>
-                        <option value="মে">মে</option>
-                        <option value="জুন">জুন</option>
-                        <option value="জুলাই">জুলাই</option>
-                        <option value="আগস্ট">আগস্ট</option>
-                        <option value="সেপ্টেম্বর">সেপ্টেম্বর</option>
-                        <option value="অক্টোবর">অক্টোবর</option>
-                        <option value="নভেম্বর">নভেম্বর</option>
-                        <option value="ডিসেম্বর">ডিসেম্বর</option>
+                <!-- ইউজার ফিল্টার -->
+                <div class="form-group" id="groupUser" style="display: none;">
+                    <label>আদায়কারী কর্মকর্তা (User)</label>
+                    <select id="filterUser"><option value="">সকল কর্মকর্তা</option></select>
+                </div>
+
+                <!-- সময়সীমা ফিল্টার -->
+                <div class="form-group" id="groupDateRange" style="display: none;">
+                    <label>সময়সীমা</label>
+                    <select id="filterDateRange">
+                        <option value="all">সর্বমোট (শুরু থেকে)</option>
+                        <option value="today">আজকের দিন (Today)</option>
+                        <option value="week">চলতি সপ্তাহ (This Week)</option>
                     </select>
                 </div>
 
@@ -387,297 +379,386 @@
                 <div style="display: flex; gap: 8px;">
                     <button class="btn" onclick="generateReport()">🔍 রিপোর্ট দেখুন</button>
                     <button class="btn btn-print" onclick="window.print()">🖨️ প্রিন্ট / PDF</button>
-                    <button class="btn btn-gold" onclick="exportReportToExcel()">📊 এক্সেল ডাউনলোড</button>
+                    <button class="btn btn-gold" onclick="exportReportToExcel()">📊 এক্সেল</button>
                 </div>
 
             </div>
         </div>
 
-
-        <!-- ============================================================== -->
-        <!-- 📄 ৩. প্রিন্ট ও পিডিএফ রিপোর্ট শিট -->
-        <!-- ============================================================== -->
+        <!-- ৩. প্রিন্ট ও স্টেটমেন্ট পেপার -->
         <div class="report-paper" id="reportArea">
-            
-            <!-- অফিসিয়াল প্রাতিষ্ঠানিক হেডার -->
             <div class="report-header">
                 <h2>জামিয়া দারুল উলুম বাবুস সালাম</h2>
                 <p>হযরত শাহজালাল (রহ.) আন্তর্জাতিক বিমানবন্দর সংলগ্ন, আশকোনা, ঢাকা-১২৩০ | হেল্পলাইন: ০১৬৪৬-৮৪৬০৭৭</p>
-                <h4 id="reportTitleText">বকেয়া ছাত্রদের তালিকা</h4>
+                <h4 id="reportTitleText">বকেয়া ছাত্রদের পূর্ণাঙ্গ তালিকা</h4>
             </div>
 
-            <!-- রিপোর্ট মেটাডাটা -->
             <div class="report-meta">
-                <span>শিক্ষাবর্ষ: <strong id="metaSession">সকল</strong> | জামাত: <strong id="metaJamat">সকল</strong></span>
-                <span>তারিখ: <strong id="metaDate">-</strong></span>
+                <span id="metaDetails">শিক্ষাবর্ষ: <strong>সকল</strong></span>
+                <span>প্রিন্টের তারিখ: <strong id="metaDate">-</strong></span>
             </div>
 
-            <!-- মূল টেবিল -->
+            <!-- একক ছাত্র লেজার সামারি কার্ড (দ্বৈত-খাত) -->
+            <div id="studentLedgerProfile" class="student-ledger-card">
+                <div class="ledger-grid">
+                    <div><span>দাখেলা নং:</span> <strong id="ledDakhela">-</strong></div>
+                    <div><span>ছাত্রের নাম:</span> <strong id="ledName">-</strong></div>
+                    <div><span>জামাত:</span> <strong id="ledJamat">-</strong></div>
+                    <div><span>খোরাকি পরিশোধিত:</span> <strong id="ledKhPaid" style="color: green;">০ ৳</strong></div>
+                    <div><span>বিদ্যুৎ পরিশোধিত:</span> <strong id="ledElPaid" style="color: green;">০ ৳</strong></div>
+                    <div><span>বর্তমান খোরাকি বকেয়া:</span> <strong id="ledDueKh" style="color: #991B1B;">০ ৳</strong></div>
+                    <div><span>বর্তমান বিদ্যুৎ বকেয়া:</span> <strong id="ledDueEl" style="color: #C2410C;">০ ৳</strong></div>
+                    <div><span>সর্বমোট প্রদেয় বকেয়া:</span> <strong id="ledTotalDue" style="color: red; font-size:1.2rem;">০ ৳</strong></div>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table id="mainReportTable">
                     <thead id="reportTableHead"></thead>
                     <tbody id="reportTableBody">
-                        <tr>
-                            <td colspan="8" style="text-align: center; color: var(--gray);">উপরে ফিল্টার নির্বাচন করে "রিপোর্ট দেখুন" বাটনে চাপ দিন।</td>
-                        </tr>
+                        <tr><td colspan="10" style="text-align: center; color: #888;">ফিল্টার নির্বাচন করে "রিপোর্ট দেখুন" বাটনে চাপ দিন।</td></tr>
                     </tbody>
                     <tfoot id="reportTableFoot"></tfoot>
                 </table>
             </div>
 
-            <!-- নিচে স্বাক্ষর সেকশন (প্রিন্টের সময় প্রদর্শিত হবে) -->
             <div class="signature-area">
                 <div class="sig-box">প্রস্তুতকারীর স্বাক্ষর</div>
                 <div class="sig-box">হিসাবরক্ষক</div>
                 <div class="sig-box">নাজেমে তালিমাত</div>
-                <div class="sig-box">মুহতামিম / প্রিন্সিপাল</div>
+                <div class="sig-box">মুহতামিম / ভাইস প্রিন্সিপাল</div>
             </div>
-
         </div>
 
+    </div>
+
+    <!-- ৪. রসিদ রিপ্রিন্ট পপ-আপ মোডাল -->
+    <div id="reprintReceiptModal" class="no-print">
+        <div style="background: #fff; border-radius: 8px; padding: 25px; max-width: 500px; width: 100%; border: 1px dashed #333;">
+            <div style="text-align: center; border-bottom: 2px dashed #444; padding-bottom: 10px; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: #0F5132;">জামিয়া দারুল উলুম বাবুস সালাম</h3>
+                <h4 style="margin: 6px 0 0 0; text-decoration: underline;">ফি আদায়ের ডুপ্লিকেট রসিদ</h4>
+            </div>
+            <div id="reprintContent" style="font-size: 0.95rem; line-height: 1.8;"></div>
+            <div style="text-align: right; margin-top: 20px; display: flex; justify-content: flex-end; gap: 8px;">
+                <button class="btn btn-print" onclick="window.print()">🖨️ প্রিন্ট করুন</button>
+                <button class="btn" style="background: #6c757d;" onclick="document.getElementById('reprintReceiptModal').style.display='none'">✕ বন্ধ করুন</button>
+            </div>
+        </div>
     </div>
 
     <!-- স্ক্রিপ্ট লজিক -->
     <script>
         let allStudents = [];
         let allTransactions = [];
+        let allStaffUsers = new Set();
         let currentReportRows = [];
 
         document.addEventListener("DOMContentLoaded", async () => {
             populateJamatDropdown();
             await loadAcademicSessions();
-            autoSelectCurrentMonth();
-            handleReportTypeChange();
-            await loadInitialStats();
-            generateReport(); // পেজ খোলার সাথে সাথে ডিফল্ট রিপোর্ট তৈরি হবে
+            await loadInitialStatsAndTransactions();
+            handleReportTypeSwitch();
+            generateReport(); // ডিফল্ট বকেয়া তালিকা লোড হবে
         });
 
-        // জামাত ড্রপডাউন
         function populateJamatDropdown() {
             const filterJamat = document.getElementById("filterJamat");
             JAMAT_LIST.forEach(j => filterJamat.add(new Option(j, j)));
         }
 
-        // শিক্ষাবর্ষ লোড
         async function loadAcademicSessions() {
             const filterSession = document.getElementById("filterSession");
             filterSession.innerHTML = `<option value="">সকল শিক্ষাবর্ষ</option>`;
             try {
-                const snapshot = await db.collection("academic_years").orderBy("year", "desc").get();
-                snapshot.docs.forEach((doc, idx) => {
+                const snap = await db.collection("academic_years").orderBy("year", "desc").get();
+                snap.docs.forEach((doc, idx) => {
                     const yr = doc.data().year;
-                    filterSession.add(new Option(yr, yr, idx === 0, idx === 0)); // ১ম টি অটো সিলেক্ট
+                    filterSession.add(new Option(yr, yr, idx === 0, idx === 0));
                 });
             } catch (e) {
                 filterSession.add(new Option("২০২৬-২৭", "২০২৬-২৭", true, true));
-                filterSession.add(new Option("২০২৫-২৬", "২০২৫-২৬"));
             }
         }
 
-        // চলতি মাস সিলেক্ট
-        function autoSelectCurrentMonth() {
-            const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-            document.getElementById("filterMonth").value = months[new Date().getMonth()];
-        }
-
-        function handleReportTypeChange() {
-            const type = document.getElementById("reportType").value;
-            const monthGroup = document.getElementById("monthFilterGroup");
-            // শুধুমাত্র আদায় রিপোর্টে মাস ফিল্টার কার্যকর
-            if (type === "monthly_collection" || type === "all_transactions") {
-                monthGroup.style.display = "flex";
-            } else {
-                monthGroup.style.display = "none";
-            }
-        }
-
-        // ==========================================================
-        // ড্যাশবোর্ড লাইভ স্ট্যাটাস লোড করা
-        // ==========================================================
-        async function loadInitialStats() {
+        async function loadInitialStatsAndTransactions() {
             try {
-                // ১. ছাত্র পরিসংখ্যান
                 const stdSnap = await db.collection("students").get();
                 allStudents = [];
-                let totalDue = 0;
-                let defaultersCount = 0;
+                let totalDueSum = 0, defaultersCount = 0;
 
-                stdSnap.forEach(doc => {
-                    const d = doc.data();
-                    allStudents.push({ id: doc.id, ...d });
-                    const due = Number(d.dueAmount) || 0;
-                    if (due > 0) {
-                        totalDue += due;
+                stdSnap.forEach(d => {
+                    const data = { id: d.id, ...d.data() };
+                    allStudents.push(data);
+                    const dueKh = Number(data.dueKhoraki) || 0;
+                    const dueEl = Number(data.dueElectricity) || 0;
+                    const totDue = dueKh + dueEl;
+
+                    if (totDue > 0) {
+                        totalDueSum += totDue;
                         defaultersCount++;
                     }
                 });
 
                 document.getElementById("statStudents").innerText = toBengaliNumber(allStudents.length);
-                document.getElementById("statDue").innerText = `${toBengaliNumber(totalDue)} ৳`;
+                document.getElementById("statDue").innerText = `${toBengaliNumber(totalDueSum)} ৳`;
                 document.getElementById("statDefaulters").innerText = `${toBengaliNumber(defaultersCount)} জন`;
 
-                // ২. আদায় পরিসংখ্যান
-                const trSnap = await db.collection("transactions").get();
+                const trSnap = await db.collection("transactions").orderBy("timestamp", "desc").get();
                 allTransactions = [];
                 let totalCollected = 0;
+                const userSelect = document.getElementById("filterUser");
 
-                trSnap.forEach(doc => {
-                    const t = doc.data();
-                    allTransactions.push({ id: doc.id, ...t });
+                trSnap.forEach(d => {
+                    const t = { id: d.id, ...d.data() };
+                    allTransactions.push(t);
                     totalCollected += (Number(t.totalPaid) || 0);
+                    if (t.collectedBy) allStaffUsers.add(t.collectedBy);
                 });
 
                 document.getElementById("statCollected").innerText = `${toBengaliNumber(totalCollected)} ৳`;
 
+                userSelect.innerHTML = `<option value="">সকল কর্মকর্তা</option>`;
+                allStaffUsers.forEach(u => userSelect.add(new Option(u, u)));
+
             } catch (err) {
-                console.error("স্ট্যাটাস এরর:", err);
+                console.error("ডাটা লোড সমস্যা:", err);
             }
         }
 
-        // ==========================================================
-        // বহুমুখী রিপোর্ট জেনারেটর ইঞ্জিন
-        // ==========================================================
+        function handleReportTypeSwitch() {
+            const type = document.getElementById("reportType").value;
+            const groupStudentSearch = document.getElementById("groupStudentSearch");
+            const groupUser = document.getElementById("groupUser");
+            const groupDateRange = document.getElementById("groupDateRange");
+
+            if (type === "student_ledger") {
+                groupStudentSearch.style.display = "flex";
+                groupUser.style.display = "none";
+                groupDateRange.style.display = "none";
+            } else if (type === "user_collection") {
+                groupStudentSearch.style.display = "none";
+                groupUser.style.display = "flex";
+                groupDateRange.style.display = "flex";
+            } else {
+                groupStudentSearch.style.display = "none";
+                groupUser.style.display = "none";
+                groupDateRange.style.display = "none";
+            }
+        }
+
         function generateReport() {
             const type = document.getElementById("reportType").value;
             const session = document.getElementById("filterSession").value;
             const jamat = document.getElementById("filterJamat").value;
-            const month = document.getElementById("filterMonth").value;
-
-            // মেটা ইনফো সেট
-            document.getElementById("metaSession").innerText = session || "সকল";
-            document.getElementById("metaJamat").innerText = jamat || "সকল";
             document.getElementById("metaDate").innerText = new Date().toLocaleDateString('bn-BD');
 
             if (type === "due_list") {
                 renderDueReport(session, jamat);
-            } else if (type === "student_list") {
-                renderStudentListReport(session, jamat);
-            } else if (type === "monthly_collection") {
-                renderCollectionReport(session, jamat, month);
-            } else if (type === "all_transactions") {
-                renderCollectionReport(session, jamat, "");
+            } else if (type === "student_ledger") {
+                renderStudentLedgerReport(session);
+            } else if (type === "monthly_collection" || type === "all_transactions") {
+                renderCollectionReport(session, jamat);
+            } else if (type === "user_collection") {
+                renderUserCollectionReport();
             }
         }
 
-        // ১. বকেয়া তালিকা রিপোর্ট
+        // ==========================================================
+        // ১. বকেয়া তালিকা রিপোর্ট (খোরাকি ও বিদ্যুৎ পাশাপাশি কলাম)
+        // ==========================================================
         function renderDueReport(session, jamat) {
-            document.getElementById("reportTitleText").innerText = "বকেয়া ছাত্রদের পূর্ণাঙ্গ তালিকা";
+            document.getElementById("studentLedgerProfile").style.display = "none";
+            document.getElementById("reportTitleText").innerText = "বকেয়া ছাত্রদের পূর্ণাঙ্গ তালিকা (খাতওয়ারি)";
+
+            let filtered = allStudents.filter(s => {
+                const dKh = Number(s.dueKhoraki) || 0;
+                const dEl = Number(s.dueElectricity) || 0;
+                return (dKh + dEl) > 0;
+            });
+
+            if (session) filtered = filtered.filter(s => s.session === session);
+            if (jamat) filtered = filtered.filter(s => s.jamat === jamat);
+
             const thead = document.getElementById("reportTableHead");
             const tbody = document.getElementById("reportTableBody");
             const tfoot = document.getElementById("reportTableFoot");
 
             thead.innerHTML = `
                 <tr>
-                    <th style="width: 50px;">ক্র. নং</th>
+                    <th style="width: 40px;">ক্র. নং</th>
                     <th>দাখেলা নং</th>
                     <th>ছাত্রের নাম</th>
-                    <th>পিতার নাম</th>
                     <th>জামাত</th>
                     <th>শিক্ষাবর্ষ</th>
-                    <th>অভিভাবকের মোবাইল</th>
-                    <th style="text-align: right;">বকেয়া টাকা</th>
+                    <th>মোবাইল নম্বর</th>
+                    <th style="text-align: right; color: #991B1B;">খোরাকি বকেয়া</th>
+                    <th style="text-align: right; color: #C2410C;">বিদ্যুৎ বকেয়া</th>
+                    <th style="text-align: right; color: red;">সর্বমোট বকেয়া</th>
                 </tr>
             `;
 
-            let filtered = allStudents.filter(s => (Number(s.dueAmount) || 0) > 0);
-            if (session) filtered = filtered.filter(s => s.session === session);
-            if (jamat) filtered = filtered.filter(s => s.jamat === jamat);
-
-            currentReportRows = filtered;
             tbody.innerHTML = "";
-            let totalDueSum = 0;
+            let sumKh = 0, sumEl = 0, sumTotal = 0;
+            currentReportRows = filtered;
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:green; font-weight:bold;">আলহামদুলিল্লাহ! কোনো বকেয়া ছাত্র পাওয়া যায়নি।</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:green; font-weight:bold;">আলহামদুলিল্লাহ! কোনো বকেয়া ছাত্র পাওয়া যায়নি।</td></tr>`;
                 tfoot.innerHTML = "";
                 return;
             }
 
             filtered.forEach((std, i) => {
-                const due = Number(std.dueAmount) || 0;
-                totalDueSum += due;
+                const kh = Number(std.dueKhoraki) || 0;
+                const el = Number(std.dueElectricity) || 0;
+                const tot = kh + el;
+
+                sumKh += kh;
+                sumEl += el;
+                sumTotal += tot;
+
                 tbody.innerHTML += `
                     <tr>
                         <td>${toBengaliNumber(i + 1)}</td>
                         <td><strong>${toBengaliNumber(std.dakhelaNum)}</strong></td>
                         <td>${esc(std.name)}</td>
-                        <td>${esc(std.fatherName || '-')}</td>
                         <td>${esc(std.jamat)}</td>
                         <td>${esc(std.session || '-')}</td>
                         <td>${std.phone ? toBengaliNumber(std.phone) : '-'}</td>
-                        <td style="text-align: right; color: red; font-weight: bold;">${toBengaliNumber(due)} ৳</td>
+                        <td style="text-align: right; font-weight: bold; color: #991B1B;">${toBengaliNumber(kh)} ৳</td>
+                        <td style="text-align: right; font-weight: bold; color: #C2410C;">${toBengaliNumber(el)} ৳</td>
+                        <td style="text-align: right; font-weight: bold; color: red; font-size:1.05rem;">${toBengaliNumber(tot)} ৳</td>
                     </tr>
                 `;
             });
 
             tfoot.innerHTML = `
                 <tr>
-                    <td colspan="7" style="text-align: right;">মোট বকেয়া পরিমাণ:</td>
-                    <td style="text-align: right; color: red;">${toBengaliNumber(totalDueSum)} ৳</td>
+                    <td colspan="6" style="text-align: right;">সর্বমোট বকেয়া সামারি:</td>
+                    <td style="text-align: right; color: #991B1B;">${toBengaliNumber(sumKh)} ৳</td>
+                    <td style="text-align: right; color: #C2410C;">${toBengaliNumber(sumEl)} ৳</td>
+                    <td style="text-align: right; color: red; font-size:1.15rem;">${toBengaliNumber(sumTotal)} ৳</td>
                 </tr>
             `;
         }
 
-        // ২. জামাতভিত্তিক ছাত্র তালিকা
-        function renderStudentListReport(session, jamat) {
-            document.getElementById("reportTitleText").innerText = `ছাত্র তালিকা রেজিস্টার (${jamat || "সকল জামাত"})`;
+        // ==========================================================
+        // ২. একক ছাত্রের লেজার রিপোর্ট (দ্বৈত-খাত হিস্ট্রি)
+        // ==========================================================
+        function renderStudentLedgerReport(session) {
+            const rawDakhela = document.getElementById("filterDakhela").value.trim();
+            const dakhelaNum = parseInt(normDigits(rawDakhela), 10);
+            const ledgerCard = document.getElementById("studentLedgerProfile");
+
+            if (isNaN(dakhelaNum)) {
+                alert("সঠিক দাখেলা নম্বর লিখুন!");
+                return;
+            }
+
+            const student = allStudents.find(s => s.dakhelaNum === dakhelaNum && (!session || s.session === session));
+            if (!student) {
+                alert("এই দাখেলা ও শিক্ষাবর্ষের ছাত্র পাওয়া যায়নি!");
+                ledgerCard.style.display = "none";
+                return;
+            }
+
+            const dueKh = Number(student.dueKhoraki) || 0;
+            const dueEl = Number(student.dueElectricity) || 0;
+            const totDue = dueKh + dueEl;
+
+            document.getElementById("reportTitleText").innerText = "ছাত্রের দ্বৈত-খাত ফি আদায় ও বকেয়া লেজার";
+            document.getElementById("metaDetails").innerHTML = `শিক্ষাবর্ষ: <strong>${student.session}</strong> | জামাত: <strong>${student.jamat}</strong>`;
+            
+            document.getElementById("ledDakhela").innerText = toBengaliNumber(student.dakhelaNum);
+            document.getElementById("ledName").innerText = student.name;
+            document.getElementById("ledJamat").innerText = student.jamat;
+            document.getElementById("ledDueKh").innerText = `${toBengaliNumber(dueKh)} ৳`;
+            document.getElementById("ledDueEl").innerText = `${toBengaliNumber(dueEl)} ৳`;
+            document.getElementById("ledTotalDue").innerText = `${toBengaliNumber(totDue)} ৳`;
+
+            const studentTx = allTransactions.filter(t => t.studentId === student.id || (t.dakhelaNum === dakhelaNum && t.session === student.session));
+
+            let totalKhPaid = 0, totalElPaid = 0, grandPaid = 0;
             const thead = document.getElementById("reportTableHead");
             const tbody = document.getElementById("reportTableBody");
             const tfoot = document.getElementById("reportTableFoot");
 
             thead.innerHTML = `
                 <tr>
-                    <th style="width: 50px;">ক্র. নং</th>
-                    <th>দাখেলা নং</th>
-                    <th>ছাত্রের নাম</th>
-                    <th>পিতার নাম</th>
-                    <th>জন্ম তারিখ</th>
-                    <th>জামাত</th>
-                    <th>খোরাকি ফি</th>
-                    <th>বিদ্যুৎ বিল</th>
-                    <th>মোবাইল</th>
+                    <th>তারিখ</th>
+                    <th>ইনভয়েস নং</th>
+                    <th>বইয়ের রসিদ</th>
+                    <th>পরিশোধের মাস</th>
+                    <th>মাধ্যম</th>
+                    <th>আদায়কারী</th>
+                    <th style="text-align: right; color: #991B1B;">খোরাকি জমা</th>
+                    <th style="text-align: right; color: #C2410C;">বিদ্যুৎ জমা</th>
+                    <th style="text-align: right;">মোট জমা</th>
+                    <th class="no-print">অ্যাকশন</th>
                 </tr>
             `;
 
-            let filtered = allStudents;
-            if (session) filtered = filtered.filter(s => s.session === session);
-            if (jamat) filtered = filtered.filter(s => s.jamat === jamat);
-
-            currentReportRows = filtered;
             tbody.innerHTML = "";
+            currentReportRows = studentTx;
 
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#888;">কোনো ছাত্রের তথ্য পাওয়া যায়নি।</td></tr>`;
-                tfoot.innerHTML = "";
-                return;
+            if (studentTx.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; color:#888;">এই ছাত্রের কোনো পূর্ব জমার রেকর্ড নেই।</td></tr>`;
+            } else {
+                studentTx.forEach(t => {
+                    const kh = Number(t.khorakiPaid) || 0;
+                    const el = Number(t.electricityPaid) || 0;
+                    const tot = Number(t.totalPaid) || (kh + el);
+
+                    totalKhPaid += kh;
+                    totalElPaid += el;
+                    grandPaid += tot;
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${t.dateString || '-'}</td>
+                            <td><small>${esc(t.invoiceNo)}</small></td>
+                            <td><strong>${esc(t.manualReceiptNo || '-')}</strong></td>
+                            <td>${esc(t.month || '-')}</td>
+                            <td>${esc(t.paymentMethod || 'ক্যাশ')}</td>
+                            <td>${esc(t.collectedBy || '-')}</td>
+                            <td style="text-align: right; font-weight: bold; color: #991B1B;">${toBengaliNumber(kh)} ৳</td>
+                            <td style="text-align: right; font-weight: bold; color: #C2410C;">${toBengaliNumber(el)} ৳</td>
+                            <td style="text-align: right; font-weight: bold; color: var(--primary);">${toBengaliNumber(tot)} ৳</td>
+                            <td class="no-print">
+                                <button class="btn btn-sm btn-print" onclick="openReprintReceipt('${t.id}')">🖨️ রসিদ</button>
+                            </td>
+                        </tr>
+                    `;
+                });
             }
 
-            filtered.forEach((std, i) => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${toBengaliNumber(i + 1)}</td>
-                        <td><strong>${toBengaliNumber(std.dakhelaNum)}</strong></td>
-                        <td>${esc(std.name)}</td>
-                        <td>${esc(std.fatherName || '-')}</td>
-                        <td>${std.dob ? toBengaliNumber(std.dob) : '-'}</td>
-                        <td>${esc(std.jamat)}</td>
-                        <td>${toBengaliNumber(std.khoraki)} ৳</td>
-                        <td>${toBengaliNumber(std.electricity)} ৳</td>
-                        <td>${std.phone ? toBengaliNumber(std.phone) : '-'}</td>
-                    </tr>
-                `;
-            });
+            document.getElementById("ledKhPaid").innerText = `${toBengaliNumber(totalKhPaid)} ৳`;
+            document.getElementById("ledElPaid").innerText = `${toBengaliNumber(totalElPaid)} ৳`;
 
             tfoot.innerHTML = `
                 <tr>
-                    <td colspan="9">সর্বমোট ছাত্র সংখ্যা: ${toBengaliNumber(filtered.length)} জন</td>
+                    <td colspan="6" style="text-align: right;">মোট পরিশোধিত টাকা সামারি:</td>
+                    <td style="text-align: right; color: #991B1B;">${toBengaliNumber(totalKhPaid)} ৳</td>
+                    <td style="text-align: right; color: #C2410C;">${toBengaliNumber(totalElPaid)} ৳</td>
+                    <td style="text-align: right; color: var(--primary); font-size:1.15rem;">${toBengaliNumber(grandPaid)} ৳</td>
+                    <td class="no-print"></td>
                 </tr>
             `;
+
+            ledgerCard.style.display = "block";
         }
 
-        // ৩. আদায় ও ট্রানজেকশন রিপোর্ট
-        function renderCollectionReport(session, jamat, month) {
-            document.getElementById("reportTitleText").innerText = `ফি আদায় ও কালেকশন স্টেটমেন্ট ${month ? `(${month} মাস)` : ''}`;
+        // ==========================================================
+        // ৩. আদায় বিবরণী (খোরাকি ও বিদ্যুৎ আলাদা কলামে)
+        // ==========================================================
+        function renderCollectionReport(session, jamat) {
+            document.getElementById("studentLedgerProfile").style.display = "none";
+            document.getElementById("reportTitleText").innerText = "ফি আদায় ও কালেকশন স্টেটমেন্ট (খাতওয়ারি)";
+
+            let filtered = allTransactions;
+            if (session) filtered = filtered.filter(t => t.session === session);
+            if (jamat) filtered = filtered.filter(t => t.jamat === jamat);
+
             const thead = document.getElementById("reportTableHead");
             const tbody = document.getElementById("reportTableBody");
             const tfoot = document.getElementById("reportTableFoot");
@@ -690,40 +771,25 @@
                     <th>দাখেলা</th>
                     <th>ছাত্রের নাম</th>
                     <th>জামাত</th>
-                    <th>খোরাকি</th>
-                    <th>বিদ্যুৎ</th>
-                    <th>বকেয়া জমা</th>
-                    <th style="text-align: right;">মোট আদায়</th>
-                    <th>মাধ্যম</th>
+                    <th style="text-align: right; color: #991B1B;">খোরাকি আদায়</th>
+                    <th style="text-align: right; color: #C2410C;">বিদ্যুৎ আদায়</th>
+                    <th style="text-align: right; color: var(--primary);">মোট আদায়</th>
+                    <th>কর্মকর্তা</th>
                 </tr>
             `;
 
-            let filtered = allTransactions;
-            if (session) filtered = filtered.filter(t => t.session === session);
-            if (jamat) filtered = filtered.filter(t => t.jamat === jamat);
-            if (month) filtered = filtered.filter(t => t.month === month);
-
-            currentReportRows = filtered;
             tbody.innerHTML = "";
-
-            let totalKhoraki = 0, totalElect = 0, totalDuePaid = 0, grandTotal = 0;
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:#888;">কোনো আদায়ের রেকর্ড পাওয়া যায়নি।</td></tr>`;
-                tfoot.innerHTML = "";
-                return;
-            }
+            let sumKh = 0, sumEl = 0, grandSum = 0;
+            currentReportRows = filtered;
 
             filtered.forEach(t => {
-                const k = Number(t.khoraki) || 0;
-                const e = Number(t.electricity) || 0;
-                const d = Number(t.duePaid) || 0;
-                const tot = Number(t.totalPaid) || 0;
+                const kh = Number(t.khorakiPaid) || 0;
+                const el = Number(t.electricityPaid) || 0;
+                const tot = Number(t.totalPaid) || (kh + el);
 
-                totalKhoraki += k;
-                totalElect += e;
-                totalDuePaid += d;
-                grandTotal += tot;
+                sumKh += kh;
+                sumEl += el;
+                grandSum += tot;
 
                 tbody.innerHTML += `
                     <tr>
@@ -733,11 +799,10 @@
                         <td>${toBengaliNumber(t.dakhelaNum)}</td>
                         <td>${esc(t.name)}</td>
                         <td>${esc(t.jamat)}</td>
-                        <td>${toBengaliNumber(k)} ৳</td>
-                        <td>${toBengaliNumber(e)} ৳</td>
-                        <td>${toBengaliNumber(d)} ৳</td>
+                        <td style="text-align: right; font-weight: bold; color: #991B1B;">${toBengaliNumber(kh)} ৳</td>
+                        <td style="text-align: right; font-weight: bold; color: #C2410C;">${toBengaliNumber(el)} ৳</td>
                         <td style="text-align: right; font-weight: bold; color: var(--primary);">${toBengaliNumber(tot)} ৳</td>
-                        <td><small>${esc(t.paymentMethod || 'ক্যাশ')}</small></td>
+                        <td><small>${esc(t.collectedBy || '-')}</small></td>
                     </tr>
                 `;
             });
@@ -745,26 +810,132 @@
             tfoot.innerHTML = `
                 <tr>
                     <td colspan="6" style="text-align: right;">সর্বমোট আদায় সামারি:</td>
-                    <td>${toBengaliNumber(totalKhoraki)} ৳</td>
-                    <td>${toBengaliNumber(totalElect)} ৳</td>
-                    <td>${toBengaliNumber(totalDuePaid)} ৳</td>
-                    <td style="text-align: right; color: var(--primary);">${toBengaliNumber(grandTotal)} ৳</td>
+                    <td style="text-align: right; color: #991B1B;">${toBengaliNumber(sumKh)} ৳</td>
+                    <td style="text-align: right; color: #C2410C;">${toBengaliNumber(sumEl)} ৳</td>
+                    <td style="text-align: right; color: var(--primary); font-size:1.15rem;">${toBengaliNumber(grandSum)} ৳</td>
                     <td></td>
                 </tr>
             `;
         }
 
         // ==========================================================
-        // এক ক্লিকে এক্সেল শিট ডাউনলোড
+        // ৪. ইউজার/কর্মকর্তা ভিত্তিক আদায়
         // ==========================================================
-        function exportReportToExcel() {
-            if (!currentReportRows || currentReportRows.length === 0) {
-                alert("ডাউনলোড করার মতো কোনো ডাটা নেই!");
-                return;
+        function renderUserCollectionReport() {
+            document.getElementById("studentLedgerProfile").style.display = "none";
+            const targetUser = document.getElementById("filterUser").value;
+            const range = document.getElementById("filterDateRange").value;
+            document.getElementById("reportTitleText").innerText = `কর্মকর্তা ভিত্তিক ফি আদায় রেজিস্টার (${targetUser || 'সকল কর্মকর্তা'})`;
+
+            let filtered = allTransactions;
+            if (targetUser) filtered = filtered.filter(t => t.collectedBy === targetUser);
+
+            const now = new Date();
+            const todayStr = now.toLocaleDateString('bn-BD');
+
+            if (range === "today") {
+                filtered = filtered.filter(t => t.dateString === todayStr);
+            } else if (range === "week") {
+                const oneWeekAgo = new Date();
+                oneWeekAgo.setDate(now.getDate() - 7);
+                filtered = filtered.filter(t => t.timestamp && t.timestamp.toDate && t.timestamp.toDate() >= oneWeekAgo);
             }
 
+            const thead = document.getElementById("reportTableHead");
+            const tbody = document.getElementById("reportTableBody");
+            const tfoot = document.getElementById("reportTableFoot");
+
+            thead.innerHTML = `
+                <tr>
+                    <th>তারিখ</th>
+                    <th>ইনভয়েস</th>
+                    <th>দাখেলা</th>
+                    <th>ছাত্রের নাম</th>
+                    <th>আদায়কারী কর্মকর্তা</th>
+                    <th style="text-align: right; color: #991B1B;">খোরাকি</th>
+                    <th style="text-align: right; color: #C2410C;">বিদ্যুৎ</th>
+                    <th style="text-align: right; color: var(--primary);">মোট আদায়</th>
+                </tr>
+            `;
+
+            tbody.innerHTML = "";
+            let sumKh = 0, sumEl = 0, grandSum = 0;
+            currentReportRows = filtered;
+
+            filtered.forEach(t => {
+                const kh = Number(t.khorakiPaid) || 0;
+                const el = Number(t.electricityPaid) || 0;
+                const tot = Number(t.totalPaid) || (kh + el);
+
+                sumKh += kh;
+                sumEl += el;
+                grandSum += tot;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${t.dateString || '-'}</td>
+                        <td><small>${esc(t.invoiceNo)}</small></td>
+                        <td>${toBengaliNumber(t.dakhelaNum)}</td>
+                        <td>${esc(t.name)}</td>
+                        <td><strong>${esc(t.collectedBy || '-')}</strong></td>
+                        <td style="text-align: right; color: #991B1B;">${toBengaliNumber(kh)} ৳</td>
+                        <td style="text-align: right; color: #C2410C;">${toBengaliNumber(el)} ৳</td>
+                        <td style="text-align: right; font-weight: bold; color: var(--primary);">${toBengaliNumber(tot)} ৳</td>
+                    </tr>
+                `;
+            });
+
+            tfoot.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align: right;">সর্বমোট আদায়:</td>
+                    <td style="text-align: right; color: #991B1B;">${toBengaliNumber(sumKh)} ৳</td>
+                    <td style="text-align: right; color: #C2410C;">${toBengaliNumber(sumEl)} ৳</td>
+                    <td style="text-align: right; color: var(--primary); font-size:1.15rem;">${toBengaliNumber(grandSum)} ৳</td>
+                </tr>
+            `;
+        }
+
+        // ==========================================================
+        // ৫. রসিদ রিপ্রিন্ট
+        // ==========================================================
+        function openReprintReceipt(txId) {
+            const tx = allTransactions.find(t => t.id === txId);
+            if (!tx) return;
+
+            const kh = Number(tx.khorakiPaid) || 0;
+            const el = Number(tx.electricityPaid) || 0;
+            const tot = Number(tx.totalPaid) || (kh + el);
+
+            const html = `
+                <div>ইনভয়েস নং: <strong>${esc(tx.invoiceNo)}</strong></div>
+                <div>বইয়ের রসিদ নং: <strong>${esc(tx.manualReceiptNo || '-')}</strong></div>
+                <div>তারিখ: <strong>${tx.dateString || '-'}</strong></div>
+                <div>দাখেলা নং: <strong>${toBengaliNumber(tx.dakhelaNum)}</strong></div>
+                <div>ছাত্রের নাম: <strong>${esc(tx.name)}</strong></div>
+                <div>জামাত: <strong>${esc(tx.jamat)}</strong></div>
+                <div>পরিশোধের মাস: <strong>${esc(tx.month || '-')}</strong></div>
+                <div style="border-top: 1px dashed #666; margin-top: 8px; padding-top: 6px;">
+                    <div>খোরাকি ফি বাবদ আদায়: <strong>${toBengaliNumber(kh)} ৳</strong></div>
+                    <div>বিদ্যুৎ ও পানি বিল আদায়: <strong>${toBengaliNumber(el)} ৳</strong></div>
+                    <div style="font-size: 1.15rem; font-weight: bold; color: #0F5132; margin-top: 4px;">
+                        সর্বমোট আদায়: ${toBengaliNumber(tot)} ৳
+                    </div>
+                </div>
+                <div style="margin-top: 8px;">আদায়কারী কর্মকর্তা: <strong>${esc(tx.collectedBy || '-')}</strong></div>
+            `;
+
+            document.getElementById("reprintContent").innerHTML = html;
+            document.getElementById("reprintReceiptModal").style.display = "flex";
+        }
+
+        // এক্সেল ডাউনলোড
+        function exportReportToExcel() {
+            if (!currentReportRows || currentReportRows.length === 0) {
+                alert("ডাউনলোড করার মতো তথ্য নেই!");
+                return;
+            }
             const title = document.getElementById("reportTitleText").innerText;
-            const ws = XLSX.utils.table_to_sheet(document.getElementById("mainReportTable")); // স্ক্রিনের বাংলা হেডারসহ হুবহু টেবিল
+            const ws = XLSX.utils.table_to_sheet(document.getElementById("mainReportTable"));
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Report");
             XLSX.writeFile(wb, `BabusSalam_${title.replace(/\s+/g, '_')}.xlsx`);

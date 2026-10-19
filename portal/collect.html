@@ -1,16 +1,17 @@
+<!-- ফাইল লোকেশন: babussalam-website/portal/collect.html -->
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>বিল ও খোরাকি কালেকশন | বাবুস সালাম পোর্টাল</title>
+    <title>বিল ও খোরাকি কালেকশন (দ্বৈত-খাত) | বাবুস সালাম পোর্টাল</title>
 
     <!-- ফায়ারবেস লাইব্রেরি (CDN) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <!-- ফায়ারবেস কনফিগ ফাইল -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <!-- কনফিগারেশন ফাইল ও অথ গার্ড -->
     <script src="firebase-config.js"></script>
     <script>requireAuth();</script>
 
@@ -34,32 +35,52 @@
             color: var(--dark);
         }
 
-        /* হেডার */
         .portal-header {
             background: var(--primary);
             color: var(--white);
-            padding: 14px 25px;
+            padding: 12px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .portal-header h2 { margin: 0; font-size: 1.25rem; }
+        .portal-header h2 { margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
+
+        .portal-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .portal-nav a {
             color: #fff;
             text-decoration: none;
-            margin-left: 12px;
             font-weight: bold;
-            padding: 7px 14px;
+            padding: 7px 12px;
             border-radius: 6px;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.14);
             font-size: 0.92rem;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
         .portal-nav a.active { background: var(--accent); color: #000; }
+        .portal-nav a:hover:not(.active) { background: rgba(255,255,255,0.25); }
+
+        .user-tag {
+            background: rgba(0,0,0,0.25);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            border: 1px solid rgba(255,215,0,0.3);
+        }
 
         .container {
-            max-width: 1050px;
+            max-width: 1100px;
             margin: 22px auto;
             padding: 0 15px;
         }
@@ -73,13 +94,12 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.03);
         }
 
-        /* সার্চ বক্স গ্রিড */
         .search-container {
             background: #F4FAF6;
             border: 1px solid #C8E6C9;
             border-radius: 8px;
             padding: 18px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
         .search-grid {
@@ -96,12 +116,12 @@
 
         .form-group label {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             margin-bottom: 6px;
         }
 
         .form-group input, .form-group select {
-            padding: 11px 14px;
+            padding: 10px 14px;
             font-size: 1rem;
             border: 1px solid var(--border);
             border-radius: 6px;
@@ -112,8 +132,8 @@
             background: var(--primary);
             color: #fff;
             border: none;
-            padding: 11px 22px;
-            font-size: 1rem;
+            padding: 10px 20px;
+            font-size: 0.98rem;
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
@@ -141,7 +161,7 @@
 
         .profile-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
             gap: 14px;
         }
 
@@ -157,13 +177,35 @@
             color: var(--dark);
         }
 
-        /* বিল ইনপুট গ্রিড */
+        /* দ্বৈত-খাত বিলিং গ্রিড */
         .billing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 16px;
             margin-top: 15px;
         }
+
+        .cashier-locked-badge {
+            background: #EAECEF;
+            border: 1px solid #CED4DA;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: var(--primary-dark);
+            cursor: not-allowed;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .fund-box {
+            background: #FFFDF0;
+            border: 1px solid #FDE68A;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .fund-box.khoraki { border-left: 4px solid #991B1B; }
+        .fund-box.electricity { border-left: 4px solid #C2410C; }
 
         .total-box {
             background: #E8F5E9;
@@ -177,14 +219,11 @@
             color: var(--primary-dark);
         }
 
-        /* ================= পপ-আপ প্রিভিউ মোডাল ================= */
+        /* ১২ মাসের ডায়ালগ মোডাল */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
             display: none;
             justify-content: center;
             align-items: center;
@@ -193,39 +232,42 @@
             box-sizing: border-box;
         }
 
-        .modal-box {
+        .month-modal-box {
             background: #fff;
-            border-radius: 10px;
-            max-width: 500px;
+            border-radius: 12px;
+            max-width: 580px;
             width: 100%;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            animation: popIn 0.25s ease;
+            padding: 26px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
         }
 
-        @keyframes popIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+        .months-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
         }
 
-        .modal-header {
-            border-bottom: 2px solid #E8F5E9;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+        .month-btn {
+            background: #F4FAF6;
+            border: 2px solid #C8E6C9;
+            padding: 12px 8px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
         }
-
-        .modal-header h3 {
-            margin: 0;
-            color: var(--primary);
-            font-size: 1.25rem;
-        }
+        .month-btn:hover { background: #E8F5E9; border-color: var(--primary); }
+        .month-btn.selected { background: var(--primary); color: #fff; border-color: var(--primary-dark); }
 
         .preview-list {
             list-style: none;
             padding: 0;
             margin: 0 0 20px 0;
         }
-
         .preview-list li {
             display: flex;
             justify-content: space-between;
@@ -234,17 +276,7 @@
             font-size: 0.95rem;
         }
 
-        .preview-list li strong {
-            color: var(--primary-dark);
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        /* ================= প্রিন্ট রসিদ ডিজাইন ================= */
+        /* প্রিন্ট মানি রসিদ */
         #receiptArea {
             display: none;
             background: #fff;
@@ -272,15 +304,7 @@
         @media print {
             body * { visibility: hidden; }
             #receiptArea, #receiptArea * { visibility: visible; }
-            #receiptArea {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                border: none;
-                margin: 0;
-                padding: 10px;
-            }
+            #receiptArea { position: absolute; left: 0; top: 0; width: 100%; border: none; margin: 0; padding: 15px; }
             .no-print { display: none !important; }
             .modal-overlay { display: none !important; }
         }
@@ -288,8 +312,8 @@
         @media (max-width: 768px) {
             .search-grid { grid-template-columns: 1fr; }
             .portal-header { flex-direction: column; gap: 10px; text-align: center; }
-            .portal-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
-            .portal-nav a { margin: 0; }
+            .portal-nav { justify-content: center; }
+            .months-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -297,32 +321,33 @@
 
     <!-- হেডার বার -->
     <header class="portal-header no-print">
-        <h2>🕌 জামিয়া বাবুস সালাম — একাউন্টস পোর্টাল</h2>
+        <h2>🕌 জামিয়া বাবুস সালাম — একাউন্টস</h2>
         <nav class="portal-nav">
-            <a href="students.html">👥 ছাত্র তালিকা ও ইমপোর্ট</a>
+            <span class="user-tag">👤 <span id="activeStaffDisplay">হিসাবরক্ষক</span></span>
+            <a href="students.html">👥 ছাত্র তালিকা</a>
             <a href="collect.html" class="active">💰 বিল উত্তোলন</a>
+            <a href="approvals.html">📲 অনলাইন পেমেন্ট</a>
             <a href="reports.html">📊 রিপোর্ট সেন্টার</a>
-            <a href="approvals.html">📲 অনলাইন পেমেন্ট ভেরিফিকেশন</a>
-
-            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">লগআউট ✕</a>
-
+            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">✕ লগআউট</a>
         </nav>
     </header>
 
     <div class="container no-print">
 
         <div class="card">
-            <h3 style="margin-top: 0; color: var(--primary);">🔍 ছাত্র খুঁজুন ও বিল উত্তোলন করুন</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: var(--primary);">🔍 ছাত্র খুঁজুন ও দ্বৈত-খাতে বিল উত্তোলন করুন</h3>
+                <button class="btn btn-gold" onclick="openMonthlyBillingDialog()">
+                    ⚡ নির্বাচিত মাসের বিল সকল ছাত্রের ওপর ধার্য করুন
+                </button>
+            </div>
             
-            <!-- শিক্ষাবর্ষ ও দাখেলা নম্বর দিয়ে ফিল্টার সার্চ -->
+            <!-- শিক্ষাবর্ষ ও দাখেলা সার্চ -->
             <div class="search-container">
                 <div class="search-grid">
-                    
                     <div class="form-group">
                         <label>শিক্ষাবর্ষ নির্বাচন *</label>
-                        <select id="searchSession">
-                            <!-- ফায়ারবেস থেকে অটো লোড হবে এবং লেটেস্ট সিলেক্ট থাকবে -->
-                        </select>
+                        <select id="searchSession"></select>
                     </div>
 
                     <div class="form-group">
@@ -336,9 +361,7 @@
                 </div>
             </div>
 
-            <div style="text-align:right; margin-bottom:16px;"><button class="btn btn-gold" onclick="generateMonthlyBillForClass()">⚡ নির্বাচিত মাসের বিল সকল ছাত্রের ওপর ধার্য করুন</button></div>
-
-            <!-- ছাত্র প্রোফাইল সামারি বক্স -->
+            <!-- ছাত্র প্রোফাইল ও আলাদা বকেয়া সামারি -->
             <div id="studentProfile" class="student-profile">
                 <div class="profile-grid">
                     <div class="profile-item">
@@ -358,69 +381,66 @@
                         <strong id="pJamat">-</strong>
                     </div>
                     <div class="profile-item">
-                        <span>শিক্ষাবর্ষ</span>
-                        <strong id="pSession">-</strong>
+                        <span>খোরাকি বকেয়া</span>
+                        <strong id="pDueKhoraki" style="color: #991B1B; font-size: 1.15rem;">০ ৳</strong>
                     </div>
                     <div class="profile-item">
-                        <span>বর্তমান বকেয়া</span>
-                        <strong id="pDue" style="color: red;">০ ৳</strong>
+                        <span>বিদ্যুৎ বকেয়া</span>
+                        <strong id="pDueElectricity" style="color: #C2410C; font-size: 1.15rem;">০ ৳</strong>
+                    </div>
+                    <div class="profile-item">
+                        <span>সর্বমোট বকেয়া</span>
+                        <strong id="pTotalDue" style="color: red; font-size: 1.25rem;">০ ৳</strong>
                     </div>
                 </div>
 
-                <!-- বিল পরিশোধ ফর্ম -->
+                <!-- বিল আদায় ফর্ম (খোরাকি ও বিদ্যুৎ সম্পূর্ণ আলাদা ঘর) -->
                 <h4 style="margin: 22px 0 10px 0; color: var(--primary); border-bottom: 1px dashed var(--border); padding-bottom: 6px;">
-                    💵 আদায়ের বিবরণী ও রসিদ
+                    💵 খাতওয়ারি ফি আদায়ের বিবরণ
                 </h4>
 
                 <div class="billing-grid">
-                    <!-- রসিদ নং ইনপুট (ম্যানুয়াল) -->
+                    <!-- কর্মকর্তা লক করা -->
+                    <div class="form-group">
+                        <label>আদায়কারী কর্মকর্তা 🔒</label>
+                        <div id="cashierBadge" class="cashier-locked-badge">👤 লোড হচ্ছে...</div>
+                    </div>
+
+                    <!-- রসিদ নং -->
                     <div class="form-group">
                         <label>রসিদ নং (হাতে লেখা বইয়ের নম্বর)</label>
                         <input type="text" id="manualReceiptNo" placeholder="যেমন: ৫০১ বা B-102">
                     </div>
 
-                    <!-- ইংরেজি সৌর মাস (চলতি মাস অটো সিলেক্ট) -->
+                    <!-- মাস -->
                     <div class="form-group">
-                        <label>মাসের নাম (ইংরেজি) *</label>
-                        <select id="billMonth">
-                            <option value="জানুয়ারি">জানুয়ারি</option>
-                            <option value="ফেব্রুয়ারি">ফেব্রুয়ারি</option>
-                            <option value="মার্চ">মার্চ</option>
-                            <option value="এপ্রিল">এপ্রিল</option>
-                            <option value="মে">মে</option>
-                            <option value="জুন">জুন</option>
-                            <option value="জুলাই">জুলাই</option>
-                            <option value="আগস্ট">আগস্ট</option>
-                            <option value="সেপ্টেম্বর">সেপ্টেম্বর</option>
-                            <option value="অক্টোবর">অক্টোবর</option>
-                            <option value="নভেম্বর">নভেম্বর</option>
-                            <option value="ডিসেম্বর">ডিসেম্বর</option>
-                        </select>
+                        <label>পরিশোধের মাস *</label>
+                        <select id="billMonth"></select>
                     </div>
 
+                    <!-- মাধ্যম -->
                     <div class="form-group">
-                        <label>খোরাকি ফি (৳)</label>
-                        <input type="number" id="payKhoraki" oninput="calculateTotal()">
-                    </div>
-
-                    <div class="form-group">
-                        <label>বিদ্যুৎ ও পানি বিল (৳)</label>
-                        <input type="number" id="payElectricity" oninput="calculateTotal()">
-                    </div>
-
-                    <div class="form-group">
-                        <label>বিগত বকেয়া পরিশোধ (৳)</label>
-                        <input type="number" id="payDue" value="0" oninput="calculateTotal()">
-                    </div>
-
-                    <div class="form-group">
-                        <label>পরিশোধের মাধ্যম</label>
+                        <label>পরিশোধের মাধ্যম *</label>
                         <select id="payMethod">
                             <option value="ক্যাশ (নগদ)">ক্যাশ (নগদ)</option>
                             <option value="বিকাশ">বিকাশ</option>
                             <option value="নগদ">নগদ</option>
                             <option value="ব্যাংক">ব্যাংক</option>
                         </select>
+                    </div>
+
+                    <!-- ১. খোরাকি আদায়ের পৃথক ঘর -->
+                    <div class="form-group fund-box khoraki">
+                        <label style="color: #991B1B;">🍚 খোরাকি ফি বাবদ আদায় (৳)</label>
+                        <input type="number" id="payKhoraki" min="0" placeholder="০" oninput="calculateDualTotal()">
+                        <small id="hintKhoraki" style="color: red; font-size: 0.82rem; margin-top: 3px; display: none;"></small>
+                    </div>
+
+                    <!-- ২. বিদ্যুৎ ও পানি আদায়ের পৃথক ঘর -->
+                    <div class="form-group fund-box electricity">
+                        <label style="color: #C2410C;">⚡ বিদ্যুৎ ও পানি বিল বাবদ আদায় (৳)</label>
+                        <input type="number" id="payElectricity" min="0" placeholder="০" oninput="calculateDualTotal()">
+                        <small id="hintElectricity" style="color: red; font-size: 0.82rem; margin-top: 3px; display: none;"></small>
                     </div>
                 </div>
 
@@ -429,8 +449,8 @@
                 </div>
 
                 <div style="text-align: right;">
-                    <button class="btn" style="padding: 12px 28px; font-size: 1.05rem;" onclick="openConfirmPreviewModal()">
-                        👁️ টাকা জমা ও রসিদ প্রিভিউ দেখুন
+                    <button class="btn" id="btnPreview" style="padding: 12px 28px; font-size: 1.05rem;" onclick="openConfirmPreviewModal()">
+                        👁️ জমা নিশ্চিতকরণ প্রিভিউ দেখুন
                     </button>
                 </div>
             </div>
@@ -439,41 +459,53 @@
 
     </div>
 
-    <!-- ============================================================== -->
-    <!-- 👁️ পপ-আপ কনফার্মেশন প্রিভিউ মোডাল -->
-    <!-- ============================================================== -->
-    <div id="confirmModal" class="modal-overlay no-print">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3>🔍 জমা নিশ্চিতকরণ প্রিভিউ</h3>
-                <small style="color: #666;">দয়া করে জমার তথ্যগুলো মিলিয়ে দেখে কনফার্ম করুন</small>
-            </div>
+    <!-- ১২ মাসের ডায়ালগ মোডাল -->
+    <div id="monthModal" class="modal-overlay no-print">
+        <div class="month-modal-box">
+            <h3 style="margin-top: 0; color: var(--primary);">🗓️ বিল ধার্যের মাস নির্বাচন করুন</h3>
+            <p style="color: #666; font-size: 0.92rem; margin-top: -5px;">
+                নির্বাচিত মাসের খোরাকি ও বিদ্যুৎ বিল প্রত্যেক ছাত্রের নির্ধারিত হার অনুযায়ী তাদের নিজ নিজ বকেয়ায় যোগ হবে (ফ্রি ছাত্রদের যোগ হবে না):
+            </p>
 
+            <div class="months-grid" id="monthsGridContainer"></div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-gray" onclick="closeMonthlyBillingDialog()">✕ বাতিল</button>
+                <button class="btn btn-gold" id="btnProceedMonth" disabled onclick="executeBatchBillingWithDoubleConfirm()">
+                    ✓ এগিয়ে যান ও কনফার্ম করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- চূড়ান্ত জমা নিশ্চিতকরণ মোডাল -->
+    <div id="confirmModal" class="modal-overlay no-print">
+        <div class="month-modal-box" style="text-align: left; max-width: 500px;">
+            <h3 style="margin-top: 0; color: var(--primary); border-bottom: 2px solid #E8F5E9; padding-bottom: 8px;">
+                🔍 জমা নিশ্চিতকরণ প্রিভিউ (দ্বৈত-খাত)
+            </h3>
             <ul class="preview-list">
                 <li><span>ছাত্রের নাম:</span> <strong id="mName">-</strong></li>
                 <li><span>দাখেলা ও জামাত:</span> <strong id="mDakhelaJamat">-</strong></li>
                 <li><span>শিক্ষাবর্ষ ও মাস:</span> <strong id="mSessionMonth">-</strong></li>
                 <li><span>বইয়ের রসিদ নং:</span> <strong id="mReceiptNo">-</strong></li>
-                <li><span>খোরাকি ফি:</span> <span id="mKhoraki">০ ৳</span></li>
-                <li><span>বিদ্যুৎ ও পানি বিল:</span> <span id="mElectricity">০ ৳</span></li>
-                <li><span>বকেয়া বাবদ পরিশোধ:</span> <span id="mDuePaid">০ ৳</span></li>
+                <li><span>আদায়কারী কর্মকর্তা:</span> <strong id="mCashier">-</strong></li>
+                <li style="color: #991B1B;"><span>খোরাকি ফি আদায়:</span> <strong id="mKhoraki">০ ৳</strong></li>
+                <li style="color: #C2410C;"><span>বিদ্যুৎ ও পানি বিল আদায়:</span> <strong id="mElectricity">০ ৳</strong></li>
                 <li style="font-size: 1.15rem; border-top: 2px solid var(--primary); padding-top: 8px;">
-                    <span>সর্বমোট জমা:</span> <strong id="mTotal" style="color: var(--primary);">০ ৳</strong>
+                    <span>সর্বমোট আদায়:</span> <strong id="mTotal" style="color: var(--primary);">০ ৳</strong>
                 </li>
                 <li><span>পেমেন্ট মাধ্যম:</span> <span id="mMethod">-</span></li>
             </ul>
 
-            <div class="modal-actions">
-                <button class="btn btn-gray" onclick="closeModal()">✕ সংশোধন করুন</button>
-                <button class="btn" id="btnConfirmPay" onclick="executeFinalPayment()">✓ ঠিক আছে (জমা ও প্রিন্ট)</button>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-gray" onclick="closeConfirmModal()">✕ সংশোধন</button>
+                <button class="btn" id="btnConfirmPay" onclick="executeFinalPaymentWithPin()">🔒 পিন দিন ও রসিদ প্রিন্ট করুন</button>
             </div>
         </div>
     </div>
 
-
-    <!-- ============================================================== -->
-    <!-- 🖨️ প্রিন্ট যোগ্য মানি রসিদ (Money Receipt) -->
-    <!-- ============================================================== -->
+    <!-- প্রিন্ট যোগ্য মানি রসিদ -->
     <div id="receiptArea">
         <div class="receipt-header">
             <h3 style="margin: 0; color: #0F5132;">জামিয়া দারুল উলুম বাবুস সালাম</h3>
@@ -502,21 +534,37 @@
             <span>মাধ্যম: <strong id="rMethod">-</strong></span>
         </div>
 
+        <!-- খাতওয়ারি ব্রেকডাউন -->
         <div style="margin-top: 10px;">
-            <div class="receipt-row"><span>মাসিক খোরাকি ফি:</span> <span id="rKhoraki">০ ৳</span></div>
-            <div class="receipt-row"><span>বিদ্যুৎ ও পানি বিল:</span> <span id="rElectricity">০ ৳</span></div>
-            <div class="receipt-row"><span>বকেয়া বাবদ পরিশোধ:</span> <span id="rDuePaid">০ ৳</span></div>
-            <div class="receipt-row" style="font-size: 1.15rem; font-weight: bold; border-top: 1px solid #333; padding-top: 6px;">
+            <div class="receipt-row">
+                <span>মাসিক খোরাকি ফি বাবদ আদায়:</span>
+                <strong id="rKhorakiPaid">০ ৳</strong>
+            </div>
+            <div class="receipt-row" style="font-size: 0.85rem; color: #666; margin-top:-4px;">
+                <span>(অবশিষ্ট খোরাকি বকেয়া):</span>
+                <span id="rRemainKhoraki">০ ৳</span>
+            </div>
+
+            <div class="receipt-row" style="margin-top: 6px;">
+                <span>বিদ্যুৎ ও পানি বিল বাবদ আদায়:</span>
+                <strong id="rElectricityPaid">০ ৳</strong>
+            </div>
+            <div class="receipt-row" style="font-size: 0.85rem; color: #666; margin-top:-4px;">
+                <span>(অবশিষ্ট বিদ্যুৎ বকেয়া):</span>
+                <span id="rRemainElectricity">০ ৳</span>
+            </div>
+
+            <div class="receipt-row" style="font-size: 1.15rem; font-weight: bold; border-top: 1px solid #333; padding-top: 6px; margin-top: 6px;">
                 <span>সর্বমোট আদায়:</span> <span id="rTotal">০ ৳</span>
             </div>
             <div class="receipt-row" style="color: red; margin-top: 4px;">
-                <span>অবশিষ্ট বকেয়া:</span> <span id="rRemainDue">০ ৳</span>
+                <span>মোট অবশিষ্ট বকেয়া:</span> <span id="rRemainTotal">০ ৳</span>
             </div>
         </div>
 
         <div style="display: flex; justify-content: space-between; margin-top: 40px; font-size: 0.85rem;">
-            <span>ছাত্র/অভিভাবকের স্বাক্ষর</span>
-            <span>আদায়কারীর স্বাক্ষর</span>
+            <span>ছাত্র/অভিভাবক স্বাক্ষর</span>
+            <span>আদায়কারী: <strong id="rCashierName">-</strong></span>
         </div>
 
         <div class="no-print" style="text-align: center; margin-top: 22px;">
@@ -525,83 +573,71 @@
         </div>
     </div>
 
-
-    <!-- লজিক ও স্ক্রিপ্ট -->
+    <!-- স্ক্রিপ্ট লজিক -->
     <script>
         let currentStudent = null;
+        let selectedBatchMonth = "";
 
         document.addEventListener("DOMContentLoaded", async () => {
+            populateMonthDropdown();
             await loadSearchSessions();
-            autoSelectCurrentMonth();
+            setupCashierBadge();
         });
 
-        // ফায়ারবেস থেকে শিক্ষাবর্ষ লোড এবং লেটেস্ট সিলেক্ট করা
+        function setupCashierBadge() {
+            setTimeout(() => {
+                const name = currentStaffUser ? (currentStaffUser.name || currentStaffUser.phone) : "কর্মকর্তা";
+                document.getElementById("cashierBadge").innerText = `👤 ${name}`;
+            }, 800);
+        }
+
+        function populateMonthDropdown() {
+            const billMonth = document.getElementById("billMonth");
+            billMonth.innerHTML = "";
+            MONTHS_LIST.forEach(m => billMonth.add(new Option(m, m)));
+            billMonth.value = MONTHS_LIST[new Date().getMonth()];
+        }
+
         async function loadSearchSessions() {
             const searchSession = document.getElementById("searchSession");
             searchSession.innerHTML = "";
-
             try {
-                const snapshot = await db.collection("academic_years").orderBy("year", "desc").get();
-                if (!snapshot.empty) {
-                    snapshot.docs.forEach((doc, idx) => {
+                const snap = await db.collection("academic_years").orderBy("year", "desc").get();
+                if (!snap.empty) {
+                    snap.docs.forEach((doc, idx) => {
                         const yr = doc.data().year;
                         searchSession.add(new Option(yr, yr, idx === 0, idx === 0));
                     });
-                } else {
-                    searchSession.add(new Option("২০২৬-২৭", "২০২৬-২৭", true, true));
-                    searchSession.add(new Option("২০২৫-২৬", "২০২৫-২৬"));
                 }
-            } catch (e) {
+            } catch(e) {
                 searchSession.add(new Option("২০২৬-২৭", "২০২৬-২৭", true, true));
-                searchSession.add(new Option("২০২৫-২৬", "২০২৫-২৬"));
             }
         }
 
-        // বর্তমান ইংরেজি মাস অটো-সিলেক্ট করা
-        function autoSelectCurrentMonth() {
-            const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-            const currentMonthIndex = new Date().getMonth(); // 0 = Jan, 1 = Feb, etc.
-            const billMonth = document.getElementById("billMonth");
-            if (billMonth) {
-                billMonth.value = months[currentMonthIndex];
-            }
-        }
-
-        // ==========================================================
-        // শিক্ষাবর্ষ ও দাখেলা মিলিয়ে ছাত্র সার্চ
-        // ==========================================================
         async function searchStudent() {
             const session = document.getElementById("searchSession").value;
-            const inputVal = document.getElementById("searchDakhela").value.trim();
-            const dakhelaNum = parseInt(inputVal, 10);
+            const dakhelaNum = parseInt(normDigits(document.getElementById("searchDakhela").value.trim()), 10);
 
-            if (!session) {
-                alert("অনুগ্রহ করে শিক্ষাবর্ষ নির্বাচন করুন!");
-                return;
-            }
-
-            if (isNaN(dakhelaNum)) {
-                alert("অনুগ্রহ করে সঠিক দাখেলা নম্বর লিখুন!");
+            if (!session || isNaN(dakhelaNum)) {
+                alert("শিক্ষাবর্ষ ও সঠিক দাখেলা নম্বর প্রদান করুন!");
                 return;
             }
 
             try {
-                // শিক্ষাবর্ষ এবং দাখেলা নম্বর মিলিয়ে ফায়ারবেস কুয়েরি
-                const querySnapshot = await db.collection("students")
+                const snap = await db.collection("students")
                     .where("session", "==", session)
                     .where("dakhelaNum", "==", dakhelaNum)
                     .limit(1)
                     .get();
 
-                if (querySnapshot.empty) {
+                if (snap.empty) {
                     alert(`শিক্ষাবর্ষ: ${session}-এ দাখেলা নং ${toBengaliNumber(dakhelaNum)} বিশিষ্ট কোনো ছাত্র পাওয়া যায়নি!`);
                     document.getElementById("studentProfile").style.display = "none";
                     currentStudent = null;
                     return;
                 }
 
-                const doc = querySnapshot.docs[0];
-                currentStudent = { id: doc.id, ...doc.data() };
+                currentStudent = { id: snap.docs[0].id, ...snap.docs[0].data() };
                 displayStudentProfile(currentStudent);
 
             } catch (err) {
@@ -610,120 +646,188 @@
         }
 
         function displayStudentProfile(std) {
+            const dueKh = Number(std.dueKhoraki) || 0;
+            const dueEl = Number(std.dueElectricity) || 0;
+            const totalDue = dueKh + dueEl;
+
             document.getElementById("pDakhela").innerText = toBengaliNumber(std.dakhelaNum);
             document.getElementById("pName").innerText = std.name;
             document.getElementById("pFather").innerText = std.fatherName || '-';
             document.getElementById("pJamat").innerText = std.jamat;
-            document.getElementById("pSession").innerText = std.session || '-';
-            document.getElementById("pDue").innerText = `${toBengaliNumber(std.dueAmount || 0)} ৳`;
+            document.getElementById("pDueKhoraki").innerText = `${toBengaliNumber(dueKh)} ৳`;
+            document.getElementById("pDueElectricity").innerText = `${toBengaliNumber(dueEl)} ৳`;
+            document.getElementById("pTotalDue").innerText = `${toBengaliNumber(totalDue)} ৳`;
 
-            // ডিফল্ট মান বসানো
-            document.getElementById("payKhoraki").value = std.khoraki || 0;
-            document.getElementById("payElectricity").value = std.electricity || 0;
-            document.getElementById("payDue").value = 0;
+            const inputKh = document.getElementById("payKhoraki");
+            const inputEl = document.getElementById("payElectricity");
+            const hintKh = document.getElementById("hintKhoraki");
+            const hintEl = document.getElementById("hintElectricity");
+
+            // খোরাকি বক্স লক/আনলক
+            if (dueKh <= 0) {
+                inputKh.value = 0;
+                inputKh.disabled = true;
+                hintKh.style.display = "block";
+                hintKh.innerText = "খোরাকি বকেয়া নেই (অগ্রিম নিষিদ্ধ)";
+            } else {
+                inputKh.disabled = false;
+                inputKh.value = dueKh;
+                inputKh.max = dueKh;
+                hintKh.style.display = "none";
+            }
+
+            // বিদ্যুৎ বক্স লক/আনলক
+            if (dueEl <= 0) {
+                inputEl.value = 0;
+                inputEl.disabled = true;
+                hintEl.style.display = "block";
+                hintEl.innerText = "বিদ্যুৎ বকেয়া নেই (অগ্রিম নিষিদ্ধ)";
+            } else {
+                inputEl.disabled = false;
+                inputEl.value = dueEl;
+                inputEl.max = dueEl;
+                hintEl.style.display = "none";
+            }
+
             document.getElementById("manualReceiptNo").value = "";
-
-            calculateTotal();
+            calculateDualTotal();
             document.getElementById("studentProfile").style.display = "block";
-            window.scrollTo({ top: document.getElementById("studentProfile").offsetTop - 20, behavior: 'smooth' });
         }
 
-        function calculateTotal() {
-            const k = Number(document.getElementById("payKhoraki").value) || 0;
-            const e = Number(document.getElementById("payElectricity").value) || 0;
-            const d = Number(document.getElementById("payDue").value) || 0;
-            const total = k + e + d;
-            document.getElementById("grandTotal").innerText = toBengaliNumber(total);
-            return total;
+        function calculateDualTotal() {
+            if (!currentStudent) return 0;
+
+            const maxKh = Number(currentStudent.dueKhoraki) || 0;
+            const maxEl = Number(currentStudent.dueElectricity) || 0;
+
+            const inputKh = document.getElementById("payKhoraki");
+            const inputEl = document.getElementById("payElectricity");
+
+            let valKh = Number(normDigits(inputKh.value)) || 0;
+            let valEl = Number(normDigits(inputEl.value)) || 0;
+
+            // কঠোর সীমানা চেক
+            if (valKh > maxKh) {
+                inputKh.value = maxKh;
+                valKh = maxKh;
+            }
+            if (valEl > maxEl) {
+                inputEl.value = maxEl;
+                valEl = maxEl;
+            }
+
+            const grand = valKh + valEl;
+            document.getElementById("grandTotal").innerText = toBengaliNumber(grand);
+            document.getElementById("btnPreview").disabled = (grand <= 0);
+
+            return { valKh, valEl, grand };
         }
 
-        // ==========================================================
-        // পপ-আপ প্রিভিউ দেখানো
-        // ==========================================================
         function openConfirmPreviewModal() {
-            if (!currentStudent) return;
-
-            const total = calculateTotal();
-            if (total <= 0) {
-                alert("আদায়ের মোট পরিমাণ ০ এর বেশি হতে হবে!");
+            const { valKh, valEl, grand } = calculateDualTotal();
+            if (grand <= 0) {
+                alert("কমপক্ষে একটি খাতের বকেয়া আদায়ের পরিমাণ লিখুন!");
                 return;
             }
 
-            const khorakiPaid = Number(document.getElementById("payKhoraki").value) || 0;
-            const electPaid = Number(document.getElementById("payElectricity").value) || 0;
-            const duePaid = Number(document.getElementById("payDue").value) || 0;
             const month = document.getElementById("billMonth").value;
             const method = document.getElementById("payMethod").value;
             const manualReceipt = document.getElementById("manualReceiptNo").value.trim() || 'প্রযোজ্য নয়';
+            const cashierName = currentStaffUser ? (currentStaffUser.name || currentStaffUser.phone) : 'অজানা';
 
-            // মোডালে তথ্য বসানো
             document.getElementById("mName").innerText = currentStudent.name;
             document.getElementById("mDakhelaJamat").innerText = `দাখেলা: ${toBengaliNumber(currentStudent.dakhelaNum)} | ${currentStudent.jamat}`;
             document.getElementById("mSessionMonth").innerText = `${currentStudent.session} (${month})`;
             document.getElementById("mReceiptNo").innerText = manualReceipt;
-            document.getElementById("mKhoraki").innerText = `${toBengaliNumber(khorakiPaid)} ৳`;
-            document.getElementById("mElectricity").innerText = `${toBengaliNumber(electPaid)} ৳`;
-            document.getElementById("mDuePaid").innerText = `${toBengaliNumber(duePaid)} ৳`;
-            document.getElementById("mTotal").innerText = `${toBengaliNumber(total)} ৳`;
+            document.getElementById("mCashier").innerText = cashierName;
+            document.getElementById("mKhoraki").innerText = `${toBengaliNumber(valKh)} ৳`;
+            document.getElementById("mElectricity").innerText = `${toBengaliNumber(valEl)} ৳`;
+            document.getElementById("mTotal").innerText = `${toBengaliNumber(grand)} ৳`;
             document.getElementById("mMethod").innerText = method;
 
             document.getElementById("confirmModal").style.display = "flex";
         }
 
-        function closeModal() {
+        function closeConfirmModal() {
             document.getElementById("confirmModal").style.display = "none";
         }
 
-        // ==========================================================
-        // কনফার্ম বাটন চাপলে চূড়ান্ত পেমেন্ট ও অটোমেটিক প্রিন্ট
-        // ==========================================================
-        async function executeFinalPayment() {
+        async function executeFinalPaymentWithPin() {
+            const hasPin = await verifyUserPin("ফি জমা ও রসিদ তৈরি");
+            if (!hasPin) return;
+
             const btn = document.getElementById("btnConfirmPay");
             btn.disabled = true;
-            btn.innerText = "⏳ সেভ হচ্ছে...";
+            btn.innerText = "⏳ জমা হচ্ছে...";
 
-            const khorakiPaid = Number(document.getElementById("payKhoraki").value) || 0;
-            const electPaid = Number(document.getElementById("payElectricity").value) || 0;
-            const duePaid = Number(document.getElementById("payDue").value) || 0;
-            const totalPaid = calculateTotal();
+            const { valKh, valEl, grand } = calculateDualTotal();
             const month = document.getElementById("billMonth").value;
             const method = document.getElementById("payMethod").value;
             const manualReceipt = document.getElementById("manualReceiptNo").value.trim() || 'N/A';
-            
-            // সিস্টেম জেনারেটেড ইউনিক ইনভয়েস নম্বর
+            const cashierName = currentStaffUser ? (currentStaffUser.name || currentStaffUser.phone) : auth.currentUser.email;
+
             let invoiceNo;
             const currentDate = new Date().toLocaleDateString('bn-BD');
-
-            // অবশিষ্ট বকেয়া হিসাব
-            const currentDue = currentStudent.dueAmount || 0;
-            let newDue;
+            let newDueKh, newDueEl, newTotalDue;
 
             try {
-                // ১. একটি অ্যাটমিক ট্রানজেকশন: সিরিয়াল ইনভয়েস, রসিদ নং ইউনিক চেক, লেনদেন সেভ ও বকেয়া হ্রাস
                 const stRef = db.collection("students").doc(currentStudent.id);
                 const cRef = db.collection("counters").doc("invoice");
                 const rcRef = manualReceipt !== 'N/A' ? db.collection("receipt_index").doc(normDigits(manualReceipt).replace(/[\/\s]/g, '_')) : null;
+
                 await db.runTransaction(async tx => {
-                    const [stSnap, cSnap, rcSnap] = await Promise.all([tx.get(stRef), tx.get(cRef), rcRef ? tx.get(rcRef) : Promise.resolve(null)]);
-                    if (rcSnap && rcSnap.exists) throw new Error("এই রসিদ নম্বর আগেই ব্যবহার করা হয়েছে!");
+                    const [stSnap, cSnap, rcSnap] = await Promise.all([
+                        tx.get(stRef),
+                        tx.get(cRef),
+                        rcRef ? tx.get(rcRef) : Promise.resolve(null)
+                    ]);
+
+                    if (rcSnap && rcSnap.exists) throw new Error("এই রসিদ নম্বরটি ইতোমধ্যে ব্যবহার করা হয়েছে!");
+                    const curKh = Number(stSnap.data().dueKhoraki) || 0;
+                    const curEl = Number(stSnap.data().dueElectricity) || 0;
+
+                    if (valKh > curKh || valEl > curEl) throw new Error("নির্ধারিত বকেয়ার চেয়ে বেশি টাকা গ্রহণ করা যাবে না!");
+
                     const seq = (cSnap.exists ? cSnap.data().n : 0) + 1;
                     invoiceNo = "INV-" + String(seq).padStart(6, "0");
-                    newDue = (Number(stSnap.data().dueAmount) || 0) - totalPaid; // নেগেটিভ = অগ্রিম জমা
+
+                    newDueKh = curKh - valKh;
+                    newDueEl = curEl - valEl;
+                    newTotalDue = newDueKh + newDueEl;
+
                     tx.set(cRef, { n: seq });
                     if (rcRef) tx.set(rcRef, { invoiceNo: invoiceNo });
+
+                    // ট্রানজেকশনে খোরাকি ও বিদ্যুৎ আলাদা ফিল্ডে সেভ
                     tx.set(db.collection("transactions").doc(), {
-                        invoiceNo, manualReceiptNo: manualReceipt, studentId: currentStudent.id,
-                        dakhelaNum: currentStudent.dakhelaNum, name: currentStudent.name,
-                        fatherName: currentStudent.fatherName || '', jamat: currentStudent.jamat,
-                        session: currentStudent.session || '', month, khoraki: khorakiPaid,
-                        electricity: electPaid, duePaid, totalPaid, paymentMethod: method,
-                        collectedBy: auth.currentUser.email,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp(), dateString: currentDate
+                        invoiceNo,
+                        manualReceiptNo: manualReceipt,
+                        studentId: currentStudent.id,
+                        dakhelaNum: currentStudent.dakhelaNum,
+                        name: currentStudent.name,
+                        fatherName: currentStudent.fatherName || '',
+                        jamat: currentStudent.jamat,
+                        session: currentStudent.session || '',
+                        month,
+                        khorakiPaid: valKh,
+                        electricityPaid: valEl,
+                        totalPaid: grand,
+                        paymentMethod: method,
+                        collectedBy: cashierName,
+                        cashierPhone: currentStaffUser ? currentStaffUser.phone : '',
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        dateString: currentDate
                     });
-                    tx.update(stRef, { dueAmount: newDue });
+
+                    // ছাত্রের আলাদা বকেয়া ফিল্ড আপডেট
+                    tx.update(stRef, {
+                        dueKhoraki: newDueKh,
+                        dueElectricity: newDueEl,
+                        dueAmount: newTotalDue
+                    });
                 });
 
-                // ৩. প্রিন্ট রসিদে তথ্য সেট করা
+                // রসিদে আলাদা ব্রেকডাউন প্রদর্শন
                 document.getElementById("rInvoiceNo").innerText = invoiceNo;
                 document.getElementById("rManualReceipt").innerText = manualReceipt;
                 document.getElementById("rDate").innerText = currentDate;
@@ -734,61 +838,114 @@
                 document.getElementById("rJamat").innerText = currentStudent.jamat;
                 document.getElementById("rMonth").innerText = month;
                 document.getElementById("rMethod").innerText = method;
-                document.getElementById("rKhoraki").innerText = `${toBengaliNumber(khorakiPaid)} ৳`;
-                document.getElementById("rElectricity").innerText = `${toBengaliNumber(electPaid)} ৳`;
-                document.getElementById("rDuePaid").innerText = `${toBengaliNumber(duePaid)} ৳`;
-                document.getElementById("rTotal").innerText = `${toBengaliNumber(totalPaid)} ৳`;
-                document.getElementById("rRemainDue").innerText = newDue < 0 ? `অগ্রিম ${toBengaliNumber(-newDue)} ৳` : `${toBengaliNumber(newDue)} ৳`;
 
-                // মোডাল বন্ধ
-                closeModal();
+                document.getElementById("rKhorakiPaid").innerText = `${toBengaliNumber(valKh)} ৳`;
+                document.getElementById("rRemainKhoraki").innerText = `${toBengaliNumber(newDueKh)} ৳`;
+                document.getElementById("rElectricityPaid").innerText = `${toBengaliNumber(valEl)} ৳`;
+                document.getElementById("rRemainElectricity").innerText = `${toBengaliNumber(newDueEl)} ৳`;
 
-                // রসিদ প্রদর্শন ও স্বয়ংক্রিয় প্রিন্ট ডায়ালগ ওপেন
+                document.getElementById("rTotal").innerText = `${toBengaliNumber(grand)} ৳`;
+                document.getElementById("rRemainTotal").innerText = `${toBengaliNumber(newTotalDue)} ৳`;
+                document.getElementById("rCashierName").innerText = cashierName;
+
+                closeConfirmModal();
                 document.getElementById("receiptArea").style.display = "block";
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                
-                setTimeout(() => {
-                    window.print();
-                }, 500);
 
-                // ফর্ম রিসেট
+                setTimeout(() => { window.print(); }, 400);
+
                 document.getElementById("studentProfile").style.display = "none";
                 document.getElementById("searchDakhela").value = "";
 
             } catch (err) {
-                alert("পেমেন্ট ব্যর্থ হয়েছে: " + err.message);
+                alert("পেমেন্ট ব্যর্থ: " + err.message);
             } finally {
                 btn.disabled = false;
-                btn.innerText = "✓ ঠিক আছে (জমা ও প্রিন্ট)";
+                btn.innerText = "🔒 পিন দিন ও রসিদ প্রিন্ট করুন";
             }
         }
-        async function generateMonthlyBillForClass() {
+
+        // ==========================================================
+        // ১২ মাসের ডায়ালগ বক্স ও বাল্ক বিল ধার্য (Dual Funds Batch Billing)
+        // ==========================================================
+        function openMonthlyBillingDialog() {
+            selectedBatchMonth = "";
+            const container = document.getElementById("monthsGridContainer");
+            container.innerHTML = "";
+            document.getElementById("btnProceedMonth").disabled = true;
+
+            MONTHS_LIST.forEach(month => {
+                const btn = document.createElement("button");
+                btn.className = "month-btn";
+                btn.innerText = month;
+                btn.onclick = () => {
+                    document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectedBatchMonth = month;
+                    document.getElementById("btnProceedMonth").disabled = false;
+                };
+                container.appendChild(btn);
+            });
+
+            document.getElementById("monthModal").style.display = "flex";
+        }
+
+        function closeMonthlyBillingDialog() {
+            document.getElementById("monthModal").style.display = "none";
+        }
+
+        async function executeBatchBillingWithDoubleConfirm() {
+            if (!selectedBatchMonth) return;
+
             const session = document.getElementById("searchSession").value;
-            const month = document.getElementById("billMonth").value;
             const year = new Date().getFullYear();
-            const runRef = db.collection("billing_runs").doc(`${normDigits(session)}_${year}_${month}`);
+            const lockKey = `${normDigits(session)}_${year}_${selectedBatchMonth}`;
+            const runRef = db.collection("billing_runs").doc(lockKey);
+
             if ((await runRef.get()).exists) {
-                alert(`${month} ${toBengaliNumber(year)}-এর বিল এই শিক্ষাবর্ষে আগেই ধার্য হয়েছে। দ্বিতীয়বার ধার্য করা যাবে না।`);
+                alert(`⚠️ ${selectedBatchMonth} ${toBengaliNumber(year)}-এর বিল এই শিক্ষাবর্ষে আগেই ধার্য হয়েছে। দ্বিতীয়বার ধার্য করা সম্ভব নয়!`);
                 return;
             }
-            if (!confirm(`শিক্ষাবর্ষ ${session}-এর সকল সক্রিয় ছাত্রের অ্যাকাউন্টে ${month} ${toBengaliNumber(year)} মাসের খোরাকি ও বিদ্যুৎ বিল বকেয়া হিসেবে যোগ হবে। নিশ্চিত?`)) return;
+
+            const warningText = `🚨 চূড়ান্ত সতর্কতা!\n\nশিক্ষাবর্ষ: ${session}\nমাস: ${selectedBatchMonth}\n\nএই মাসের খোরাকি ফি ও বিদ্যুৎ বিল সকল সক্রিয় ছাত্রের নিজ নিজ বকেয়ায় যোগ হবে।\n\n⚠️ "এটি পরিবর্তন করা যাবে না! আপনি কি নিশ্চিত?"`;
+            if (!confirm(warningText)) return;
+
+            const hasPin = await verifyUserPin(`সকল ছাত্রের ওপর ${selectedBatchMonth} মাসের বিল ধার্য`);
+            if (!hasPin) return;
+
+            closeMonthlyBillingDialog();
+
             try {
-                // আগে লক রেকর্ড: মাঝপথে ব্যর্থ হলেও ডাবল চার্জ ঠেকাবে
-                await runRef.set({ session, month, year, status: "started", by: auth.currentUser.email, at: firebase.firestore.FieldValue.serverTimestamp() });
+                await runRef.set({
+                    session,
+                    month: selectedBatchMonth,
+                    year,
+                    by: currentStaffUser ? currentStaffUser.name : auth.currentUser.email,
+                    at: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
                 const snap = await db.collection("students").where("session", "==", session).get();
                 const docs = snap.docs.filter(d => (d.data().status || "active") === "active");
+
                 for (let i = 0; i < docs.length; i += 400) {
                     const batch = db.batch();
                     docs.slice(i, i + 400).forEach(d => {
                         const x = d.data();
-                        batch.update(d.ref, { dueAmount: firebase.firestore.FieldValue.increment((Number(x.khoraki) || 0) + (Number(x.electricity) || 0)) });
+                        const addKh = Number(x.khoraki) || 0;
+                        const addEl = Number(x.electricity) || 0;
+
+                        batch.update(d.ref, {
+                            dueKhoraki: firebase.firestore.FieldValue.increment(addKh),
+                            dueElectricity: firebase.firestore.FieldValue.increment(addEl),
+                            dueAmount: firebase.firestore.FieldValue.increment(addKh + addEl)
+                        });
                     });
                     await batch.commit();
                 }
-                await runRef.update({ status: "done", count: docs.length });
-                alert(`আলহামদুলিল্লাহ! ${toBengaliNumber(docs.length)} জন ছাত্রের অ্যাকাউন্টে ${month} মাসের বিল ধার্য হয়েছে।`);
+
+                alert(`আলহামদুলিল্লাহ! ${toBengaliNumber(docs.length)} জন ছাত্রের অ্যাকাউন্টে ${selectedBatchMonth} মাসের খোরাকি ও বিদ্যুৎ বিল সফলভাবে ধার্য হয়েছে।`);
             } catch (e) {
-                alert("বিল ধার্য করতে সমস্যা: " + e.message + "\n\n⚠️ কিছু ছাত্রের বিল ইতোমধ্যে যোগ হয়ে থাকতে পারে। আবার চালানোর আগে রিপোর্ট দেখে নিন।");
+                alert("বিল ধার্য করতে সমস্যা: " + e.message);
             }
         }
     </script>

@@ -1,20 +1,20 @@
+<!-- ফাইল লোকেশন: babussalam-website/portal/students.html -->
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ছাত্র ব্যবস্থাপনা ও বাল্ক ইমপোর্ট | বাবুস সালাম পোর্টাল</title>
+    <title>ছাত্র ব্যবস্থাপনা ও ডুপ্লিকেট-প্রটেক্টেড রেজিস্টার | বাবুস সালাম পোর্টাল</title>
     
     <!-- ফায়ারবেস লাইব্রেরি (CDN) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <!-- এক্সেল ফাইল পড়ার লাইব্রেরি -->
+    <!-- এক্সেল ফাইল প্রসেসর -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-    <!-- ফায়ারবেস কনফিগ ফাইল -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <!-- ফায়ারবেস কনফিগ ও অথ গার্ড -->
     <script src="firebase-config.js"></script>
     <script>requireAuth();</script>
 
@@ -38,37 +38,59 @@
             color: var(--dark);
         }
 
-        /* হেডার */
         .portal-header {
             background: var(--primary);
             color: var(--white);
-            padding: 14px 25px;
+            padding: 12px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .portal-header h2 { margin: 0; font-size: 1.25rem; }
+        .portal-header h2 { margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
+
+        .portal-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .portal-nav a {
             color: #fff;
             text-decoration: none;
-            margin-left: 12px;
             font-weight: bold;
-            padding: 7px 14px;
+            padding: 7px 12px;
             border-radius: 6px;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.14);
             font-size: 0.92rem;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
         .portal-nav a.active { background: var(--accent); color: #000; }
+        .portal-nav a:hover:not(.active) { background: rgba(255,255,255,0.25); }
+
+        .user-tag {
+            background: rgba(0,0,0,0.25);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            border: 1px solid rgba(255,215,0,0.4);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .user-tag:hover { background: rgba(0,0,0,0.45); }
 
         .container {
-            max-width: 1250px;
+            max-width: 1350px;
             margin: 22px auto;
             padding: 0 15px;
         }
 
-        /* কার্ড বক্স */
         .card {
             background: var(--white);
             border-radius: 10px;
@@ -91,10 +113,9 @@
             gap: 10px;
         }
 
-        /* গ্রিড ফরম */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 14px;
         }
 
@@ -105,7 +126,7 @@
 
         .form-group label {
             font-weight: 600;
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             margin-bottom: 5px;
         }
 
@@ -115,11 +136,6 @@
             border-radius: 6px;
             font-size: 0.95rem;
             font-family: inherit;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            border-color: var(--primary);
-            outline: none;
         }
 
         .btn {
@@ -140,23 +156,20 @@
         .btn:hover { background: var(--primary-light); }
         .btn-gold { background: var(--accent); color: #000; }
         .btn-gold:hover { background: #e6c200; }
-        .btn-sm { padding: 5px 10px; font-size: 0.82rem; }
+        .btn-sm { padding: 4px 8px; font-size: 0.82rem; }
+        .btn-gray { background: #6c757d; }
 
-        /* ড্রপ জোন */
         .excel-upload-zone {
             border: 2px dashed var(--primary-light);
             background: #F4FAF6;
             border-radius: 10px;
-            padding: 22px;
+            padding: 20px;
             text-align: center;
             cursor: pointer;
             margin-bottom: 15px;
         }
 
-        /* টেবিল */
-        .table-responsive {
-            overflow-x: auto;
-        }
+        .table-responsive { overflow-x: auto; }
 
         table {
             width: 100%;
@@ -177,49 +190,60 @@
             font-weight: 700;
         }
 
-        .badge {
-            background: #E8F5E9;
-            color: var(--primary);
-            padding: 3px 8px;
-            border-radius: 12px;
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 20px;
             font-size: 0.82rem;
-            font-weight: 600;
-        }
-
-        .session-badge {
-            background: #FFF3CD;
-            color: #856404;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
             font-weight: bold;
-        }
-
-        .action-btn-del {
-            background: #FFEBEB;
-            color: var(--danger);
-            border: 1px solid #FFCDD2;
-            padding: 3px 8px;
-            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.82rem;
+            user-select: none;
         }
+        .status-pill.active { background: #D1E7DD; color: #0F5132; border: 1px solid #BADBCC; }
+        .status-pill.inactive { background: #F8D7DA; color: #842029; border: 1px solid #F5C2C7; }
 
-        /* নোটিফিকেশন বার */
-        #statusMsg {
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            display: none;
+        .pagination-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .page-numbers { display: flex; gap: 5px; }
+        .page-btn {
+            border: 1px solid var(--border);
+            background: #fff;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: inherit;
             font-weight: bold;
         }
-        .success-box { background: #E8F5E9; color: var(--primary); border: 1px solid #C8E6C9; }
-        .error-box { background: #FFEBEE; color: var(--danger); border: 1px solid #FFCDD2; }
+        .page-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-        @media (max-width: 768px) {
-            .portal-header { flex-direction: column; gap: 10px; text-align: center; }
-            .portal-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
-            .portal-nav a { margin: 0; }
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.65);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .modal-box {
+            background: #fff;
+            border-radius: 10px;
+            max-width: 680px;
+            width: 100%;
+            padding: 24px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -227,170 +251,123 @@
 
     <!-- হেডার বার -->
     <header class="portal-header">
-        <h2>🕌 জামিয়া বাবুস সালাম — একাউন্টস পোর্টাল</h2>
+        <h2>🕌 জামিয়া বাবুস সালাম — একাউন্টস</h2>
         <nav class="portal-nav">
-            <a href="students.html" class="active">👥 ছাত্র তালিকা ও ইমপোর্ট</a>
+            <!-- ইউজারের নামের ওপর ক্লিক করে পিন বদলানো যাবে -->
+            <span class="user-tag" title="ক্লিক করে আপনার ৪-ডিজিটের সিকিউরিটি পিন পরিবর্তন করুন">
+                👤 <span id="activeStaffDisplay">লোড হচ্ছে...</span> ⚙️
+            </span>
+            <a href="students.html" class="active">👥 ছাত্র তালিকা</a>
             <a href="collect.html">💰 বিল উত্তোলন</a>
+            <a href="approvals.html">📲 অনলাইন পেমেন্ট</a>
             <a href="reports.html">📊 রিপোর্ট সেন্টার</a>
-            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">লগআউট ✕</a>
+            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">✕ লগআউট</a>
         </nav>
     </header>
 
     <div class="container">
 
-        <!-- মেসেজ ডিসপ্লে -->
-        <div id="statusMsg"></div>
-
-        <!-- ============================================================== -->
-        <!-- 📥 ১. এক্সেল ফাইল থেকে এক ক্লিকে পুরো জামাত আপলোড -->
-        <!-- ============================================================== -->
+        <!-- ১. এক্সেল বাল্ক ইমপোর্ট (কঠোর ডুপ্লিকেট ফিল্টারিংসহ) -->
         <div class="card">
             <div class="card-title">
-                <span>📁 এক্সেল ফাইল থেকে একসাথে ছাত্র ইমপোর্ট করুন (Bulk Import)</span>
+                <span>📁 এক্সেল থেকে ছাত্র ইমপোর্ট (ডুপ্লিকেট দাখেলা কঠোরভাবে নিষিদ্ধ)</span>
                 <div>
-                    <button class="btn btn-gold btn-sm" onclick="downloadSampleExcel()">
-                        ⬇️ এক্সেল ডেমো ফরম্যাট ডাউনলোড
-                    </button>
-                    <button class="btn btn-sm" onclick="promptAddSession()" style="background: var(--primary-light);">
-                        ➕ নতুন শিক্ষাবর্ষ যুক্ত করুন
-                    </button>
+                    <button class="btn btn-gold btn-sm" onclick="downloadSampleExcel()">⬇️ এক্সেল ডেমো</button>
+                    <button class="btn btn-sm" onclick="promptAddSession()">➕ নতুন শিক্ষাবর্ষ</button>
                 </div>
             </div>
-            
-            <p style="margin-top: 0; color: #555; font-size: 0.9rem;">
-                এক্সেলে সাজানো ছাত্রদের ফাইল (.xlsx / .csv) আপলোড করুন। ফাইলটিতে দাখেলা নং (১, ২, ৩...), জন্ম তারিখ ও শিক্ষাবর্ষ থাকবে।
-            </p>
 
             <div class="excel-upload-zone" onclick="document.getElementById('excelFileInput').click()">
                 <span style="font-size: 2.2rem;">📊</span>
                 <h4 style="margin: 6px 0 2px 0; color: var(--primary);">এখানে ক্লিক করে এক্সেল ফাইল সিলেক্ট করুন</h4>
-                <p style="margin: 0; font-size: 0.85rem; color: #777;">সমর্থিত ফাইল: .xlsx, .xls, .csv</p>
+                <p style="margin: 0; font-size: 0.85rem; color: #777;">একই শিক্ষাবর্ষে পূর্বে নিবন্ধিত কোনো দাখেলা এক্সেলে থাকলে তা স্বয়ংক্রিয়ভাবে বাতিল হয়ে যাবে।</p>
                 <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" style="display: none;" onchange="handleExcelUpload(event)">
             </div>
 
-            <!-- প্রিভিউ টেবিল -->
             <div id="previewArea" style="display: none;">
-                <h4 style="color: var(--primary); margin-bottom: 8px;">প্রিভিউ: <span id="previewCount">০</span> জন ছাত্র প্রস্তুত</h4>
-                <div class="table-responsive" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px;">
+                <h4 style="color: var(--primary); margin-bottom: 8px;">প্রিভিউ: <span id="previewCount">০</span> জন প্রস্তুত</h4>
+                <div class="table-responsive" style="max-height: 220px; overflow-y: auto; margin-bottom: 15px;">
                     <table id="previewTable">
                         <thead>
                             <tr>
-                                <th>দাখেলা নং</th>
-                                <th>ছাত্রের নাম</th>
-                                <th>পিতার নাম</th>
-                                <th>জন্ম তারিখ</th>
-                                <th>জামাত</th>
-                                <th>শিক্ষাবর্ষ</th>
-                                <th>খোরাকি</th>
-                                <th>বিদ্যুৎ</th>
-                                <th>পূর্ব বকেয়া</th>
-                                <th>মোবাইল নম্বর</th>
+                                <th>দাখেলা</th><th>নাম</th><th>জামাত</th><th>শিক্ষাবর্ষ</th><th>খোরাকি ফি</th><th>বিদ্যুৎ ফি</th><th>খোরাকি বকেয়া</th><th>বিদ্যুৎ বকেয়া</th><th>মোবাইল</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
-                <button class="btn" id="confirmImportBtn" onclick="saveBulkStudentsToFirebase()">
-                    🚀 কনফার্ম করুন ও ফায়ারবেসে সেভ করুন
-                </button>
+                <button class="btn" id="confirmImportBtn" onclick="saveBulkStudentsWithPin()">🚀 ডুপ্লিকেট যাচাই করে সেভ করুন</button>
             </div>
         </div>
 
-
-        <!-- ============================================================== -->
-        <!-- ✍️ ২. একজন ছাত্রের তথ্য সরাসরি এন্ট্রি ফরম -->
-        <!-- ============================================================== -->
+        <!-- ২. নতুন একক ছাত্র এন্ট্রি (ডুপ্লিকেট নিষিদ্ধকরণ ভ্যালিডেশনসহ) -->
         <div class="card">
-            <div class="card-title">
-                <span>➕ নতুন ছাত্র ভর্তি / তথ্য এন্ট্রি</span>
-            </div>
-
-            <form id="singleStudentForm" onsubmit="saveSingleStudent(event)">
+            <div class="card-title"><span>➕ নতুন ছাত্র ভর্তি এন্ট্রি (দ্বৈত-খাত)</span></div>
+            <form id="singleStudentForm" onsubmit="saveSingleStudentWithPin(event)">
                 <div class="form-grid">
-                    
                     <div class="form-group">
-                        <label>দাখেলা নম্বর (যেমন: ১, ২, ৫০০) *</label>
-                        <input type="number" id="stdDakhela" placeholder="১, ২, ৩..." min="1" step="1" required>
+                        <label>দাখেলা নম্বর (ইউনিক) *</label>
+                        <input type="number" id="stdDakhela" placeholder="১, ২, ৩..." min="1" required>
                     </div>
-
                     <div class="form-group">
-                        <label>ছাত্রের পুরো নাম *</label>
-                        <input type="text" id="stdName" placeholder="ছাত্রের নাম" required>
+                        <label>ছাত্রের নাম *</label>
+                        <input type="text" id="stdName" placeholder="পুরো নাম লিখুন" required>
                     </div>
-
                     <div class="form-group">
                         <label>পিতার নাম</label>
                         <input type="text" id="stdFather" placeholder="পিতার নাম">
                     </div>
-
-                    <div class="form-group">
-                        <label>জন্ম তারিখ (দিন-মাস-সন)</label>
-                        <input type="date" id="stdDob">
-                    </div>
-
                     <div class="form-group">
                         <label>জামাত / বিভাগ *</label>
-                        <select id="stdJamat" required>
-                            <option value="">জামাত নির্বাচন করুন</option>
-                        </select>
+                        <select id="stdJamat" required><option value="">নির্বাচন করুন</option></select>
                     </div>
-
                     <div class="form-group">
                         <label>শিক্ষাবর্ষ *</label>
-                        <select id="stdSession" required>
-                            <!-- ফায়ারবেস থেকে অটো লোড হবে -->
-                        </select>
+                        <select id="stdSession" required></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>মাসিক খোরাকি ফি (৳) [ফ্রি হলে ০] *</label>
+                        <input type="number" id="stdKhoraki" value="2300" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>বিদ্যুৎ ও পানি বিল (৳) [ফ্রি হলে ০] *</label>
+                        <input type="number" id="stdElectricity" value="500" min="0" required>
                     </div>
 
                     <div class="form-group">
-                        <label>মাসিক খোরাকি ফি (৳)</label>
-                        <input type="number" id="stdKhoraki" value="2300" required>
+                        <label>পূর্ব খোরাকি বকেয়া থাকলে (৳)</label>
+                        <input type="number" id="stdDueKhoraki" value="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>পূর্ব বিদ্যুৎ বকেয়া থাকলে (৳)</label>
+                        <input type="number" id="stdDueElectricity" value="0" min="0">
                     </div>
 
                     <div class="form-group">
-                        <label>বিদ্যুৎ ও পানি বিল (৳)</label>
-                        <input type="number" id="stdElectricity" value="500" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>পূর্বের বকেয়া থাকলে (৳)</label>
-                        <input type="number" id="stdPrevDue" value="0">
-                    </div>
-
-                    <div class="form-group">
-                        <label>অভিভাবকের মোবাইল নম্বর</label>
+                        <label>অভিভাবকের মোবাইল</label>
                         <input type="tel" id="stdPhone" placeholder="01XXXXXXXXX">
                     </div>
-
                 </div>
-
-                <div style="margin-top: 16px;">
+                <div style="margin-top: 15px;">
                     <button type="submit" class="btn">💾 ছাত্র সংরক্ষণ করুন</button>
                 </div>
             </form>
         </div>
 
-
-        <!-- ============================================================== -->
-        <!-- 📋 ৩. ছাত্রদের রেজিস্টার তালিকা ও সার্চ/ফিল্টার -->
-        <!-- ============================================================== -->
+        <!-- ৩. রেজিস্টার তালিকা -->
         <div class="card">
             <div class="card-title">
-                <span>👥 নিবন্ধিত ছাত্রদের তালিকা (<span id="totalStudentsCount">০</span> জন)</span>
+                <span>👥 নিবন্ধিত ছাত্র তালিকা (<span id="totalStudentsCount">০</span> জন)</span>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    
-                    <!-- শিক্ষাবর্ষ ফিল্টার -->
-                    <select id="filterSession" onchange="filterStudentsTable()" style="padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border);">
-                        <option value="">সকল শিক্ষাবর্ষ</option>
+                    <select id="filterSession" onchange="applyFiltersAndResetPage()"><option value="">সকল শিক্ষাবর্ষ</option></select>
+                    <select id="filterJamat" onchange="applyFiltersAndResetPage()"><option value="">সকল জামাত</option></select>
+                    <select id="filterStatus" onchange="applyFiltersAndResetPage()">
+                        <option value="">সকল স্ট্যাটাস</option>
+                        <option value="active">কেবল সক্রিয়</option>
+                        <option value="inactive">কেবল নিষ্ক্রিয়</option>
                     </select>
-
-                    <!-- জামাত ফিল্টার -->
-                    <select id="filterJamat" onchange="filterStudentsTable()" style="padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border);">
-                        <option value="">সকল জামাত</option>
-                    </select>
-
-                    <!-- সার্চ বক্স -->
-                    <input type="text" id="searchKeyword" onkeyup="filterStudentsTable()" placeholder="🔍 নাম বা দাখেলা খুঁজুন..." style="padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border);">
+                    <input type="text" id="searchKeyword" onkeyup="applyFiltersAndResetPage()" placeholder="🔍 নাম বা দাখেলা খুঁজুন...">
                 </div>
             </div>
 
@@ -398,359 +375,585 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>দাখেলা নং</th>
+                            <th>দাখেলা</th>
                             <th>নাম</th>
-                            <th>পিতার নাম</th>
-                            <th>জন্ম তারিখ</th>
                             <th>জামাত</th>
                             <th>শিক্ষাবর্ষ</th>
-                            <th>খোরাকি</th>
-                            <th>বিদ্যুৎ</th>
-                            <th>বর্তমান বকেয়া</th>
-                            <th>মোবাইল</th>
+                            <th>ধার্য খোরাকি</th>
+                            <th>ধার্য বিদ্যুৎ</th>
+                            <th style="color: #991B1B;">খোরাকি বকেয়া</th>
+                            <th style="color: #C2410C;">বিদ্যুৎ বকেয়া</th>
+                            <th style="color: #DC2626; font-weight: bold;">মোট বকেয়া</th>
+                            <th>স্ট্যাটাস</th>
                             <th>অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody id="studentsTableBody">
-                        <tr>
-                            <td colspan="11" style="text-align: center; color: var(--gray);">ডাটাবেজ থেকে তথ্য লোড হচ্ছে...</td>
-                        </tr>
+                        <tr><td colspan="11" style="text-align: center; color: #888;">ডাটাবেজ লোড হচ্ছে...</td></tr>
                     </tbody>
                 </table>
+            </div>
+
+            <div class="pagination-bar">
+                <span id="pageInfoText" style="color: #666; font-size: 0.9rem;">পৃষ্ঠা ১ এর মধ্যে ১</span>
+                <div class="page-numbers" id="paginationControls"></div>
             </div>
         </div>
 
     </div>
 
+    <!-- ৪. ছাত্র সম্পাদনা মোডাল -->
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="margin-top:0; color:var(--primary); border-bottom: 2px solid #E8F5E9; padding-bottom:8px;">
+                ✏️ ছাত্রের তথ্য ও ফি সম্পাদনা (Dual-Ledger)
+            </h3>
+            <form id="editStudentForm" onsubmit="submitStudentEditWithPin(event)">
+                <input type="hidden" id="editDocId">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>দাখেলা নং (লক)</label>
+                        <input type="number" id="editDakhela" readonly style="background:#eee;">
+                    </div>
+                    <div class="form-group">
+                        <label>শিক্ষাবর্ষ (লক)</label>
+                        <input type="text" id="editSession" readonly style="background:#eee;">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>ছাত্রের নাম *</label>
+                        <input type="text" id="editName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>পিতার নাম</label>
+                        <input type="text" id="editFather">
+                    </div>
+                    <div class="form-group">
+                        <label>জামাত *</label>
+                        <select id="editJamat" required></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>মাসিক খোরাকি ফি (৳) [ফ্রি হলে ০] *</label>
+                        <input type="number" id="editKhoraki" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>বিদ্যুৎ ও পানি বিল (৳) [ফ্রি হলে ০] *</label>
+                        <input type="number" id="editElectricity" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>বর্তমান খোরাকি বকেয়া (৳)</label>
+                        <input type="number" id="editDueKhoraki" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>বর্তমান বিদ্যুৎ বকেয়া (৳)</label>
+                        <input type="number" id="editDueElectricity" min="0" required>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>অভিভাবকের মোবাইল</label>
+                        <input type="tel" id="editPhone">
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" class="btn btn-gray" onclick="closeEditModal()">✕ বাতিল</button>
+                    <button type="submit" class="btn">💾 আপডেট নিশ্চিত করুন</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- স্ক্রিপ্ট লজিক -->
     <script>
         let allStudentsList = [];
+        let filteredStudentsList = [];
         let parsedExcelData = [];
-        let activeSessionsList = ["২০২৫-২৬", "২০২৪-২৫"]; // ডিফল্ট ফলব্যাক
+        let activeSessionsList = ["২০২৬-২৭", "২০২৫-২৬"];
+
+        const PAGE_SIZE = 50;
+        let currentPage = 1;
 
         document.addEventListener("DOMContentLoaded", async () => {
             populateJamatDropdowns();
             await loadAcademicSessions();
-            loadStudentsFromFirebase();
+            loadStudentsRealtime();
         });
 
-        // জামাত ড্রপডাউন পূরণ
         function populateJamatDropdowns() {
-            const stdJamatSelect = document.getElementById("stdJamat");
-            const filterJamatSelect = document.getElementById("filterJamat");
+            const stdJamat = document.getElementById("stdJamat");
+            const filterJamat = document.getElementById("filterJamat");
+            const editJamat = document.getElementById("editJamat");
 
-            JAMAT_LIST.forEach(jamat => {
-                stdJamatSelect.add(new Option(jamat, jamat));
-                filterJamatSelect.add(new Option(jamat, jamat));
+            JAMAT_LIST.forEach(j => {
+                stdJamat.add(new Option(j, j));
+                filterJamat.add(new Option(j, j));
+                editJamat.add(new Option(j, j));
             });
         }
 
-        // ==========================================================
-        // ফায়ারবেস থেকে শিক্ষাবর্ষ লোড ও পরিচালনা
-        // ==========================================================
         async function loadAcademicSessions() {
             try {
-                const snapshot = await db.collection("academic_years").orderBy("year", "desc").get();
-                if (!snapshot.empty) {
+                const snap = await db.collection("academic_years").orderBy("year", "desc").get();
+                if (!snap.empty) {
                     activeSessionsList = [];
-                    snapshot.forEach(doc => activeSessionsList.push(doc.data().year));
-                } else {
-                    // প্রথমবার ডাটাবেজে কালেকশন না থাকলে ডিফল্ট তৈরি করা
-                    await db.collection("academic_years").doc("2026-27").set({ year: "২০২৬-২৭", createdAt: new Date() });
-                    await db.collection("academic_years").doc("2025-26").set({ year: "২০২৫-২৬", createdAt: new Date() });
-                    activeSessionsList = ["২০২৬-২৭", "২০২৫-২৬"];
+                    snap.forEach(d => activeSessionsList.push(d.data().year));
                 }
-            } catch (e) {
-                console.log("শিক্ষাবর্ষ ফলব্যাক থেকে নেওয়া হয়েছে:", e);
-            }
-
+            } catch(e) {}
             renderSessionDropdowns();
         }
 
         function renderSessionDropdowns() {
             const stdSession = document.getElementById("stdSession");
             const filterSession = document.getElementById("filterSession");
-
             stdSession.innerHTML = "";
             filterSession.innerHTML = `<option value="">সকল শিক্ষাবর্ষ</option>`;
 
             activeSessionsList.forEach((sess, idx) => {
-                stdSession.add(new Option(sess, sess, idx === 0, idx === 0)); // ১ম টি অটো সিলেক্টেড
+                stdSession.add(new Option(sess, sess, idx === 0, idx === 0));
                 filterSession.add(new Option(sess, sess));
             });
         }
 
-        // নতুন শিক্ষাবর্ষ যুক্ত করার প্রম্পট
         async function promptAddSession() {
-            const newYear = prompt("নতুন শিক্ষাবর্ষ লিখুন (যেমন: ২০২৬-২৭):");
+            const hasPin = await verifyUserPin("নতুন শিক্ষাবর্ষ যুক্ত");
+            if (!hasPin) return;
+
+            const newYear = prompt("নতুন শিক্ষাবর্ষ লিখুন (যেমন: ২০২৭-২৮):");
             if (newYear && newYear.trim() !== "") {
                 const cleanYear = newYear.trim();
                 const docId = cleanYear.replace(/[^০-৯0-9-]/g, "");
                 await db.collection("academic_years").doc(docId).set({
                     year: cleanYear,
-                    createdAt: new Date()
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                showMessage(`নতুন শিক্ষাবর্ষ "${cleanYear}" যুক্ত হয়েছে!`);
+                alert(`নতুন শিক্ষাবর্ষ "${cleanYear}" যুক্ত হয়েছে!`);
                 await loadAcademicSessions();
             }
         }
 
-        // মেসেজ বক্স
-        function showMessage(msg, isSuccess = true) {
-            const el = document.getElementById("statusMsg");
-            el.className = isSuccess ? "success-box" : "error-box";
-            el.innerText = msg;
-            el.style.display = "block";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(() => { el.style.display = "none"; }, 5000);
-        }
-
-        // ==========================================================
-        // ফায়ারবেস থেকে ছাত্রদের তালিকা আনা
-        // ==========================================================
-        function loadStudentsFromFirebase() {
-            db.collection("students").orderBy("dakhelaNum", "asc").onSnapshot(snapshot => {
+        function loadStudentsRealtime() {
+            db.collection("students").orderBy("dakhelaNum", "asc").onSnapshot(snap => {
                 allStudentsList = [];
-                snapshot.forEach(doc => {
+                snap.forEach(doc => {
                     allStudentsList.push({ id: doc.id, ...doc.data() });
                 });
-                renderStudentsTable(allStudentsList);
                 document.getElementById("totalStudentsCount").innerText = toBengaliNumber(allStudentsList.length);
-            }, error => {
-                console.error("ডাটা এরর:", error);
-                showMessage("ডাটাবেজ থেকে তথ্য লোড করতে সমস্যা!", false);
+                applyFilters();
+            }, err => {
+                alert("ডাটাবেজ লোড এরর: " + err.message);
             });
         }
 
-        // টেবিল রেন্ডার
-        function renderStudentsTable(list) {
+        function applyFiltersAndResetPage() {
+            currentPage = 1;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const session = document.getElementById("filterSession").value;
+            const jamat = document.getElementById("filterJamat").value;
+            const status = document.getElementById("filterStatus").value;
+            const keyword = normDigits(document.getElementById("searchKeyword").value.toLowerCase().trim());
+
+            filteredStudentsList = allStudentsList.filter(s => {
+                const matchSession = !session || s.session === session;
+                const matchJamat = !jamat || s.jamat === jamat;
+                const matchStatus = !status || (s.status || 'active') === status;
+                const matchKey = !keyword || (s.name && s.name.toLowerCase().includes(keyword)) || String(s.dakhelaNum).includes(keyword);
+                return matchSession && matchJamat && matchStatus && matchKey;
+            });
+
+            renderPaginatedTable();
+        }
+
+        function renderPaginatedTable() {
             const tbody = document.getElementById("studentsTableBody");
             tbody.innerHTML = "";
 
-            if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:#888;">কোনো ছাত্রের তথ্য পাওয়া যায়নি।</td></tr>`;
+            if (filteredStudentsList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:#888;">কোনো ছাত্র পাওয়া যায়নি।</td></tr>`;
+                renderPagination(0);
                 return;
             }
 
-            list.forEach(std => {
+            const totalPages = Math.ceil(filteredStudentsList.length / PAGE_SIZE);
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIndex = (currentPage - 1) * PAGE_SIZE;
+            const currentSlice = filteredStudentsList.slice(startIndex, startIndex + PAGE_SIZE);
+
+            currentSlice.forEach(std => {
+                const isActive = (std.status || 'active') === 'active';
+                const dueKh = Number(std.dueKhoraki) || 0;
+                const dueEl = Number(std.dueElectricity) || 0;
+                const totDue = dueKh + dueEl;
+
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
                     <td><strong>${toBengaliNumber(std.dakhelaNum)}</strong></td>
                     <td>${esc(std.name)}</td>
-                    <td>${esc(std.fatherName || '-')}</td>
-                    <td>${std.dob ? toBengaliNumber(std.dob) : '-'}</td>
-                    <td><span class="badge">${esc(std.jamat)}</span></td>
-                    <td><span class="session-badge">${esc(std.session || '-')}</span></td>
-                    <td>${toBengaliNumber(std.khoraki)} ৳</td>
-                    <td>${toBengaliNumber(std.electricity)} ৳</td>
-                    <td style="color:${(std.dueAmount || 0) > 0 ? 'red' : 'green'}; font-weight:bold;">
-                        ${toBengaliNumber(std.dueAmount || 0)} ৳
+                    <td><span style="font-weight:600;">${esc(std.jamat)}</span></td>
+                    <td><span style="background:#FFF3CD; padding:2px 6px; border-radius:4px; font-size:0.85rem;">${esc(std.session || '-')}</span></td>
+                    <td>${Number(std.khoraki) === 0 ? '<span style="color:green; font-weight:bold;">ফ্রি</span>' : `${toBengaliNumber(std.khoraki)} ৳`}</td>
+                    <td>${Number(std.electricity) === 0 ? '<span style="color:green; font-weight:bold;">ফ্রি</span>' : `${toBengaliNumber(std.electricity)} ৳`}</td>
+                    <td style="color: ${dueKh > 0 ? '#991B1B' : '#666'}; font-weight:bold;">${toBengaliNumber(dueKh)} ৳</td>
+                    <td style="color: ${dueEl > 0 ? '#C2410C' : '#666'}; font-weight:bold;">${toBengaliNumber(dueEl)} ৳</td>
+                    <td style="color: ${totDue > 0 ? '#DC2626' : 'green'}; font-weight:bold; font-size:1rem;">
+                        ${toBengaliNumber(totDue)} ৳
                     </td>
-                    <td>${std.phone ? toBengaliNumber(std.phone) : '-'}</td>
                     <td>
-                        <button class="action-btn-del" data-id="${esc(std.id)}" data-name="${esc(std.name)}" onclick="deleteStudent(this.dataset.id, this.dataset.name)">মুছুন</button>
-                        <button class="action-btn-del" style="background:#6c757d;" data-id="${esc(std.id)}" data-status="${(std.status || 'active')}" onclick="toggleStudentStatus(this.dataset.id, this.dataset.status)">${(std.status || 'active') === 'active' ? 'নিষ্ক্রিয়' : 'সক্রিয়'}</button>
+                        <span class="status-pill ${isActive ? 'active' : 'inactive'}" onclick="toggleStatusWithPin('${std.id}', '${std.status || 'active'}')">
+                            ${isActive ? '🟢 সক্রিয়' : '🔴 নিষ্ক্রিয়'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-gold" onclick="openEditModal('${std.id}')">✏️ এডিট</button>
+                        <button class="btn btn-sm" style="background:#dc3545;" onclick="deleteStudentWithPin('${std.id}', '${esc(std.name)}')">✕</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
+
+            renderPagination(totalPages);
         }
 
-        // ফিল্টারিং
-        function filterStudentsTable() {
-            const session = document.getElementById("filterSession").value;
-            const jamat = document.getElementById("filterJamat").value;
-            const keyword = normDigits(document.getElementById("searchKeyword").value.toLowerCase().trim());
+        function renderPagination(totalPages) {
+            const container = document.getElementById("paginationControls");
+            const infoText = document.getElementById("pageInfoText");
+            container.innerHTML = "";
 
-            const filtered = allStudentsList.filter(std => {
-                const matchSession = session === "" || std.session === session;
-                const matchJamat = jamat === "" || std.jamat === jamat;
-                const matchKeyword = std.name.toLowerCase().includes(keyword) || 
-                                     std.dakhelaNum.toString().includes(keyword);
-                return matchSession && matchJamat && matchKeyword;
-            });
+            if (totalPages <= 1) {
+                infoText.innerText = `সর্বমোট ${toBengaliNumber(filteredStudentsList.length)} জন ছাত্র`;
+                return;
+            }
 
-            renderStudentsTable(filtered);
+            infoText.innerText = `পৃষ্ঠা ${toBengaliNumber(currentPage)} এর ${toBengaliNumber(totalPages)} (মোট ${toBengaliNumber(filteredStudentsList.length)} জন)`;
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement("button");
+                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                btn.innerText = toBengaliNumber(i);
+                btn.onclick = () => {
+                    currentPage = i;
+                    renderPaginatedTable();
+                    window.scrollTo({ top: 350, behavior: 'smooth' });
+                };
+                container.appendChild(btn);
+            }
         }
 
-        // ==========================================================
-        // একক ছাত্র সেভ
-        // ==========================================================
-        async function saveSingleStudent(e) {
-            e.preventDefault();
-            const dakhelaNum = parseInt(document.getElementById("stdDakhela").value, 10);
-            const name = document.getElementById("stdName").value.trim();
-            const fatherName = document.getElementById("stdFather").value.trim();
-            const dob = document.getElementById("stdDob").value;
-            const jamat = document.getElementById("stdJamat").value;
-            const session = document.getElementById("stdSession").value;
-            const khoraki = Number(document.getElementById("stdKhoraki").value) || 0;
-            const electricity = Number(document.getElementById("stdElectricity").value) || 0;
-            const prevDue = Number(document.getElementById("stdPrevDue").value) || 0;
-            const phone = document.getElementById("stdPhone").value.trim();
+        async function toggleStatusWithPin(docId, curStatus) {
+            const newStatus = curStatus === 'active' ? 'inactive' : 'active';
+            const actionText = newStatus === 'inactive' ? 'ছাত্রকে নিষ্ক্রিয়' : 'ছাত্রকে সক্রিয়';
+            
+            const hasPin = await verifyUserPin(actionText);
+            if (!hasPin) return;
 
             try {
-                const docId = stdId(session, dakhelaNum);
-                if ((await db.collection("students").doc(docId).get()).exists) {
-                    showMessage("এই শিক্ষাবর্ষে এই দাখেলা নম্বর আগে থেকেই আছে!", false);
-                    return;
-                }
-                await db.collection("students").doc(docId).set({
-                    dakhelaNum: dakhelaNum,
-                    name: name,
-                    fatherName: fatherName,
-                    dob: dob,
-                    jamat: jamat,
-                    session: session,
-                    khoraki: khoraki,
-                    electricity: electricity,
-                    dueAmount: prevDue,
-                    status: "active",
-                    phone: phone,
+                await db.collection("students").doc(docId).update({
+                    status: newStatus,
+                    updatedBy: currentStaffUser.name || currentStaffUser.phone,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
-                showMessage(`আলহামদুলিল্লাহ! দাখেলা নং ${toBengaliNumber(dakhelaNum)} (${name}) সংরক্ষিত হয়েছে।`);
-                document.getElementById("singleStudentForm").reset();
-                document.getElementById("stdSession").value = session;
-            } catch (err) {
-                showMessage("সংরক্ষণ ব্যর্থ: " + err.message, false);
+            } catch(e) {
+                alert("স্ট্যাটাস আপডেট ব্যর্থ: " + e.message);
             }
         }
 
-        // ছাত্র ডিলিট
-        async function deleteStudent(id, name) {
-            const s = allStudentsList.find(x => x.id === id);
-            if (s && (Number(s.dueAmount) || 0) !== 0) { showMessage("বকেয়া/অগ্রিম থাকা ছাত্র মোছা যায় না — নিষ্ক্রিয় করুন।", false); return; }
-            if (confirm(`আপনি কি সত্যিই ছাত্র "${name}"-কে তালিকা থেকে মুছে ফেলতে চান?`)) {
-                await db.collection("students").doc(id).delete();
-                showMessage(`ছাত্র "${name}" সফলভাবে মুছে ফেলা হয়েছে।`);
+        function openEditModal(docId) {
+            const std = allStudentsList.find(s => s.id === docId);
+            if (!std) return;
+
+            document.getElementById("editDocId").value = std.id;
+            document.getElementById("editDakhela").value = std.dakhelaNum;
+            document.getElementById("editSession").value = std.session || '';
+            document.getElementById("editName").value = std.name;
+            document.getElementById("editFather").value = std.fatherName || '';
+            document.getElementById("editJamat").value = std.jamat;
+            document.getElementById("editKhoraki").value = std.khoraki || 0;
+            document.getElementById("editElectricity").value = std.electricity || 0;
+            document.getElementById("editDueKhoraki").value = std.dueKhoraki || 0;
+            document.getElementById("editDueElectricity").value = std.dueElectricity || 0;
+            document.getElementById("editPhone").value = std.phone || '';
+
+            document.getElementById("editModal").style.display = "flex";
+        }
+
+        function closeEditModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
+
+        async function submitStudentEditWithPin(e) {
+            e.preventDefault();
+            const docId = document.getElementById("editDocId").value;
+            const hasPin = await verifyUserPin("ছাত্রের তথ্য সংশোধন");
+            if (!hasPin) return;
+
+            const dueKh = Number(document.getElementById("editDueKhoraki").value) || 0;
+            const dueEl = Number(document.getElementById("editDueElectricity").value) || 0;
+
+            try {
+                await db.collection("students").doc(docId).update({
+                    name: document.getElementById("editName").value.trim(),
+                    fatherName: document.getElementById("editFather").value.trim(),
+                    jamat: document.getElementById("editJamat").value,
+                    khoraki: Number(document.getElementById("editKhoraki").value) || 0,
+                    electricity: Number(document.getElementById("editElectricity").value) || 0,
+                    dueKhoraki: dueKh,
+                    dueElectricity: dueEl,
+                    dueAmount: dueKh + dueEl,
+                    phone: normDigits(document.getElementById("editPhone").value.trim()),
+                    editedBy: currentStaffUser.name || currentStaffUser.phone,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert("তথ্য সফলভাবে হালনাগাদ হয়েছে!");
+                closeEditModal();
+            } catch(err) {
+                alert("আপডেট ব্যর্থ: " + err.message);
             }
         }
 
         // ==========================================================
-        // এক্সেল বাল্ক ইমপোর্ট লজিক
+        // 🚨 ১. একক ছাত্র এন্ট্রিতে কঠোর ডুপ্লিকেট চেকিং
+        // ==========================================================
+        async function saveSingleStudentWithPin(e) {
+            e.preventDefault();
+            const dakhelaNum = parseInt(normDigits(document.getElementById("stdDakhela").value), 10);
+            const session = document.getElementById("stdSession").value;
+            const docId = stdId(session, dakhelaNum);
+
+            if (isNaN(dakhelaNum) || !session) {
+                alert("সঠিক দাখেলা নম্বর ও শিক্ষাবর্ষ নির্বাচন করুন!");
+                return;
+            }
+
+            // ১.১ মেমোরি ও ডাটাবেজে কঠোরভাবে ডুপ্লিকেট চেক
+            const alreadyExists = allStudentsList.some(s => s.session === session && s.dakhelaNum === dakhelaNum);
+            if (alreadyExists) {
+                alert(`🛑 কঠোর সতর্কতা!\nশিক্ষাবর্ষ "${session}"-এ দাখেলা নং "${toBengaliNumber(dakhelaNum)}" পূর্বেই একজন ছাত্রের নামে নিবন্ধিত আছে। একই শিক্ষাবর্ষে একই দাখেলা দুইবার এন্ট্রি করা সম্পূর্ণ নিষিদ্ধ!`);
+                return;
+            }
+
+            const docSnap = await db.collection("students").doc(docId).get();
+            if (docSnap.exists) {
+                alert(`🛑 সার্ভার সতর্কতা!\nশিক্ষাবর্ষ "${session}"-এ দাখেলা নং "${toBengaliNumber(dakhelaNum)}" ডাটাবেজে আগে থেকেই বিদ্যমান!`);
+                return;
+            }
+
+            const hasPin = await verifyUserPin("নতুন ছাত্র এন্ট্রি");
+            if (!hasPin) return;
+
+            const dueKh = Number(document.getElementById("stdDueKhoraki").value) || 0;
+            const dueEl = Number(document.getElementById("stdDueElectricity").value) || 0;
+
+            try {
+                await db.collection("students").doc(docId).set({
+                    dakhelaNum: dakhelaNum,
+                    name: document.getElementById("stdName").value.trim(),
+                    fatherName: document.getElementById("stdFather").value.trim(),
+                    jamat: document.getElementById("stdJamat").value,
+                    session: session,
+                    khoraki: Number(document.getElementById("stdKhoraki").value) || 0,
+                    electricity: Number(document.getElementById("stdElectricity").value) || 0,
+                    dueKhoraki: dueKh,
+                    dueElectricity: dueEl,
+                    dueAmount: dueKh + dueEl,
+                    phone: normDigits(document.getElementById("stdPhone").value.trim()),
+                    status: "active",
+                    createdBy: currentStaffUser.name || currentStaffUser.phone,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert("আলহামদুলিল্লাহ! ছাত্র সফলভাবে সংরক্ষিত হয়েছে।");
+                document.getElementById("singleStudentForm").reset();
+                document.getElementById("stdSession").value = session;
+            } catch(err) {
+                alert("সংরক্ষণ ব্যর্থ: " + err.message);
+            }
+        }
+
+        async function deleteStudentWithPin(docId, name) {
+            const std = allStudentsList.find(s => s.id === docId);
+            const totalDue = (Number(std.dueKhoraki) || 0) + (Number(std.dueElectricity) || 0);
+
+            if (std && totalDue !== 0) {
+                alert("⚠️ যে ছাত্রের বকেয়া রয়েছে তাকে ডিলিট করা যাবে না! প্রয়োজনে নিষ্ক্রিয় (Inactive) করুন।");
+                return;
+            }
+
+            const hasPin = await verifyUserPin(`ছাত্র "${name}"-কে স্থায়ীভাবে মুছে ফেলতে`);
+            if (!hasPin) return;
+
+            if (confirm(`আপনি কি সত্যিই ছাত্র "${name}"-কে মুছে ফেলতে চান?`)) {
+                try {
+                    await db.collection("students").doc(docId).delete();
+                    alert("ছাত্র মুছে ফেলা হয়েছে।");
+                } catch(e) {
+                    alert("মুছতে সমস্যা: " + e.message);
+                }
+            }
+        }
+
+        // ==========================================================
+        // 🚨 ২. এক্সেল বাল্ক আপলোডে কঠোর ডুপ্লিকেট চেকিং
         // ==========================================================
         function handleExcelUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = e => {
                 const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-                if (jsonData.length === 0) {
-                    showMessage("ফাইলে কোনো তথ্য পাওয়া যায়নি!", false);
+                const wb = XLSX.read(data, { type: 'array' });
+                const ws = wb.Sheets[wb.SheetNames[0]];
+                parsedExcelData = XLSX.utils.sheet_to_json(ws);
+                if (parsedExcelData.length === 0) {
+                    alert("ফাইলে কোনো ডাটা নেই!");
                     return;
                 }
 
-                parsedExcelData = jsonData;
-                renderPreviewTable(jsonData);
+                // এক্সেল ফাইলের ভেতরেই দাখেলা দুইবার আছে কিনা চেক
+                const seenInFile = new Set();
+                const duplicatesInFile = [];
+                const defaultSession = activeSessionsList[0];
+
+                parsedExcelData.forEach((r, idx) => {
+                    const d = parseInt(normDigits(r["দাখেলা নং"] || r["dakhela"]), 10);
+                    const sess = String(r["শিক্ষাবর্ষ"] || r["session"] || defaultSession).trim();
+                    const key = `${sess}_${d}`;
+                    if (seenInFile.has(key)) {
+                        duplicatesInFile.push(`সারি ${idx + 2}: দাখেলা ${d} (${sess})`);
+                    }
+                    seenInFile.add(key);
+                });
+
+                if (duplicatesInFile.length > 0) {
+                    alert(`🛑 এক্সেল ফাইলে ডুপ্লিকেট দাখেলা পাওয়া গেছে!\nএকই ফাইলের ভেতর নিচের দাখেলাগুলো একাধিকবার আছে:\n\n${duplicatesInFile.slice(0, 10).join('\n')}\n\nফাইল সংশোধন করে আবার আপলোড করুন।`);
+                    document.getElementById("excelFileInput").value = "";
+                    document.getElementById("previewArea").style.display = "none";
+                    return;
+                }
+
+                const tbody = document.querySelector("#previewTable tbody");
+                tbody.innerHTML = "";
+                document.getElementById("previewCount").innerText = toBengaliNumber(parsedExcelData.length);
+                parsedExcelData.slice(0, 10).forEach(r => {
+                    tbody.innerHTML += `<tr>
+                        <td>${esc(r["দাখেলা নং"] || r["dakhela"] || '-')}</td>
+                        <td>${esc(r["নাম"] || r["name"] || '-')}</td>
+                        <td>${esc(r["জামাত"] || r["jamat"] || '-')}</td>
+                        <td>${esc(r["শিক্ষাবর্ষ"] || r["session"] || activeSessionsList[0])}</td>
+                        <td>${esc(r["খোরাকি ফি"] || r["khoraki"] || '0')}</td>
+                        <td>${esc(r["বিদ্যুৎ ফি"] || r["electricity"] || '0')}</td>
+                        <td>${esc(r["পূর্ব খোরাকি বকেয়া"] || r["due_khoraki"] || '0')}</td>
+                        <td>${esc(r["পূর্ব বিদ্যুৎ বকেয়া"] || r["due_electricity"] || '0')}</td>
+                        <td>${esc(r["মোবাইল"] || r["phone"] || '-')}</td>
+                    </tr>`;
+                });
+                document.getElementById("previewArea").style.display = "block";
             };
             reader.readAsArrayBuffer(file);
         }
 
-        function renderPreviewTable(data) {
-            const previewArea = document.getElementById("previewArea");
-            const tbody = document.querySelector("#previewTable tbody");
-            tbody.innerHTML = "";
-            document.getElementById("previewCount").innerText = toBengaliNumber(data.length);
+        async function saveBulkStudentsWithPin() {
+            const defaultSession = activeSessionsList[0];
+            const hasPin = await verifyUserPin("এক্সেল থেকে সকল ছাত্র সেভ");
+            if (!hasPin) return;
 
-            data.slice(0, 15).forEach(row => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td>${esc(row["দাখেলা নং"] || row["dakhela"] || '-')}</td>
-                    <td>${esc(row["নাম"] || row["name"] || '-')}</td>
-                    <td>${esc(row["পিতার নাম"] || row["father"] || '-')}</td>
-                    <td>${esc(row["জন্ম তারিখ"] || row["dob"] || '-')}</td>
-                    <td>${esc(row["জামাত"] || row["jamat"] || '-')}</td>
-                    <td>${esc(row["শিক্ষাবর্ষ"] || row["session"] || activeSessionsList[0])}</td>
-                    <td>${esc(row["খোরাকি"] || row["khoraki"] || '0')}</td>
-                    <td>${esc(row["বিদ্যুৎ"] || row["electricity"] || '0')}</td>
-                    <td>${esc(row["বকেয়া"] || row["due"] || '0')}</td>
-                    <td>${esc(row["মোবাইল"] || row["phone"] || '-')}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            previewArea.style.display = "block";
-        }
-
-        async function saveBulkStudentsToFirebase() {
             const btn = document.getElementById("confirmImportBtn");
-            btn.disabled = true; btn.innerText = "⏳ ডাটা সেভ হচ্ছে... অপেক্ষা করুন...";
+            btn.disabled = true;
+            btn.innerText = "⏳ ডুপ্লিকেট যাচাই করা হচ্ছে...";
+
             try {
-                const defaultSession = activeSessionsList[0];
-                const seen = new Set(), rows = [], errors = [];
-                parsedExcelData.forEach((row, i) => {
-                    const n = parseInt(normDigits(row["দাখেলা নং"] || row["dakhela"]), 10);
-                    const name = String(row["নাম"] || row["name"] || "").trim();
-                    const session = String(row["শিক্ষাবর্ষ"] || row["session"] || defaultSession).trim();
-                    const jamat = String(row["জামাত"] || row["jamat"] || "").trim();
-                    if (isNaN(n) || !name) return errors.push(`সারি ${i + 2}: দাখেলা নং বা নাম নেই`);
-                    if (!JAMAT_LIST.includes(jamat)) return errors.push(`সারি ${i + 2}: জামাত "${jamat}" তালিকায় নেই`);
-                    const key = stdId(session, n);
-                    if (seen.has(key)) return errors.push(`সারি ${i + 2}: দাখেলা নং ${n} ফাইলে দুইবার আছে`);
-                    seen.add(key); rows.push({ key, n, name, session, jamat, row });
-                });
-                const exist = new Set();
-                for (let i = 0; i < rows.length; i += 100)
-                    await Promise.all(rows.slice(i, i + 100).map(async r => { if ((await db.collection("students").doc(r.key).get()).exists) exist.add(r.key); }));
-                let added = 0, updated = 0;
-                for (let i = 0; i < rows.length; i += 400) {
+                // ২.১ সার্ভারে পূর্বে থাকা ছাত্রদের সাথে ম্যাচিং চেক
+                const duplicateWithDB = [];
+                const validRowsToSave = [];
+
+                for (const x of parsedExcelData) {
+                    const dNum = parseInt(normDigits(x["দাখেলা নং"] || x["dakhela"]), 10);
+                    const sSession = String(x["শিক্ষাবর্ষ"] || x["session"] || defaultSession).trim();
+                    const sName = String(x["নাম"] || x["name"] || "").trim();
+
+                    if (!isNaN(dNum) && sName) {
+                        const targetDocId = stdId(sSession, dNum);
+                        // মেমোরি এবং ডাটাবেজ চেক
+                        const alreadyInDB = allStudentsList.some(s => s.id === targetDocId);
+                        if (alreadyInDB) {
+                            duplicateWithDB.push(`দাখেলা: ${dNum} (${sName} - ${sSession})`);
+                        } else {
+                            validRowsToSave.push({ x, dNum, sSession, sName, targetDocId });
+                        }
+                    }
+                }
+
+                if (duplicateWithDB.length > 0) {
+                    const proceed = confirm(`⚠️ সতর্কবার্তা!\nনিচের ${toBengaliNumber(duplicateWithDB.length)} জন ছাত্রের দাখেলা ডাটাবেজে পূর্ব থেকেই বিদ্যমান রয়েছে:\n\n${duplicateWithDB.slice(0, 10).join('\n')}${duplicateWithDB.length > 10 ? '\n...' : ''}\n\n🛑 নিয়ম অনুযায়ী পূর্বের ছাত্রদের কোনো তথ্য পরিবর্তন করা হবে না। আপনি কি শুধুমাত্র বাকি নতুন ${toBengaliNumber(validRowsToSave.length)} জন ছাত্রকে সেভ করতে চান?`);
+                    if (!proceed) {
+                        btn.disabled = false;
+                        btn.innerText = "🚀 ডুপ্লিকেট যাচাই করে সেভ করুন";
+                        return;
+                    }
+                }
+
+                if (validRowsToSave.length === 0) {
+                    alert("সংরক্ষণ করার মতো কোনো নতুন ছাত্র পাওয়া যায়নি (সবাই ডুপ্লিকেট)!");
+                    btn.disabled = false;
+                    btn.innerText = "🚀 ডুপ্লিকেট যাচাই করে সেভ করুন";
+                    return;
+                }
+
+                btn.innerText = `⏳ নতুন ${toBengaliNumber(validRowsToSave.length)} জন সেভ হচ্ছে...`;
+
+                for (let i = 0; i < validRowsToSave.length; i += 400) {
                     const batch = db.batch();
-                    rows.slice(i, i + 400).forEach(r => {
-                        const x = r.row;
-                        const base = {
-                            dakhelaNum: r.n, name: r.name, fatherName: String(x["পিতার নাম"] || x["father"] || "").trim(),
-                            dob: String(x["জন্ম তারিখ"] || x["dob"] || "").trim(), jamat: r.jamat, session: r.session,
-                            khoraki: Number(normDigits(x["খোরাকি"] || x["khoraki"])) || 0,
-                            electricity: Number(normDigits(x["বিদ্যুৎ"] || x["electricity"])) || 0,
+                    validRowsToSave.slice(i, i + 400).forEach(item => {
+                        const x = item.x;
+                        const sJamat = String(x["জামাত"] || x["jamat"] || "").trim();
+                        const dueKh = Number(normDigits(x["পূর্ব খোরাকি বকেয়া"] || x["due_khoraki"])) || 0;
+                        const dueEl = Number(normDigits(x["পূর্ব বিদ্যুৎ বকেয়া"] || x["due_electricity"])) || 0;
+
+                        const ref = db.collection("students").doc(item.targetDocId);
+                        batch.set(ref, {
+                            dakhelaNum: item.dNum,
+                            name: item.sName,
+                            fatherName: String(x["পিতার নাম"] || x["father"] || "").trim(),
+                            jamat: sJamat,
+                            session: item.sSession,
+                            khoraki: Number(normDigits(x["খোরাকি ফি"] || x["khoraki"])) || 0,
+                            electricity: Number(normDigits(x["বিদ্যুৎ ফি"] || x["electricity"])) || 0,
+                            dueKhoraki: dueKh,
+                            dueElectricity: dueEl,
+                            dueAmount: dueKh + dueEl,
                             phone: normDigits(x["মোবাইল"] || x["phone"] || "").trim(),
+                            status: "active",
+                            importedBy: currentStaffUser.name || currentStaffUser.phone,
                             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        };
-                        const ref = db.collection("students").doc(r.key);
-                        if (exist.has(r.key)) { batch.set(ref, base, { merge: true }); updated++; } // বকেয়া/স্ট্যাটাস অক্ষত থাকে
-                        else { batch.set(ref, { ...base, dueAmount: Number(normDigits(x["বকেয়া"] || x["due"])) || 0, status: "active" }); added++; }
+                        });
                     });
                     await batch.commit();
                 }
-                showMessage(`✅ নতুন ${toBengaliNumber(added)} জন, হালনাগাদ ${toBengaliNumber(updated)} জন, বাদ ${toBengaliNumber(errors.length)} টি সারি।`);
-                if (errors.length) alert("বাদ পড়া সারি:\n" + errors.slice(0, 15).join("\n") + (errors.length > 15 ? "\n..." : ""));
+
+                alert(`✅ সফলভাবে নতুন ${toBengaliNumber(validRowsToSave.length)} জন ছাত্র সংরক্ষিত হয়েছে!\n(কোনো ডুপ্লিকেট ওভাররাইট করা হয়নি)`);
                 document.getElementById("previewArea").style.display = "none";
                 document.getElementById("excelFileInput").value = "";
-            } catch (err) {
-                showMessage("বাল্ক ইমপোর্টে সমস্যা: " + err.message, false);
+            } catch(err) {
+                alert("বাল্ক ইমপোর্ট এরর: " + err.message);
             } finally {
-                btn.disabled = false; btn.innerText = "🚀 কনফার্ম করুন ও ফায়ারবেসে সেভ করুন";
+                btn.disabled = false;
+                btn.innerText = "🚀 ডুপ্লিকেট যাচাই করে সেভ করুন";
             }
         }
 
-
-        // ডেমো এক্সেল ডাউনলোড
         function downloadSampleExcel() {
-            const sampleData = [
-                { "দাখেলা নং": 1, "নাম": "আব্দুল্লাহ আল মামুন", "পিতার নাম": "মুহাম্মদ আলী", "জন্ম তারিখ": "15-08-2010", "জামাত": "ফযীলত ২য় বর্ষ (মেশকাত)", "শিক্ষাবর্ষ": activeSessionsList[0], "খোরাকি": 2300, "বিদ্যুৎ": 500, "বকেয়া": 0, "মোবাইল": "01711000000" },
-                { "দাখেলা নং": 2, "নাম": "মুহাম্মদ হাসান", "পিতার নাম": "রফিকুল ইসলাম", "জন্ম তারিখ": "10-02-2011", "জামাত": "ফযীলত ২য় বর্ষ (মেশকাত)", "শিক্ষাবর্ষ": activeSessionsList[0], "খোরাকি": 2300, "বিদ্যুৎ": 500, "বকেয়া": 500, "মোবাইল": "01811000000" },
-                { "দাখেলা নং": 3, "নাম": "মুহাম্মদ উসমান", "পিতার নাম": "আব্দুর রহমান", "জন্ম তারিখ": "22-11-2012", "জামাত": "হিফজুল কুরআন বিভাগ", "শিক্ষাবর্ষ": activeSessionsList[0], "খোরাকি": 3500, "বিদ্যুৎ": 1000, "বকেয়া": 0, "মোবাইল": "01911000000" }
+            const sample = [
+                { "দাখেলা নং": 1, "নাম": "আব্দুল্লাহ আল মামুন", "পিতার নাম": "মুহাম্মদ আলী", "জামাত": "ফযীলত ২য় বর্ষ (মেশকাত)", "শিক্ষাবর্ষ": activeSessionsList[0], "খোরাকি ফি": 2300, "বিদ্যুৎ ফি": 500, "পূর্ব খোরাকি বকেয়া": 0, "পূর্ব বিদ্যুৎ বকেয়া": 0, "মোবাইল": "01711000000" },
+                { "দাখেলা নং": 2, "নাম": "মুহাম্মদ হাসান (খোরাকি ফ্রি)", "পিতার নাম": "রফিকুল ইসলাম", "জামাত": "হিফজুল কুরআন বিভাগ", "শিক্ষাবর্ষ": activeSessionsList[0], "খোরাকি ফি": 0, "বিদ্যুৎ ফি": 500, "পূর্ব খোরাকি বকেয়া": 0, "পূর্ব বিদ্যুৎ বকেয়া": 500, "মোবাইল": "01811000000" }
             ];
-            const ws = XLSX.utils.json_to_sheet(sampleData);
+            const ws = XLSX.utils.json_to_sheet(sample);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Students");
-            XLSX.writeFile(wb, "BabusSalam_Student_Sample.xlsx");
+            XLSX.writeFile(wb, "BabusSalam_Student_DualLedger_Sample.xlsx");
         }
-        // ছাত্রকে নিষ্ক্রিয় করার ফাংশন
-async function toggleStudentStatus(id, currentStatus) {
-    const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-    const msg = newStatus === 'inactive' ? 'ছাত্রকে নিষ্ক্রিয়/ছাড়প্রাপ্ত করতে চান?' : 'ছাত্রকে পুনরায় সক্রিয় করতে চান?';
-    if (confirm(msg)) {
-        await db.collection("students").doc(id).update({ status: newStatus });
-        alert("স্ট্যাটাস আপডেট হয়েছে!");
-    }
-}
     </script>
 </body>
 </html>
