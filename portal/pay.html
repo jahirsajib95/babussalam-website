@@ -256,7 +256,7 @@
 
             <div class="form-group">
                 <label>ছাত্রের দাখেলা নম্বর লিখুন *</label>
-                <input type="number" id="pDakhela" placeholder="যেমন: ১, ২, ৫০০..." min="1" required onkeypress="if(event.key === 'Enter') fetchStudentForPayment()">
+                <input type="text" inputmode="numeric" id="pDakhela" placeholder="যেমন: ১, ২, ৫০০..." min="1" required onkeypress="if(event.key === 'Enter') fetchStudentForPayment()">
             </div>
 
             <button class="btn" onclick="fetchStudentForPayment()">🔍 বকেয়া দেখুন</button>
@@ -331,13 +331,13 @@
                     <div class="dual-pay-inputs">
                         <div class="pay-input-card">
                             <label style="font-weight: bold; color: #991B1B; font-size: 0.9rem;">🍚 খোরাকি বাবদ দিচ্ছেন (৳)</label>
-                            <input type="number" id="payKhoraki" min="0" placeholder="০" oninput="calculateParentTotal()">
+                            <input type="text" inputmode="numeric" id="payKhoraki" min="0" placeholder="০" oninput="calculateParentTotal()">
                             <small id="hintPayKh" style="color: red; font-size: 0.8rem; display: none;"></small>
                         </div>
 
                         <div class="pay-input-card">
                             <label style="font-weight: bold; color: #C2410C; font-size: 0.9rem;">⚡ বিদ্যুৎ বিল বাবদ দিচ্ছেন (৳)</label>
-                            <input type="number" id="payElectricity" min="0" placeholder="০" oninput="calculateParentTotal()">
+                            <input type="text" inputmode="numeric" id="payElectricity" min="0" placeholder="০" oninput="calculateParentTotal()">
                             <small id="hintPayEl" style="color: red; font-size: 0.8rem; display: none;"></small>
                         </div>
                     </div>
@@ -582,12 +582,14 @@
             btn.disabled = true;
             btn.innerText = "⏳ তথ্য পাঠানো হচ্ছে...";
 
-            const trackingRef = "ONL-" + Date.now().toString().slice(-6);
+            const trackingRef = makeTrackingRef();
             const docKey = "TRX_" + trxId.toUpperCase().replace(/[^A-Z0-9]/g, "");
 
             try {
-                const existing = await db.collection("online_payments").doc(docKey).get();
-                if (existing.exists) {
+                let dup = false;
+                // Rules-এ পাবলিক read বন্ধ থাকলে এই যাচাই এড়িয়ে যাবে; তখন Rules ডুপ্লিকেট আটকাবে
+                try { dup = (await db.collection("online_payments").doc(docKey).get()).exists; } catch (_) {}
+                if (dup) {
                     throw new Error("এই TrxID-টি পূর্বে একবার জমা দেওয়া হয়েছে! দয়া করে সঠিক TrxID দিন।");
                 }
 
@@ -633,7 +635,7 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
 
             } catch (err) {
-                alert("পেমেন্ট সাবমিট ব্যর্থ: " + err.message);
+                alert("পেমেন্ট সাবমিট ব্যর্থ: " + (err.code === "permission-denied" ? "এই TrxID আগে জমা হয়েছে অথবা তথ্য সঠিক নয়। আবার যাচাই করুন।" : err.message));
                 btn.disabled = false;
                 btn.innerText = "✓ পেমেন্ট তথ্য সাবমিট করুন";
             }

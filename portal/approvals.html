@@ -451,14 +451,17 @@
     <script>
         let allPaymentsList = [];
         let currentStatusFilter = 'pending';
+        let unsubPayments = null;
 
         document.addEventListener("DOMContentLoaded", () => {
             fetchPaymentsRealtime();
         });
 
         function fetchPaymentsRealtime() {
-            db.collection("online_payments")
+            if (unsubPayments) { unsubPayments(); unsubPayments = null; }
+            unsubPayments = db.collection("online_payments")
                 .orderBy("submittedAt", "desc")
+                .limit(1000)
                 .onSnapshot(snapshot => {
                     allPaymentsList = [];
                     let pendingCount = 0, pendingSum = 0, approvedCount = 0, rejectedCount = 0;
@@ -466,28 +469,21 @@
                     snapshot.forEach(doc => {
                         const data = { docId: doc.id, ...doc.data() };
                         allPaymentsList.push(data);
-
                         const st = data.status || 'pending';
                         const amt = Number(data.amount) || 0;
-
-                        if (st === 'pending') {
-                            pendingCount++;
-                            pendingSum += amt;
-                        } else if (st === 'approved') {
-                            approvedCount++;
-                        } else if (st === 'rejected') {
-                            rejectedCount++;
-                        }
+                        if (st === 'pending') { pendingCount++; pendingSum += amt; }
+                        else if (st === 'approved') approvedCount++;
+                        else if (st === 'rejected') rejectedCount++;
                     });
 
                     document.getElementById("statPendingCount").innerText = `${toBengaliNumber(pendingCount)} টি`;
                     document.getElementById("statPendingAmount").innerText = `${toBengaliNumber(pendingSum)} ৳`;
                     document.getElementById("statApprovedCount").innerText = `${toBengaliNumber(approvedCount)} টি`;
                     document.getElementById("statRejectedCount").innerText = `${toBengaliNumber(rejectedCount)} টি`;
-
                     renderPaymentsTable();
                 }, error => {
                     console.error("ডাটা এরর:", error);
+                    alert("পেমেন্ট তালিকা লোড করতে সমস্যা: " + error.message);
                 });
         }
 
@@ -501,36 +497,29 @@
         function renderPaymentsTable() {
             const tbody = document.getElementById("paymentsTableBody");
             const keyword = normDigits(document.getElementById("filterKeyword").value.toLowerCase().trim());
-            tbody.innerHTML = "";
 
             let filtered = allPaymentsList;
             if (currentStatusFilter !== 'all') {
                 filtered = filtered.filter(item => (item.status || 'pending') === currentStatusFilter);
             }
-
             if (keyword) {
-                filtered = filtered.filter(item => {
-                    const t = (item.trxId || '').toLowerCase();
-                    const p = (item.senderPhone || '').toLowerCase();
-                    const n = (item.name || '').toLowerCase();
-                    const ref = (item.trackingRef || '').toLowerCase();
-                    const dak = String(item.dakhelaNum || '');
-                    return t.includes(keyword) || p.includes(keyword) || n.includes(keyword) || ref.includes(keyword) || dak.includes(keyword);
-                });
+                filtered = filtered.filter(item =>
+                    [item.trxId, item.senderPhone, item.name, item.trackingRef, item.dakhelaNum]
+                        .some(v => normDigits(String(v ?? '')).toLowerCase().includes(keyword)));
             }
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: #888; padding: 25px;">কোনো পেমেন্ট রেকর্ড পাওয়া যায়নি।</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: #888; padding: 25px;">কোনো পেমেন্ট রেকর্ড পাওয়া যায়নি।</td></tr>`;
                 return;
             }
 
-            filtered.forEach(p => {
-                const tr = document.createElement("tr");
+            tbody.innerHTML = filtered.map(p => {
                 const status = p.status || 'pending';
+                const id = esc(p.docId);
                 let statusBadge = '';
                 if (status === 'pending') statusBadge = '<span class="badge badge-pending">⏳ অপেক্ষমাণ</span>';
                 else if (status === 'approved') statusBadge = '<span class="badge badge-approved">✓ অনুমোদিত</span>';
-                else if (status === 'rejected') statusBadge = '<span class="badge badge-rejected">✕ বাতিলকৃত</span>';
+                else statusBadge = '<span class="badge badge-rejected">✕ বাতিলকৃত</span>';
 
                 let timeStr = p.dateString || '-';
                 if (p.submittedAt && p.submittedAt.toDate) {
@@ -545,42 +534,29 @@
                 if (status === 'pending') {
                     actionsHtml = `
                         <div style="display: flex; gap: 6px; justify-content: center;">
-                            <button class="btn btn-approve" onclick="approveOnlinePaymentWithPin('${p.docId}')">✓ অনুমোদন</button>
-                            <button class="btn btn-reject" onclick="rejectOnlinePaymentWithPin('${p.docId}')">✕ বাতিল</button>
-                        </div>
-                    `;
+                            <button class="btn btn-approve" data-act="approve" data-id="${id}">✓ অনুমোদন</button>
+                            <button class="btn btn-reject" data-act="reject" data-id="${id}">✕ বাতিল</button>
+                        </div>`;
                 } else if (status === 'approved') {
-                    actionsHtml = `
-                        <div style="text-align:center;">
-                            <button class="btn btn-receipt" onclick="printApprovedReceipt('${p.docId}')">🖨️ রসিদ</button>
-                        </div>
-                    `;
+                    actionsHtml = `<div style="text-align:center;"><button class="btn btn-receipt" data-act="receipt" data-id="${id}">🖨️ রসিদ</button></div>`;
                 } else {
                     actionsHtml = `<small style="color:var(--danger);">${esc(p.rejectionReason || 'বাতিল')}</small>`;
                 }
 
-                tr.innerHTML = `
-                    <td><small>${timeStr}</small></td>
+                return `<tr>
+                    <td><small>${esc(timeStr)}</small></td>
                     <td><strong>${esc(p.trackingRef || '-')}</strong></td>
-                    <td>দাখেলা: <strong>${toBengaliNumber(p.dakhelaNum)}</strong><br><small style="color:#666;">${esc(p.session)}</small></td>
+                    <td>দাখেলা: <strong>${esc(toBengaliNumber(p.dakhelaNum))}</strong><br><small style="color:#666;">${esc(p.session)}</small></td>
                     <td>${esc(p.name)}<br><small style="color:#666;">${esc(p.jamat)}</small></td>
-                    <td><strong>${esc(p.paymentMethod)}</strong><br><small>${toBengaliNumber(p.senderPhone)}</small></td>
-                    <td>
-                        <span class="trx-copy-box" title="কপি করতে ক্লিক করুন" onclick="copyTrx('${esc(p.trxId)}')">
-                            📋 ${esc(p.trxId)}
-                        </span>
-                    </td>
+                    <td><strong>${esc(p.paymentMethod)}</strong><br><small>${esc(toBengaliNumber(p.senderPhone))}</small></td>
+                    <td><span class="trx-copy-box" title="কপি করতে ক্লিক করুন" data-act="copy" data-trx="${esc(p.trxId)}">📋 ${esc(p.trxId)}</span></td>
                     <td style="text-align: right; font-weight: bold; color: #991B1B;">${toBengaliNumber(kh)} ৳</td>
                     <td style="text-align: right; font-weight: bold; color: #C2410C;">${toBengaliNumber(el)} ৳</td>
-                    <td style="text-align: right; font-weight: bold; color: var(--primary); font-size: 1.05rem;">
-                        ${toBengaliNumber(tot)} ৳
-                    </td>
+                    <td style="text-align: right; font-weight: bold; color: var(--primary); font-size: 1.05rem;">${toBengaliNumber(tot)} ৳</td>
                     <td>${statusBadge}</td>
                     <td>${actionsHtml}</td>
-                `;
-
-                tbody.appendChild(tr);
-            });
+                </tr>`;
+            }).join('');
         }
 
         function copyTrx(trx) {
@@ -596,110 +572,99 @@
             const payItem = allPaymentsList.find(x => x.docId === docId);
             if (!payItem) return;
 
-            const kh = Number(payItem.khorakiAmount) || 0;
-            const el = Number(payItem.electricityAmount) || 0;
-            const tot = Number(payItem.amount) || (kh + el);
-
-            const hasPin = await verifyUserPin(`অনলাইন পেমেন্ট (${toBengaliNumber(tot)} ৳) অনুমোদন`);
+            const hasPin = await verifyUserPin(`অনলাইন পেমেন্ট (${toBengaliNumber(Number(payItem.amount) || 0)} ৳) অনুমোদন`);
             if (!hasPin) return;
 
-            const cashierName = currentStaffUser ? (currentStaffUser.name || currentStaffUser.phone) : auth.currentUser.email;
+            const staff = cashierName();
+            const currentDate = new Date().toLocaleDateString('bn-BD');
+            let R = null;
 
             try {
-                let generatedInvoiceNo;
-                let updatedKhDue, updatedElDue, updatedTotalDue;
-                let fatherName = '-';
-                const currentDate = new Date().toLocaleDateString('bn-BD');
-
                 await db.runTransaction(async tx => {
                     const payRef = db.collection("online_payments").doc(docId);
                     const paySnap = await tx.get(payRef);
-
                     if (!paySnap.exists) throw new Error("আবেদন ডাটাবেজে নেই!");
-                    const currentData = paySnap.data();
-                    if (currentData.status !== 'pending') throw new Error("এই আবেদনটি আগেই প্রসেস করা হয়েছে!");
+                    const cur = paySnap.data();
+                    if ((cur.status || 'pending') !== 'pending') throw new Error("এই আবেদনটি আগেই প্রসেস করা হয়েছে!");
 
-                    const stRef = db.collection("students").doc(payItem.studentId);
+                    // টাকার পরিমাণ সার্ভারে সংরক্ষিত আবেদন থেকেই নেওয়া হচ্ছে
+                    const kh = Number(cur.khorakiAmount) || 0;
+                    const el = Number(cur.electricityAmount) || 0;
+                    const tot = kh + el;
+                    if (kh < 0 || el < 0 || tot <= 0) throw new Error("আবেদনের টাকার পরিমাণ সঠিক নয়!");
+
+                    const stRef = db.collection("students").doc(cur.studentId);
                     const cRef = db.collection("counters").doc("invoice");
-
                     const [stSnap, cSnap] = await Promise.all([tx.get(stRef), tx.get(cRef)]);
-                    if (!stSnap.exists) throw new Error("ছাত্রের তথ্য পাওয়া যায়নি!");
+                    if (!stSnap.exists) throw new Error("ছাত্রের তথ্য পাওয়া যায়নি!");
 
-                    const stdData = stSnap.data();
-                    fatherName = stdData.fatherName || '-';
+                    const sd = stSnap.data();
+                    const curKh = Number(sd.dueKhoraki) || 0;
+                    const curEl = Number(sd.dueElectricity) || 0;
+                    if (kh > curKh || el > curEl) {
+                        throw new Error(`আবেদনের টাকা বর্তমান বকেয়ার চেয়ে বেশি (খোরাকি বকেয়া ${toBengaliNumber(curKh)} ৳, বিদ্যুৎ বকেয়া ${toBengaliNumber(curEl)} ৳)। আবেদনটি বাতিল করুন।`);
+                    }
 
                     const seq = (cSnap.exists ? cSnap.data().n : 0) + 1;
-                    generatedInvoiceNo = "INV-" + String(seq).padStart(6, "0");
-
-                    // দ্বৈত বকেয়া হ্রাস
-                    const curKh = Number(stdData.dueKhoraki) || 0;
-                    const curEl = Number(stdData.dueElectricity) || 0;
-
-                    updatedKhDue = curKh - kh;
-                    updatedElDue = curEl - el;
-                    updatedTotalDue = updatedKhDue + updatedElDue;
+                    const invoiceNo = "INV-" + String(seq).padStart(6, "0");
+                    const newKh = curKh - kh, newEl = curEl - el;
 
                     tx.set(cRef, { n: seq });
-                    tx.update(stRef, {
-                        dueKhoraki: updatedKhDue,
-                        dueElectricity: updatedElDue,
-                        dueAmount: updatedTotalDue
-                    });
-
-                    // ট্রানজেকশনে আলাদা সেভ
-                    const newTxRef = db.collection("transactions").doc();
-                    tx.set(newTxRef, {
-                        invoiceNo: generatedInvoiceNo,
-                        manualReceiptNo: 'Online (' + payItem.trxId + ')',
-                        studentId: payItem.studentId,
-                        dakhelaNum: payItem.dakhelaNum,
-                        name: payItem.name,
-                        fatherName: fatherName,
-                        jamat: payItem.jamat,
-                        session: payItem.session || '',
+                    tx.update(stRef, { dueKhoraki: newKh, dueElectricity: newEl, dueAmount: newKh + newEl });
+                    tx.set(db.collection("transactions").doc(), {
+                        invoiceNo,
+                        manualReceiptNo: 'Online (' + cur.trxId + ')',
+                        studentId: cur.studentId,
+                        dakhelaNum: sd.dakhelaNum,
+                        name: sd.name,
+                        fatherName: sd.fatherName || '',
+                        jamat: sd.jamat,
+                        session: sd.session || '',
                         month: new Date().toLocaleDateString('bn-BD', { month: 'long' }),
                         khorakiPaid: kh,
                         electricityPaid: el,
                         totalPaid: tot,
-                        paymentMethod: payItem.paymentMethod,
-                        senderPhone: payItem.senderPhone,
-                        trxId: payItem.trxId,
-                        collectedBy: cashierName,
+                        paymentMethod: cur.paymentMethod,
+                        senderPhone: cur.senderPhone,
+                        trxId: cur.trxId,
+                        source: 'online',
+                        collectedBy: staff,
+                        collectedByUid: cashierUid(),
                         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                         dateString: currentDate
                     });
-
                     tx.update(payRef, {
                         status: 'approved',
-                        invoiceNo: generatedInvoiceNo,
-                        approvedBy: cashierName,
+                        invoiceNo,
+                        approvedBy: staff,
+                        approvedByUid: cashierUid(),
                         approvedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
+
+                    R = { invoiceNo, kh, el, tot, newKh, newEl, fatherName: sd.fatherName || '-' };
                 });
 
-                alert(`আলহামদুলিল্লাহ! পেমেন্ট অনুমোদিত হয়েছে। ইনভয়েস নং: ${generatedInvoiceNo}`);
-
+                alert(`আলহামদুলিল্লাহ! পেমেন্ট অনুমোদিত হয়েছে। ইনভয়েস নং: ${R.invoiceNo}`);
                 showApprovalReceipt({
-                    invoiceNo: generatedInvoiceNo,
+                    invoiceNo: R.invoiceNo,
                     trackingRef: payItem.trackingRef,
                     session: payItem.session,
                     dakhelaNum: payItem.dakhelaNum,
                     jamat: payItem.jamat,
                     name: payItem.name,
-                    fatherName: fatherName,
+                    fatherName: R.fatherName,
                     paymentMethod: payItem.paymentMethod,
                     trxId: payItem.trxId,
                     senderPhone: payItem.senderPhone,
-                    khorakiPaid: kh,
-                    electricityPaid: el,
-                    totalPaid: tot,
-                    remainKh: updatedKhDue,
-                    remainEl: updatedElDue,
-                    remainTotal: updatedTotalDue,
-                    approvedBy: cashierName,
+                    khorakiPaid: R.kh,
+                    electricityPaid: R.el,
+                    totalPaid: R.tot,
+                    remainKh: R.newKh,
+                    remainEl: R.newEl,
+                    remainTotal: R.newKh + R.newEl,
+                    approvedBy: staff,
                     date: currentDate
                 });
-
             } catch (err) {
                 alert("অনুমোদন ব্যর্থ: " + err.message);
             }
@@ -712,16 +677,21 @@
             const reason = prompt("বাতিলের কারণ লিখুন:", "ভুল ট্রানজেকশন আইডি");
             if (reason === null) return;
 
-            const cashierName = currentStaffUser ? (currentStaffUser.name || currentStaffUser.phone) : auth.currentUser.email;
-
             try {
-                await db.collection("online_payments").doc(docId).update({
-                    status: 'rejected',
-                    rejectionReason: reason.trim() || 'তথ্য সঠিক নয়',
-                    rejectedBy: cashierName,
-                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                await db.runTransaction(async tx => {
+                    const ref = db.collection("online_payments").doc(docId);
+                    const snap = await tx.get(ref);
+                    if (!snap.exists) throw new Error("আবেদন পাওয়া যায়নি!");
+                    if ((snap.data().status || 'pending') !== 'pending') throw new Error("এই আবেদনটি আগেই প্রসেস করা হয়েছে!");
+                    tx.update(ref, {
+                        status: 'rejected',
+                        rejectionReason: reason.trim() || 'তথ্য সঠিক নয়',
+                        rejectedBy: cashierName(),
+                        rejectedByUid: cashierUid(),
+                        rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
                 });
-                alert("আবেদনটি বাতিল করা হয়েছে।");
+                alert("আবেদনটি বাতিল করা হয়েছে।");
             } catch (err) {
                 alert("বাতিল করতে সমস্যা: " + err.message);
             }
@@ -794,6 +764,16 @@
 
             setTimeout(() => { window.print(); }, 400);
         }
+        // টেবিলের সব বাটন ক্লিক এক জায়গায় (inline onclick নেই — XSS নিরাপদ)
+        document.addEventListener('click', e => {
+            const el = e.target.closest('[data-act]');
+            if (!el) return;
+            const act = el.dataset.act, id = el.dataset.id;
+            if (act === 'approve') approveOnlinePaymentWithPin(id);
+            else if (act === 'reject') rejectOnlinePaymentWithPin(id);
+            else if (act === 'receipt') printApprovedReceipt(id);
+            else if (act === 'copy') copyTrx(el.dataset.trx);
+        });
     </script>
 </body>
 </html>

@@ -352,7 +352,7 @@
 
                     <div class="form-group">
                         <label>দাখেলা নম্বর লিখুন *</label>
-                        <input type="number" id="searchDakhela" placeholder="যেমন: ১, ২, ৫০০..." min="1" onkeypress="if(event.key === 'Enter') searchStudent()">
+                        <input type="text" inputmode="numeric" id="searchDakhela" placeholder="যেমন: ১, ২, ৫০০..." min="1" onkeypress="if(event.key === 'Enter') searchStudent()">
                     </div>
 
                     <div>
@@ -432,14 +432,14 @@
                     <!-- ১. খোরাকি আদায়ের পৃথক ঘর -->
                     <div class="form-group fund-box khoraki">
                         <label style="color: #991B1B;">🍚 খোরাকি ফি বাবদ আদায় (৳)</label>
-                        <input type="number" id="payKhoraki" min="0" placeholder="০" oninput="calculateDualTotal()">
+                        <input type="text" inputmode="numeric" id="payKhoraki" min="0" placeholder="০" oninput="calculateDualTotal()">
                         <small id="hintKhoraki" style="color: red; font-size: 0.82rem; margin-top: 3px; display: none;"></small>
                     </div>
 
                     <!-- ২. বিদ্যুৎ ও পানি আদায়ের পৃথক ঘর -->
                     <div class="form-group fund-box electricity">
                         <label style="color: #C2410C;">⚡ বিদ্যুৎ ও পানি বিল বাবদ আদায় (৳)</label>
-                        <input type="number" id="payElectricity" min="0" placeholder="০" oninput="calculateDualTotal()">
+                        <input type="text" inputmode="numeric" id="payElectricity" min="0" placeholder="০" oninput="calculateDualTotal()">
                         <small id="hintElectricity" style="color: red; font-size: 0.82rem; margin-top: 3px; display: none;"></small>
                     </div>
                 </div>
@@ -585,10 +585,9 @@
         });
 
         function setupCashierBadge() {
-            setTimeout(() => {
-                const name = currentStaffUser ? (currentStaffUser.name || currentStaffUser.phone) : "কর্মকর্তা";
-                document.getElementById("cashierBadge").innerText = `👤 ${name}`;
-            }, 800);
+            onStaffReady(() => {
+                document.getElementById("cashierBadge").innerText = `👤 ${cashierName()}`;
+            });
         }
 
         function populateMonthDropdown() {
@@ -752,7 +751,13 @@
             document.getElementById("confirmModal").style.display = "none";
         }
 
+        const NO_RECEIPT = 'প্রযোজ্য নয়';
+        function receiptKey(r) {
+            return normDigits(r).toUpperCase().replace(/[\/\s.]+/g, '_');
+        }
+
         async function executeFinalPaymentWithPin() {
+            if (!currentStudent) return;
             const hasPin = await verifyUserPin("ফি জমা ও রসিদ তৈরি");
             if (!hasPin) return;
 
@@ -763,100 +768,92 @@
             const { valKh, valEl, grand } = calculateDualTotal();
             const month = document.getElementById("billMonth").value;
             const method = document.getElementById("payMethod").value;
-            const manualReceipt = document.getElementById("manualReceiptNo").value.trim() || 'N/A';
-            const cashierName = currentStaffUser ? (currentStaffUser.name || currentStaffUser.phone) : auth.currentUser.email;
-
-            let invoiceNo;
+            const rawReceipt = document.getElementById("manualReceiptNo").value.trim();
+            const manualReceipt = rawReceipt || NO_RECEIPT;
+            const staff = cashierName();
             const currentDate = new Date().toLocaleDateString('bn-BD');
-            let newDueKh, newDueEl, newTotalDue;
+
+            let invoiceNo, newDueKh, newDueEl, newTotalDue, sd;
 
             try {
+                if (grand <= 0) throw new Error("আদায়ের পরিমাণ শূন্য!");
                 const stRef = db.collection("students").doc(currentStudent.id);
                 const cRef = db.collection("counters").doc("invoice");
-                const rcRef = manualReceipt !== 'N/A' ? db.collection("receipt_index").doc(normDigits(manualReceipt).replace(/[\/\s]/g, '_')) : null;
+                const rcRef = rawReceipt ? db.collection("receipt_index").doc(receiptKey(rawReceipt)) : null;
 
                 await db.runTransaction(async tx => {
                     const [stSnap, cSnap, rcSnap] = await Promise.all([
-                        tx.get(stRef),
-                        tx.get(cRef),
-                        rcRef ? tx.get(rcRef) : Promise.resolve(null)
+                        tx.get(stRef), tx.get(cRef), rcRef ? tx.get(rcRef) : Promise.resolve(null)
                     ]);
 
-                    if (rcSnap && rcSnap.exists) throw new Error("এই রসিদ নম্বরটি ইতোমধ্যে ব্যবহার করা হয়েছে!");
-                    const curKh = Number(stSnap.data().dueKhoraki) || 0;
-                    const curEl = Number(stSnap.data().dueElectricity) || 0;
+                    if (!stSnap.exists) throw new Error("ছাত্রের তথ্য পাওয়া যায়নি!");
+                    if (rcSnap && rcSnap.exists) throw new Error("এই রসিদ নম্বরটি ইতোমধ্যে ব্যবহার করা হয়েছে!");
 
-                    if (valKh > curKh || valEl > curEl) throw new Error("নির্ধারিত বকেয়ার চেয়ে বেশি টাকা গ্রহণ করা যাবে না!");
+                    sd = stSnap.data();
+                    const curKh = Number(sd.dueKhoraki) || 0;
+                    const curEl = Number(sd.dueElectricity) || 0;
+                    if (valKh > curKh || valEl > curEl) throw new Error("নির্ধারিত বকেয়ার চেয়ে বেশি টাকা গ্রহণ করা যাবে না!");
 
                     const seq = (cSnap.exists ? cSnap.data().n : 0) + 1;
                     invoiceNo = "INV-" + String(seq).padStart(6, "0");
-
                     newDueKh = curKh - valKh;
                     newDueEl = curEl - valEl;
                     newTotalDue = newDueKh + newDueEl;
 
                     tx.set(cRef, { n: seq });
-                    if (rcRef) tx.set(rcRef, { invoiceNo: invoiceNo });
+                    if (rcRef) tx.set(rcRef, { invoiceNo });
 
-                    // ট্রানজেকশনে খোরাকি ও বিদ্যুৎ আলাদা ফিল্ডে সেভ
                     tx.set(db.collection("transactions").doc(), {
                         invoiceNo,
                         manualReceiptNo: manualReceipt,
                         studentId: currentStudent.id,
-                        dakhelaNum: currentStudent.dakhelaNum,
-                        name: currentStudent.name,
-                        fatherName: currentStudent.fatherName || '',
-                        jamat: currentStudent.jamat,
-                        session: currentStudent.session || '',
+                        dakhelaNum: sd.dakhelaNum,
+                        name: sd.name,
+                        fatherName: sd.fatherName || '',
+                        jamat: sd.jamat,
+                        session: sd.session || '',
                         month,
                         khorakiPaid: valKh,
                         electricityPaid: valEl,
                         totalPaid: grand,
                         paymentMethod: method,
-                        collectedBy: cashierName,
-                        cashierPhone: currentStaffUser ? currentStaffUser.phone : '',
+                        source: 'counter',
+                        collectedBy: staff,
+                        collectedByUid: cashierUid(),
+                        cashierPhone: currentStaffUser ? (currentStaffUser.phone || '') : '',
                         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                         dateString: currentDate
                     });
 
-                    // ছাত্রের আলাদা বকেয়া ফিল্ড আপডেট
-                    tx.update(stRef, {
-                        dueKhoraki: newDueKh,
-                        dueElectricity: newDueEl,
-                        dueAmount: newTotalDue
-                    });
+                    tx.update(stRef, { dueKhoraki: newDueKh, dueElectricity: newDueEl, dueAmount: newTotalDue });
                 });
 
-                // রসিদে আলাদা ব্রেকডাউন প্রদর্শন
                 document.getElementById("rInvoiceNo").innerText = invoiceNo;
                 document.getElementById("rManualReceipt").innerText = manualReceipt;
                 document.getElementById("rDate").innerText = currentDate;
-                document.getElementById("rDakhela").innerText = toBengaliNumber(currentStudent.dakhelaNum);
-                document.getElementById("rSession").innerText = currentStudent.session || '-';
-                document.getElementById("rName").innerText = currentStudent.name;
-                document.getElementById("rFather").innerText = currentStudent.fatherName || '-';
-                document.getElementById("rJamat").innerText = currentStudent.jamat;
+                document.getElementById("rDakhela").innerText = toBengaliNumber(sd.dakhelaNum);
+                document.getElementById("rSession").innerText = sd.session || '-';
+                document.getElementById("rName").innerText = sd.name;
+                document.getElementById("rFather").innerText = sd.fatherName || '-';
+                document.getElementById("rJamat").innerText = sd.jamat;
                 document.getElementById("rMonth").innerText = month;
                 document.getElementById("rMethod").innerText = method;
-
                 document.getElementById("rKhorakiPaid").innerText = `${toBengaliNumber(valKh)} ৳`;
                 document.getElementById("rRemainKhoraki").innerText = `${toBengaliNumber(newDueKh)} ৳`;
                 document.getElementById("rElectricityPaid").innerText = `${toBengaliNumber(valEl)} ৳`;
                 document.getElementById("rRemainElectricity").innerText = `${toBengaliNumber(newDueEl)} ৳`;
-
                 document.getElementById("rTotal").innerText = `${toBengaliNumber(grand)} ৳`;
                 document.getElementById("rRemainTotal").innerText = `${toBengaliNumber(newTotalDue)} ৳`;
-                document.getElementById("rCashierName").innerText = cashierName;
+                document.getElementById("rCashierName").innerText = staff;
 
                 closeConfirmModal();
                 document.getElementById("receiptArea").style.display = "block";
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-
                 setTimeout(() => { window.print(); }, 400);
 
                 document.getElementById("studentProfile").style.display = "none";
                 document.getElementById("searchDakhela").value = "";
-
+                currentStudent = null;
             } catch (err) {
                 alert("পেমেন্ট ব্যর্থ: " + err.message);
             } finally {
@@ -898,54 +895,94 @@
             if (!selectedBatchMonth) return;
 
             const session = document.getElementById("searchSession").value;
+            if (!session) { alert("শিক্ষাবর্ষ নির্বাচন করুন!"); return; }
             const year = new Date().getFullYear();
             const lockKey = `${normDigits(session)}_${year}_${selectedBatchMonth}`;
             const runRef = db.collection("billing_runs").doc(lockKey);
+            const FRESH_MS = 10 * 60 * 1000;
 
-            if ((await runRef.get()).exists) {
-                alert(`⚠️ ${selectedBatchMonth} ${toBengaliNumber(year)}-এর বিল এই শিক্ষাবর্ষে আগেই ধার্য হয়েছে। দ্বিতীয়বার ধার্য করা সম্ভব নয়!`);
+            let note = '';
+            try {
+                const prev = await runRef.get();
+                if (prev.exists) {
+                    const pd = prev.data();
+                    if (pd.status === 'running' && Date.now() - (pd.startedMs || 0) < FRESH_MS) {
+                        alert("⚠️ এই মাসের বিল ধার্য এই মুহূর্তে অন্য কেউ চালাচ্ছেন। কিছুক্ষণ পরে দেখুন।");
+                        return;
+                    }
+                    note = pd.status === 'done'
+                        ? "\n\nℹ️ এই মাসের বিল আগেই ধার্য হয়েছে। এবার শুধু তাদের ওপর ধার্য হবে যাদের ওপর এখনো ধার্য হয়নি (যেমন নতুন ভর্তি)। আগে ধার্য হওয়া কারো বিল দ্বিতীয়বার যোগ হবে না।"
+                        : "\n\nℹ️ আগের ধার্য অসম্পূর্ণ ছিল। বাকি ছাত্রদের ওপর ধার্য হবে; যাদের হয়ে গেছে তাদের আবার হবে না।";
+                }
+            } catch (e) {
+                alert("যাচাই করতে সমস্যা: " + e.message);
                 return;
             }
 
-            const warningText = `🚨 চূড়ান্ত সতর্কতা!\n\nশিক্ষাবর্ষ: ${session}\nমাস: ${selectedBatchMonth}\n\nএই মাসের খোরাকি ফি ও বিদ্যুৎ বিল সকল সক্রিয় ছাত্রের নিজ নিজ বকেয়ায় যোগ হবে।\n\n⚠️ "এটি পরিবর্তন করা যাবে না! আপনি কি নিশ্চিত?"`;
+            const warningText = `🚨 চূড়ান্ত সতর্কতা!\n\nশিক্ষাবর্ষ: ${session}\nমাস: ${selectedBatchMonth}\n\nএই মাসের খোরাকি ফি ও বিদ্যুৎ বিল সকল সক্রিয় ছাত্রের নিজ নিজ বকেয়ায় যোগ হবে।${note}\n\n⚠️ "এটি পরিবর্তন করা যাবে না! আপনি কি নিশ্চিত?"`;
             if (!confirm(warningText)) return;
 
             const hasPin = await verifyUserPin(`সকল ছাত্রের ওপর ${selectedBatchMonth} মাসের বিল ধার্য`);
             if (!hasPin) return;
 
             closeMonthlyBillingDialog();
+            const staff = cashierName();
 
             try {
-                await runRef.set({
-                    session,
-                    month: selectedBatchMonth,
-                    year,
-                    by: currentStaffUser ? currentStaffUser.name : auth.currentUser.email,
-                    at: firebase.firestore.FieldValue.serverTimestamp()
+                // লক দখল (একসাথে দুজন চালাতে পারবে না)
+                await db.runTransaction(async tx => {
+                    const snap = await tx.get(runRef);
+                    if (snap.exists && snap.data().status === 'running' && Date.now() - (snap.data().startedMs || 0) < FRESH_MS) {
+                        throw new Error("অন্য কেউ এই মুহূর্তে বিল ধার্য করছেন!");
+                    }
+                    tx.set(runRef, {
+                        session, month: selectedBatchMonth, year,
+                        status: 'running', startedMs: Date.now(),
+                        by: staff, byUid: cashierUid(),
+                        at: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
                 });
 
                 const snap = await db.collection("students").where("session", "==", session).get();
-                const docs = snap.docs.filter(d => (d.data().status || "active") === "active");
+                const docs = snap.docs.filter(d => {
+                    const x = d.data();
+                    const already = Array.isArray(x.billedKeys) && x.billedKeys.includes(lockKey);
+                    return (x.status || "active") === "active" && !already;
+                });
 
-                for (let i = 0; i < docs.length; i += 400) {
+                for (let i = 0; i < docs.length; i += 200) {
                     const batch = db.batch();
-                    docs.slice(i, i + 400).forEach(d => {
+                    docs.slice(i, i + 200).forEach(d => {
                         const x = d.data();
                         const addKh = Number(x.khoraki) || 0;
                         const addEl = Number(x.electricity) || 0;
-
                         batch.update(d.ref, {
                             dueKhoraki: firebase.firestore.FieldValue.increment(addKh),
                             dueElectricity: firebase.firestore.FieldValue.increment(addEl),
-                            dueAmount: firebase.firestore.FieldValue.increment(addKh + addEl)
+                            dueAmount: firebase.firestore.FieldValue.increment(addKh + addEl),
+                            billedKeys: firebase.firestore.FieldValue.arrayUnion(lockKey)
+                        });
+                        // প্রতি ছাত্রের ধার্যের ইতিহাস (লেজারে দেখা যাবে)
+                        batch.set(d.ref.collection("charges").doc(lockKey), {
+                            session, month: selectedBatchMonth, year,
+                            khoraki: addKh, electricity: addEl, total: addKh + addEl,
+                            by: staff,
+                            at: firebase.firestore.FieldValue.serverTimestamp()
                         });
                     });
                     await batch.commit();
                 }
 
-                alert(`আলহামদুলিল্লাহ! ${toBengaliNumber(docs.length)} জন ছাত্রের অ্যাকাউন্টে ${selectedBatchMonth} মাসের খোরাকি ও বিদ্যুৎ বিল সফলভাবে ধার্য হয়েছে।`);
+                await runRef.update({
+                    status: 'done',
+                    billedTotal: firebase.firestore.FieldValue.increment(docs.length),
+                    finishedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert(`আলহামদুলিল্লাহ! ${toBengaliNumber(docs.length)} জন ছাত্রের অ্যাকাউন্টে ${selectedBatchMonth} মাসের খোরাকি ও বিদ্যুৎ বিল সফলভাবে ধার্য হয়েছে।`);
             } catch (e) {
-                alert("বিল ধার্য করতে সমস্যা: " + e.message);
+                try { await runRef.update({ status: 'failed', error: String(e.message || e) }); } catch (_) {}
+                alert("বিল ধার্য করতে সমস্যা: " + e.message + "\n\nআবার চালালে শুধু বাকিদের ওপর ধার্য হবে, কারো বিল দুইবার যোগ হবে না।");
             }
         }
     </script>
