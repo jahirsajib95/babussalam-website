@@ -8,7 +8,7 @@
 const CHAT_API_URL = "https://babussalam-chat.babussalam.workers.dev/";
 
 // 👇 চ্যাটবট কাজ না করলে এই নম্বর দেখানো হবে (ফুটারের অফিস নম্বর — যাচাই করে নিন)
-const FALLBACK_PHONE = "01973-827881";
+const FALLBACK_PHONE = "০১৮১৬-১৮৩৪৮৮";
 
 const MAX_HISTORY = 8;
 const REQUEST_TIMEOUT_MS = 40000;
