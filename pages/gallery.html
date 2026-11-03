@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ফটো গ্যালারি — জামিয়া বাবুস সালাম</title>
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet"> -->
+    <meta name="description" content="জামিয়া বাবুস সালামের ক্যাম্পাস, কেন্দ্রীয় মসজিদ, ক্লাসরুম ও বিমানবন্দর সংলগ্ন এলাকার ছবির গ্যালারি।">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ফটো গ্যালারি — জামিয়া বাবুস সালাম">
+    <meta property="og:description" content="জামিয়া বাবুস সালামের ক্যাম্পাস, কেন্দ্রীয় মসজিদ, ক্লাসরুম ও বিমানবন্দর সংলগ্ন এলাকার ছবির গ্যালারি।">
+    <meta property="og:image" content="https://jamiababussalam.com/images/gallery/01-campus.jpg">
+    <meta property="og:url" content="https://jamiababussalam.com/pages/gallery">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://jamiababussalam.com/pages/gallery">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -234,7 +241,6 @@
     <div class="gallery-filter">
         <button class="filter-btn active" onclick="filterGallery('all', this)">সব</button>
         <button class="filter-btn" onclick="filterGallery('campus', this)">🏛️ ক্যাম্পাস</button>
-        <button class="filter-btn" onclick="filterGallery('event', this)">🎉 অনুষ্ঠান</button>
         <button class="filter-btn" onclick="filterGallery('class', this)">📚 ক্লাসরুম</button>
         <button class="filter-btn" onclick="filterGallery('mosque', this)">🕌 মসজিদ</button>
     </div>
@@ -247,7 +253,7 @@
         <!-- ═══ ছবি ১ ═══ -->
         <!-- 👇 নতুন ছবি যোগ করতে এই ব্লক কপি করে নিচে পেস্ট করুন -->
         <div class="gallery-item" data-category="campus" onclick="openLightbox(0)">
-            <img src="../images/gallery/01-campus.jpg" alt="ক্যাম্পাস ভিউ">
+            <img src="../images/gallery/01-campus.jpg" alt="ক্যাম্পাস ভিউ" loading="lazy">
             <div class="caption">
                 জামিয়ার মূল ভবন
                 <small>📅 জানুয়ারি ২০২৫</small>
@@ -257,7 +263,7 @@
 
         <!-- ═══ ছবি ২ ═══ -->
         <div class="gallery-item" data-category="mosque" onclick="openLightbox(1)">
-            <img src="../images/gallery/02-mosque.jpg" alt="মসজিদ">
+            <img src="../images/gallery/02-mosque.jpg" alt="মসজিদ" loading="lazy">
             <div class="caption">
                 জামিয়ার কেন্দ্রীয় মসজিদ
                 <small>📅 ২০২৪</small>
@@ -267,7 +273,7 @@
 
         <!-- ═══ ছবি ৩ ═══ -->
         <div class="gallery-item" data-category="class" onclick="openLightbox(2)">
-            <img src="../images/gallery/03-classroom.jpg" alt="ক্লাসরুম">
+            <img src="../images/gallery/03-classroom.jpg" alt="ক্লাসরুম" loading="lazy">
             <div class="caption">
                 কিতাব বিভাগের ক্লাস
                 <small>📅 ডিসেম্বর ২০২৪</small>
@@ -277,50 +283,80 @@
 
         <!-- ═══ ছবি ৪ ═══ -->
         <div class="gallery-item" data-category="campus" onclick="openLightbox(3)">
-            <img src="../images/gallery/04-library.jpg" alt="লাইব্রেরি">
+            <img src="../images/gallery/04-front-view.jpg" alt="জামিয়ার সম্মুখভাগ" loading="lazy">
             <div class="caption">
-                জামিয়ার লাইব্রেরি
-                <small>📅 ২০২৪</small>
+                ফুলের বাগানসহ জামিয়ার সম্মুখভাগ
+                <small>📅 ২০২৬</small>
             </div>
         </div>
 
 
         <!-- ═══ ছবি ৫ ═══ -->
-        <div class="gallery-item" data-category="event" onclick="openLightbox(4)">
-            <img src="../images/gallery/05-event.jpg" alt="বার্ষিক মাহফিল">
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(4)">
+            <img src="../images/gallery/05-south-building.jpg" alt="জামিয়ার ভবনের দক্ষিণ দিক" loading="lazy">
             <div class="caption">
-                বার্ষিক মাহফিল ২০২৪
-                <small>📅 মার্চ ২০২৪</small>
+                জামিয়ার ভবনের দক্ষিণ দিক
+                <small>📅 ২০২৬</small>
             </div>
         </div>
 
 
         <!-- ═══ ছবি ৬ ═══ -->
-        <div class="gallery-item" data-category="class" onclick="openLightbox(5)">
-            <img src="../images/gallery/06-students.jpg" alt="ছাত্ররা">
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(5)">
+            <img src="../images/gallery/06-main-gate.jpg" alt="জামিয়ার প্রবেশপথ" loading="lazy">
             <div class="caption">
-                হিফজ বিভাগের ছাত্রগণ
-                <small>📅 ২০২৪</small>
+                জামিয়ার প্রবেশপথ ও সংলগ্ন সড়ক
+                <small>📅 ২০২৬</small>
             </div>
         </div>
 
 
         <!-- ═══ ছবি ৭ ═══ -->
-        <div class="gallery-item" data-category="event" onclick="openLightbox(6)">
-            <img src="../images/gallery/07-graduation.jpg" alt="দাওরায়ে হাদিস সমাপনী">
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(6)">
+            <img src="../images/gallery/07-street-view.jpg" alt="বিমানবন্দর সড়ক থেকে জামিয়ার দৃশ্য" loading="lazy">
             <div class="caption">
-                দাওরায়ে হাদিস সমাপনী
-                <small>📅 এপ্রিল ২০২৪</small>
+                বিমানবন্দর সড়ক থেকে জামিয়ার দৃশ্য
+                <small>📅 ২০২৬</small>
             </div>
         </div>
 
 
         <!-- ═══ ছবি ৮ ═══ -->
-        <div class="gallery-item" data-category="mosque" onclick="openLightbox(7)">
-            <img src="../images/gallery/08-jumma.jpg" alt="জুমার নামাজ">
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(7)">
+            <img src="../images/gallery/08-monument.jpg" alt="জামিয়ার সম্মুখে ইসলামি নকশা" loading="lazy">
             <div class="caption">
-                জুমার নামাজের দৃশ্য
-                <small>📅 ২০২৪</small>
+                জামিয়ার সম্মুখে ইসলামি নকশা ও ফলক
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+
+        <!-- ═══ ছবি ৯ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(8)">
+            <img src="../images/gallery/09-aerial.jpg" alt="পাখির চোখে জামিয়া কমপ্লেক্স" loading="lazy">
+            <div class="caption">
+                পাখির চোখে জামিয়া কমপ্লেক্স
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+
+        <!-- ═══ ছবি ১০ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(9)">
+            <img src="../images/gallery/10-night.jpg" alt="রাতের আলোয় জামিয়া বাবুস সালাম" loading="lazy">
+            <div class="caption">
+                রাতের আলোয় জামিয়া বাবুস সালাম
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+
+        <!-- ═══ ছবি ১১ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(10)">
+            <img src="../images/gallery/11-poster.jpg" alt="জামিয়ার পরিচিতিমূলক পোস্টার" loading="lazy">
+            <div class="caption">
+                জামিয়ার পরিচিতিমূলক পোস্টার
+                <small>📅 ২০২৬</small>
             </div>
         </div>
 

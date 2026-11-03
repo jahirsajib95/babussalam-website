@@ -37,7 +37,7 @@ function loadPart(id, file, callback) {
     var box = document.getElementById(id);
     if (!box) return;
 
-    fetch(file)
+    fetch(file, { cache: 'no-cache' })
         .then(function (res) {
             if (!res.ok) throw new Error('not found');
             return res.text();

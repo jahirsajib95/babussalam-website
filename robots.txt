@@ -1,3 +1,9 @@
 User-agent: *
 Allow: /
+
+# প্রশাসনিক প্যানেল ও স্টাফ পোর্টাল সার্চে দেখানোর দরকার নেই
+Disallow: /admin
+Disallow: /pages/ifta-admin
+Disallow: /portal/
+
 Sitemap: https://jamiababussalam.com/sitemap.xml

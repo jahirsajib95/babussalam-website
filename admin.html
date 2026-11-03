@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>মাদরাসা কন্ট্রোল প্যানেল (GitHub Live)</title>
     <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -118,18 +119,17 @@
 </head>
 <body>
 
-<!-- ══ পাসওয়ার্ড প্রোটেকশন স্ক্রিন ══ -->
+<!-- ══ লগইন যাচাই স্ক্রিন ══ -->
 <div id="login-screen">
-    <i class="fa-solid fa-lock" style="font-size: 45px; color: var(--primary); margin-bottom: 15px;"></i>
-    <h3>অ্যাডমিন লগইন</h3>
-    <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">প্যানেলে প্রবেশ করতে সিক্রেট পাসওয়ার্ড লিখুন</p>
-    <div class="form-group">
-        <input type="password" id="pass-input" placeholder="পাসওয়ার্ড লিখুন..." autofocus>
-    </div>
-    <button class="btn btn-gold" style="width: 100%; justify-content: center;" onclick="checkPassword()">
-        <i class="fa-solid fa-right-to-bracket"></i> প্রবেশ করুন
-    </button>
-    <p id="pass-error" style="color: red; font-size: 13px; display: none; margin-top: 10px;">ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।</p>
+    <i class="fa-solid fa-shield-halved" style="font-size: 45px; color: var(--primary); margin-bottom: 15px;"></i>
+    <h3>অ্যাডমিন লগইন যাচাই হচ্ছে…</h3>
+    <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">
+        পোর্টালে লগইন করা স্টাফ অ্যাকাউন্ট দিয়েই এই প্যানেলে প্রবেশ করা যায়।
+    </p>
+    <p id="auth-status" style="display:none; color:#dc2626; font-size:13px; margin-bottom:10px;"></p>
+    <a class="btn" style="justify-content:center; text-decoration:none;" href="portal/login.html?next=../admin.html">
+        <i class="fa-solid fa-right-to-bracket"></i> লগইন পেজে যান
+    </a>
 </div>
 
 <!-- ══ মূল অ্যাডমিন প্যানেল ══ -->
@@ -249,19 +249,39 @@
     </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="portal/firebase-config.js"></script>
 <script>
-    // ডিফল্ট পাসওয়ার্ড (এখানে আপনার পছন্দমতো পরিবর্তন করে নিন)
-    const ADMIN_PASSWORD = "babus123";
+    /* ══ Firebase লগইন গার্ড ══
+       পাসওয়ার্ড আর কোডে নেই। প্যানেলটি শুধু portal/login.html দিয়ে লগইন করা
+       এবং Firestore-এর admins কালেকশনে থাকা স্টাফদের জন্য খুলবে। */
+    var LOGIN_URL = 'portal/login.html?next=' + encodeURIComponent('../admin.html');
 
-    function checkPassword() {
-        const val = document.getElementById('pass-input').value;
-        if(val === ADMIN_PASSWORD) {
-            sessionStorage.setItem('admin_logged', 'true');
-            showAdmin();
-        } else {
-            document.getElementById('pass-error').style.display = 'block';
-        }
+    function startAuthGuard() {
+        var statusEl = document.getElementById('auth-status');
+        auth.onAuthStateChanged(async function (user) {
+            if (!user) { location.replace(LOGIN_URL); return; }
+            try {
+                var snap = await db.collection('admins').doc(user.uid).get();
+                if (!snap.exists) {
+                    await auth.signOut();
+                    location.replace(LOGIN_URL + '&denied=1');
+                    return;
+                }
+                document.getElementById('login-screen').style.display = 'none';
+                showAdmin();
+            } catch (e) {
+                if (statusEl) {
+                    statusEl.style.display = 'block';
+                    statusEl.textContent = 'লগইন যাচাই করা যায়নি: ' + (e && e.message ? e.message : e);
+                }
+            }
+        });
     }
+
+    document.addEventListener('DOMContentLoaded', startAuthGuard);
 
     function showAdmin() {
         document.getElementById('login-screen').style.display = 'none';
@@ -271,8 +291,9 @@
     }
 
     function logout() {
-        sessionStorage.removeItem('admin_logged');
-        location.reload();
+        if (confirm('লগআউট করতে চান?')) {
+            auth.signOut().then(function () { location.replace(LOGIN_URL); });
+        }
     }
 
     // অটো আজকের বাংলা তারিখ ও সময় তৈরি
@@ -290,20 +311,15 @@
         document.getElementById('exam-publish-time').value = `${dateStr} | রাত ৮:০০ টা`;
     }
 
-    window.onload = () => {
-        if(sessionStorage.getItem('admin_logged') === 'true') {
-            showAdmin();
-        }
-    };
-
     let siteData = { notices: [], results: [] };
     let fileSha = "";
 
     function loadLocalSettings() {
         document.getElementById('gh-owner').value = localStorage.getItem('gh_owner') || '';
         document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || '';
-        document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
-        if(localStorage.getItem('gh_token')) {
+        document.getElementById('gh-token').value = sessionStorage.getItem('gh_token') || '';
+        localStorage.removeItem('gh_token'); // পুরোনো ব্রাউজারে জমে থাকা টোকেন সরানো হচ্ছে
+        if(sessionStorage.getItem('gh_token')) {
             loadFromGitHub();
         }
     }
@@ -311,7 +327,7 @@
     function saveConfig() {
         localStorage.setItem('gh_owner', document.getElementById('gh-owner').value.trim());
         localStorage.setItem('gh_repo', document.getElementById('gh-repo').value.trim());
-        localStorage.setItem('gh_token', document.getElementById('gh-token').value.trim());
+        sessionStorage.setItem('gh_token', document.getElementById('gh-token').value.trim());
         showStatus('কনফিগারেশন সেভ হয়েছে!', '#dcfce7', '#15803d');
     }
 

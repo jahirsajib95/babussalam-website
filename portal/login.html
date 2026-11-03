@@ -200,8 +200,16 @@
                     throw new Error("not_authorized");
                 }
 
-                // সফল হলে সরাসরি বিল উত্তোলন পেজে প্রবেশ করবে
-                window.location.replace("collect.html");
+                // সফল হলে next প্যারামিটারের পেজে (থাকলে) নইলে বিল উত্তোলন পেজে যাবে
+                const nextParam = new URLSearchParams(location.search).get("next");
+                let target = "collect.html";
+                if (nextParam) {
+                    try {
+                        const resolved = new URL(nextParam, location.href);
+                        if (resolved.origin === location.origin) target = resolved.href;
+                    } catch (e) { /* ভুল লিংক হলে ডিফল্ট পেজই থাকবে */ }
+                }
+                window.location.replace(target);
 
             } catch (error) {
                 console.error("লগইন এরর:", error);
@@ -220,6 +228,15 @@
                 errMsg.style.display = "block";
             }
         }
+
+        // কোনো প্যানেলে অনুমতি না থাকলে সেখান থেকে ফেরত পাঠানোর বার্তা
+        (function showDeniedNotice() {
+            if (new URLSearchParams(location.search).get("denied") !== "1") return;
+            const box = document.getElementById("errMsg");
+            if (!box) return;
+            box.textContent = "⚠️ আপনার অ্যাকাউন্টটি ওই প্যানেলে প্রবেশের অনুমতি পায়নি।";
+            box.style.display = "block";
+        })();
     </script>
 </body>
 </html>
