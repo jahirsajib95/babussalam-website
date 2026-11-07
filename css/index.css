@@ -566,3 +566,300 @@
             }
         }
     
+/* ============================================================
+   হোমপেজের নতুন সেকশন — ভর্তি, ফি, পর্ষদ, ফলাফল, যোগাযোগ
+   ============================================================ */
+
+        .home-block { padding: 60px 20px; }
+        .home-block.alt {
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .home-block .container { padding: 0; }
+
+        .section-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 26px;
+        }
+        .section-actions.left { justify-content: flex-start; margin-top: 18px; }
+        .section-actions.light .btn-outline { color: #fff; border-color: rgba(255,255,255,0.6); }
+        .section-actions.light .btn-outline:hover { background: rgba(255,255,255,0.14); color: #fff; }
+
+        .check-list { list-style: none; padding: 0 !important; margin: 16px 0 0; }
+        .check-list li {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            font-size: 14.5px;
+            color: #334155;
+        }
+        .check-list li i { color: var(--primary-light); margin-top: 5px; font-size: 14px; }
+        .check-list.two-col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 4px 24px;
+            max-width: 900px;
+            margin: 18px auto 0;
+        }
+
+        .name-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .name-card {
+            background: #f8fbf9;
+            border: 1px solid #e2ede6;
+            border-radius: 14px;
+            padding: 24px;
+        }
+        .name-icon { font-size: 30px; margin-bottom: 8px; }
+        .name-card h3 { color: var(--primary-dark); font-size: 18px; margin-bottom: 10px; }
+        .name-card p { color: #475569; font-size: 14.5px; }
+        .mini-list { list-style: none; padding: 0; margin: 0 0 12px; }
+        .mini-list li { display: flex; gap: 10px; font-size: 14px; color: #475569; margin-bottom: 8px; }
+        .mini-list li i { color: var(--primary-light); margin-top: 4px; }
+        .text-link { font-weight: bold; font-size: 14px; color: var(--primary); }
+        .text-link i { font-size: 12px; }
+
+        .admission-band {
+            background: linear-gradient(135deg, #0b5335, #073823);
+            padding: 60px 20px;
+            color: #fff;
+        }
+        .admission-band .container { padding: 0; }
+        .admission-band .section-title h2::after { background: var(--accent-gold); }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 16px;
+            margin: 26px 0;
+        }
+        .step {
+            position: relative;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.16);
+            border-radius: 14px;
+            padding: 24px 20px 20px;
+        }
+        .step-num {
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            color: #073823;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .step h4 { color: #fff; font-size: 16px; margin: 6px 0 8px; }
+        .step p { color: #d8e8dd; font-size: 14px; margin: 0; }
+
+        .admission-panels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .panel {
+            background: #fff;
+            border-radius: 14px;
+            padding: 22px;
+            color: var(--text-dark);
+        }
+        .panel h3 { color: var(--primary-dark); font-size: 17px; margin-bottom: 12px; }
+        .panel h3 i { color: var(--accent-gold); margin-right: 6px; }
+        .panel ul { margin: 0; padding-left: 20px; }
+        .panel li { font-size: 14px; color: #475569; margin-bottom: 7px; }
+        .fee-total { font-size: 30px; font-weight: bold; color: var(--primary); margin: 0 0 8px; }
+        .fee-table { min-width: 560px; }
+        .helpline { color: #e8f1ea; font-size: 14.5px; margin: 18px 0 0; }
+        .helpline a { color: var(--accent-gold); font-weight: bold; }
+        .helpline .sep { margin: 0 8px; color: rgba(255,255,255,0.4); }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0 6px;
+        }
+        .chip {
+            background: #fff;
+            border: 1px solid #d9e6dd;
+            border-radius: 999px;
+            padding: 7px 16px;
+            font-size: 13.5px;
+            color: var(--primary-dark);
+        }
+
+        .dept-grid.three { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .trust-card {
+            background: #f8fbf9;
+            border: 1px solid #e2ede6;
+            border-radius: 14px;
+            padding: 20px;
+        }
+        .trust-role {
+            display: inline-block;
+            font-size: 12px;
+            color: var(--accent-gold);
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        .trust-card strong { display: block; color: var(--primary-dark); font-size: 15px; margin-bottom: 6px; }
+        .trust-card small { color: var(--text-muted); font-size: 12.5px; line-height: 1.6; }
+
+        .result-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .result-card {
+            display: block;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 18px 20px;
+            color: var(--text-dark);
+            box-shadow: var(--card-shadow);
+        }
+        .result-card:hover { transform: translateY(-2px); border-color: var(--primary); }
+        .result-badge {
+            display: inline-block;
+            background: var(--accent-gold-light);
+            color: #8a5a00;
+            border-radius: 999px;
+            font-size: 12px;
+            padding: 2px 10px;
+            margin-bottom: 8px;
+        }
+        .result-card strong { display: block; color: var(--primary-dark); font-size: 15.5px; margin-bottom: 4px; }
+        .result-card small { color: var(--text-muted); font-size: 12.5px; display: block; }
+        .result-link { display: inline-block; margin-top: 10px; font-weight: bold; color: var(--primary); font-size: 13.5px; }
+
+        .fatwa-teaser { max-width: 760px; margin: 0 auto; text-align: center; }
+        .fatwa-teaser p { color: #475569; font-size: 14.5px; }
+        .fatwa-teaser .section-actions { justify-content: center; }
+
+        .foundation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+        }
+        .foundation-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+        }
+        .foundation-card h4 { color: var(--primary-dark); font-size: 17px; margin-bottom: 12px; }
+        .foundation-card h4 i { color: var(--accent-gold); margin-right: 6px; }
+        .foundation-card ul { margin: 0; padding-left: 20px; }
+        .foundation-card li { font-size: 14px; color: #475569; margin-bottom: 8px; }
+        .wide-text { max-width: 860px; margin: 0 auto 8px; text-align: center; color: #475569; font-size: 14.5px; }
+
+        .gallery-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .gallery-strip img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+            transition: var(--transition);
+        }
+        .gallery-strip a:hover img { transform: scale(1.02); box-shadow: var(--card-shadow); }
+
+        .bank-info-box p { margin: 3px 0; font-size: 14px; }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        .contact-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+        }
+        .contact-card i { font-size: 26px; color: var(--primary-light); margin-bottom: 10px; }
+        .contact-card h4 { color: var(--primary-dark); font-size: 16px; margin-bottom: 8px; }
+        .contact-card p { font-size: 14px; color: #475569; margin-bottom: 10px; }
+        .contact-card a { font-weight: bold; font-size: 13.5px; }
+        .contact-note {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13.5px;
+            color: #64748b;
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+        .contact-note i { color: var(--primary-light); }
+        .contact-note .sep { margin: 0 10px; color: #cbd5e1; }
+
+        @media (max-width: 768px) {
+            .home-block { padding: 42px 16px; }
+            .admission-band { padding: 42px 16px; }
+            .fee-table { min-width: 480px; }
+            .gallery-strip img { height: 160px; }
+            .check-list.two-col { grid-template-columns: 1fr; }
+        }
+/* ── গ্রিড কলামের সঠিক সংখ্যা (auto-fit-এর বাড়তি খালি কলাম ঠিক করা) ── */
+        .steps { grid-template-columns: repeat(3, 1fr); }
+        .name-grid,
+        .admission-panels,
+        .foundation-grid,
+        .result-list { grid-template-columns: repeat(2, 1fr); }
+        .trust-grid,
+        .contact-grid,
+        .dept-grid.three { grid-template-columns: repeat(3, 1fr); }
+        .gallery-strip { grid-template-columns: repeat(4, 1fr); }
+
+        @media (max-width: 1000px) {
+            .steps { grid-template-columns: repeat(2, 1fr); }
+            .gallery-strip { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 900px) {
+            .trust-grid,
+            .contact-grid,
+            .dept-grid.three { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .name-grid,
+            .admission-panels,
+            .foundation-grid,
+            .result-list { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            .steps,
+            .trust-grid,
+            .contact-grid,
+            .dept-grid.three { grid-template-columns: 1fr; }
+        }
