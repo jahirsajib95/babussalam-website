@@ -1,0 +1,113 @@
+/* ============================================================
+   অ্যাডমিন প্যানেল — পেজ-নির্দিষ্ট স্টাইল
+   মূল ফাইল: admin.html
+   ============================================================ */
+
+        :root {
+            --primary: #0b5335;
+            --primary-dark: #073823;
+            --accent-gold: #c9933b;
+            --danger: #dc2626;
+            --bg: #f1f5f9;
+        }
+        body {
+            font-family: 'SolaimanLipi', sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+            color: #1e293b;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        /* লগইন স্ক্রিন */
+        #login-screen {
+            max-width: 400px;
+            margin: 80px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        h1 { text-align: center; color: var(--primary); margin-top: 0; }
+        .config-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .btn {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover { background: var(--primary-dark); }
+        .btn-gold { background: var(--accent-gold); color: #000; font-weight: bold; }
+        .btn-danger { background: var(--danger); }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+        }
+        .tab.active {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .item-card {
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+        }
+        .badge {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .urgent { background: #dc2626; }
+        .exam { background: #d97706; }
+        .general { background: #16a34a; }
+        #status-msg {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+        }
+    

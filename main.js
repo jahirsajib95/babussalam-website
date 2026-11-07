@@ -1,11 +1,15 @@
 /* ═══════════════════════════════════════════
-   জামিয়া বাবুস সালাম — মেইন স্ক্রিপ্ট (আপডেটেড)
-   ⚠️ এই ফাইলে কোনো পরিবর্তন করবেন না
+   জামিয়া বাবুস সালাম — মেইন স্ক্রিপ্ট
    ═══════════════════════════════════════════ */
 
-// পেজটি pages/ ফোল্ডারে আছে কিনা বের করা
+// পেজটি সাইট-রুট থেকে কত স্তর গভীরে তার ভিত্তিতে BASE পাথ বের করা
+// (রুট: ``./``, এক স্তরের ফোল্ডার যেমন ``/institutional/about.html``: ``../``)
 function getBasePath() {
-    return window.location.pathname.indexOf('/pages/') !== -1 ? '../' : './';
+    var parts = window.location.pathname.split('/').filter(function (part) {
+        return part !== '';
+    });
+    if (parts.length && /\.html?$/.test(parts[parts.length - 1])) parts.pop();
+    return parts.length ? new Array(parts.length + 1).join('../') : './';
 }
 
 var BASE = getBasePath();

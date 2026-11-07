@@ -5,7 +5,7 @@
         <div class="logo-section" onclick="window.location.href='{{BASE}}index.html'" style="cursor: pointer;"> <img
                 src="{{BASE}}images/logo.png" alt="লোগো">
             <div class="logo-text">
-                <h1>জামিয়া বাবুস সালাম</h1> <small>Jamia Babus Salam</small>
+                <p class="brand-name">জামিয়া বাবুস সালাম</p> <small>Jamia Babus Salam</small>
             </div>
         </div> <button class="menu-toggle" id="menuToggle"> ☰ <span>মেনু</span> </button>
     </div>
@@ -33,8 +33,8 @@
             <span class="arrow">▼</span>
         </div>
         <div class="nav-submenu">
-            <a href="{{BASE}}pages/notice.html">নোটিশ</a>
-            <a href="{{BASE}}pages/biggopti.html">বিজ্ঞপ্তি</a>
+            <a href="{{BASE}}notice/notice.html">নোটিশ</a>
+            <a href="{{BASE}}notice/biggopti.html">বিজ্ঞপ্তি</a>
         </div>
     </div>
 
@@ -44,10 +44,10 @@
             <span class="arrow">▼</span>
         </div>
         <div class="nav-submenu">
-            <a href="{{BASE}}pages/bidhi.html">বিধি ও আইন</a>
-            <a href="{{BASE}}pages/syllabus.html">সিলেবাস</a>
-            <a href="{{BASE}}pages/class-schedule.html">শ্রেণিসূচি</a>
-            <a href="{{BASE}}pages/calendar.html">একাডেমিক বর্ষপঞ্জি</a>
+            <a href="{{BASE}}academic/bidhi.html">বিধি ও আইন</a>
+            <a href="{{BASE}}academic/syllabus.html">সিলেবাস</a>
+            <a href="{{BASE}}academic/class-schedule.html">শ্রেণিসূচি</a>
+            <a href="{{BASE}}academic/calendar.html">একাডেমিক বর্ষপঞ্জি</a>
         </div>
     </div>
 
@@ -57,12 +57,12 @@
             <span class="arrow">▼</span>
         </div>
         <div class="nav-submenu">
-            <a href="{{BASE}}pages/porichalona.html">পরিচালনা পর্ষদ</a>
-            <a href="{{BASE}}pages/bibhag.html">বিভাগসমূহ</a>
-            <a href="{{BASE}}pages/about.html">আমাদের পরিচিতি</a>
-            <a href="{{BASE}}pages/teachers.html">শিক্ষক, কর্মকর্তা-কর্মচারী</a>
-            <a href="{{BASE}}pages/mission.html">আদর্শ, লক্ষ্য ও উদ্দেশ্য</a>
-            <a href="{{BASE}}pages/history.html">সংক্ষিপ্ত ইতিহাস</a>
+            <a href="{{BASE}}institutional/porichalona.html">পরিচালনা পর্ষদ</a>
+            <a href="{{BASE}}institutional/bibhag.html">বিভাগসমূহ</a>
+            <a href="{{BASE}}institutional/about.html">আমাদের পরিচিতি</a>
+            <a href="{{BASE}}institutional/teachers.html">শিক্ষক, কর্মকর্তা-কর্মচারী</a>
+            <a href="{{BASE}}institutional/mission.html">আদর্শ, লক্ষ্য ও উদ্দেশ্য</a>
+            <a href="{{BASE}}institutional/history.html">সংক্ষিপ্ত ইতিহাস</a>
         </div>
     </div>
 
@@ -72,10 +72,10 @@
             <span class="arrow">▼</span>
         </div>
         <div class="nav-submenu">
-            <a href="{{BASE}}pages/admission.html">ভর্তি তথ্য</a>
-            <a href="{{BASE}}pages/admission-subjects.html">ভর্তি পরীক্ষার কিতাব ও যোগ্যতা</a>
-            <a href="{{BASE}}pages/admission-fee.html">ভর্তি ফি ও খোরাকী</a>
-            <a href="{{BASE}}pages/admission-rules.html">বিধি ও অঙ্গীকারনামা</a>
+            <a href="{{BASE}}admission/admission.html">ভর্তি তথ্য</a>
+            <a href="{{BASE}}admission/admission-subjects.html">ভর্তি পরীক্ষার কিতাব ও যোগ্যতা</a>
+            <a href="{{BASE}}admission/admission-fee.html">ভর্তি ফি ও খোরাকী</a>
+            <a href="{{BASE}}admission/admission-rules.html">বিধি ও অঙ্গীকারনামা</a>
         </div>
     </div>
 
@@ -85,8 +85,8 @@
             <span class="arrow">▼</span>
         </div>
         <div class="nav-submenu">
-            <a href="{{BASE}}pages/foundation.html">কমপ্লেক্স ও ফাউন্ডেশন</a>
-            <a href="{{BASE}}pages/branches.html">অধীনস্থ মাদরাসাসমূহ</a>
+            <a href="{{BASE}}foundation/foundation.html">কমপ্লেক্স ও ফাউন্ডেশন</a>
+            <a href="{{BASE}}foundation/branches.html">অধীনস্থ মাদরাসাসমূহ</a>
         </div>
     </div>
 
@@ -96,41 +96,31 @@
             <span class="arrow">▼</span>
         </div>
         <div class="nav-submenu">
-            <a href="{{BASE}}pages/kafela.html">কাফেলা বিস্তারিত</a>
-            <a href="{{BASE}}pages/hawarian.html">হাওয়ারিয়ান কাফেলা</a>
-            <a href="{{BASE}}pages/kafela-form.html">কাফেলা সদস্য ফরম</a>
+            <a href="{{BASE}}kafela/kafela.html">কাফেলা বিস্তারিত</a>
+            <a href="{{BASE}}kafela/hawarian.html">হাওয়ারিয়ান কাফেলা</a>
+            <a href="{{BASE}}kafela/kafela-form.html">কাফেলা সদস্য ফরম</a>
         </div>
     </div>
 
-     <!-- <div class="nav-section">
-        <div class="nav-section-title">
-            <span><span class="icon">❓</span> ফতোয়া ও জিজ্ঞাসা</span>
-            <span class="arrow">▼</span>
-        </div>
-        <div class="nav-submenu">
-            <a href="{{BASE}}pages/ask.html">প্রশ্ন করুন</a>
-            <a href="{{BASE}}pages/ifta-admin.html">উত্তর দেখুন</a>
-        </div>
-    </div> -->
 
-    <a href="{{BASE}}pages/fatwa.html" class="nav-link-single">
+    <a href="{{BASE}}fatwa/fatwa.html" class="nav-link-single">
         <span class="icon">❓</span> ফতোয়া ও জিজ্ঞাসা
     </a>
 
-    <a href="{{BASE}}pages/gallery.html" class="nav-link-single">
+    <a href="{{BASE}}gallery/gallery.html" class="nav-link-single">
         <span class="icon">📸</span> ফটো গ্যালারি
     </a>
 
-    <a href="{{BASE}}pages/result.html" class="nav-link-single">
+    <a href="{{BASE}}result/result.html" class="nav-link-single">
         <span class="icon">📊</span> ফলাফল
     </a>
-    <a href="{{BASE}}pages/links.html" class="nav-link-single">
+    <a href="{{BASE}}links/links.html" class="nav-link-single">
         <span class="icon">🔗</span> প্রয়োজনীয় লিংকসমূহ
     </a>
-    <a href="{{BASE}}pages/donate.html" class="nav-link-single">
+    <a href="{{BASE}}donate/donate.html" class="nav-link-single">
         <span class="icon">💰</span> অনুদান ও যোগাযোগ
     </a>
-    <a href="{{BASE}}pages/download.html" class="nav-link-single">
+    <a href="{{BASE}}download/download.html" class="nav-link-single">
         <span class="icon">📥</span> ডাউনলোড
     </a>
 

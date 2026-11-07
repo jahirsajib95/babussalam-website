@@ -1,7 +1,6 @@
 /* ═══════════════════════════════════════════
-   গুগল ফন্ট লোড — Noto Sans Bengali
+   ফন্ট লোড — SolaimanLipi
    ═══════════════════════════════════════════ */
-/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap'); */
 @import url('https://fonts.maateen.me/solaiman-lipi/font.css');
 
 
@@ -23,8 +22,6 @@
     --shadow: 0 2px 15px rgba(0,0,0,0.08);
     --radius: 12px;
 
-    /* ═══ Noto Sans Bengali ফন্ট ভেরিয়েবল ═══ */
-    /* --font-bengali: 'Noto Sans Bengali', sans-serif; */
     --font-bengali: 'SolaimanLipi', sans-serif;
 }
 
@@ -35,7 +32,7 @@ body {
     background: var(--light);
     color: var(--dark);
     line-height: 1.8;
-    font-size: 15px; /* Noto Sans ফন্টের সাইজ একটু বড় হওয়ায় ১৫পিএক্স পারফেক্ট */
+    font-size: 15px;
 }
 
 a { text-decoration: none; color: var(--primary); transition: all 0.3s; }
@@ -76,7 +73,7 @@ img { max-width: 100%; height: auto; }
     flex-shrink: 0;
 }
 
-.logo-text h1 {
+.logo-text .brand-name {
     font-size: 17px; font-weight: 700;
     color: var(--white); line-height: 1.3;
 }
@@ -203,7 +200,7 @@ img { max-width: 100%; height: auto; }
     padding: 45px 20px 40px;
 }
 .hero .arabic-text { font-size: 22px; color: var(--accent); margin-bottom: 10px; }
-.hero h2 { font-size: 25px; margin-bottom: 8px; }
+.hero h1 { font-size: 25px; margin-bottom: 8px; }
 .hero p { font-size: 14px; opacity: 0.92; max-width: 620px; margin: 0 auto 20px; }
 
 .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
@@ -320,7 +317,7 @@ img { max-width: 100%; height: auto; }
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: var(--white); padding: 32px 20px; text-align: center;
 }
-.page-header h2 { font-size: 24px; margin-bottom: 6px; }
+.page-header h1 { font-size: 24px; margin-bottom: 6px; }
 .page-header .breadcrumb { font-size: 13px; opacity: 0.85; }
 .page-header .breadcrumb a { color: var(--accent); }
 
@@ -497,7 +494,7 @@ img { max-width: 100%; height: auto; }
 
 /* ═══ রেসপন্সিভ ═══ */
 @media (max-width: 768px) {
-    .hero h2 { font-size: 20px; }
+    .hero h1 { font-size: 20px; }
     .hero .arabic-text { font-size: 18px; }
     .quick-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .quick-card { padding: 14px 8px; }
@@ -507,51 +504,17 @@ img { max-width: 100%; height: auto; }
     .card-grid { grid-template-columns: 1fr; }
     .page-content { margin: 14px 12px 30px; padding: 20px 16px; }
     .footer-grid { grid-template-columns: 1fr; }
-    .logo-text h1 { font-size: 15px; }
+    .logo-text .brand-name { font-size: 15px; }
 }
 
 @media (max-width: 360px) {
     .quick-grid { grid-template-columns: repeat(2, 1fr); }
-    .logo-text h1 { font-size: 13px; }
+    .logo-text .brand-name { font-size: 13px; }
     .logo-section img { width: 38px; height: 38px; }
 }
 
-/* ═══ হেডিং ফন্ট — সোলায়মানলিপি ═══ */
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-}
-
-/* ═══ মেনু ও বাটন ফন্ট ═══ */
-.nav-menu,
-.nav-section-title,
-.nav-link-single,
-.nav-submenu a,
-.btn,
-.btn-submit,
-.notice-tab,
-.filter-btn,
-.quick-card .card-title,
-.footer-col h4,
-.footer-col a,
-.footer-col p {
-    font-family: var(--font-heading);
-}
-
-/* ═══ নোটিশ ও কার্ড ফন্ট ═══ */
-.notice-card h4,
-.notice-card .notice-excerpt,
-.info-card h4,
-.info-card p,
-.teacher-info h4,
-.teacher-info .designation,
-.download-card .file-info h4,
-.link-item .link-text,
-.donate-card h4 {
-    font-family: var(--font-body);
-}
-
 /* ═══════════════════════════════════════════
-   সমগ্র সাইটে Noto Sans Bengali ফন্ট সেটআপ
+   সমগ্র সাইটে SolaimanLipi ফন্ট সেটআপ
    ═══════════════════════════════════════════ */
 h1, h2, h3, h4, h5, h6,
 input, textarea, select, button,

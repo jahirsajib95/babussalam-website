@@ -1,0 +1,217 @@
+/* ============================================================
+   ফুটার — পেজ-নির্দিষ্ট স্টাইল
+   মূল ফাইল: includes/footer.html
+   ============================================================ */
+
+    /* ফুটারের আধুনিক ও প্রিমিয়াম ডিজাইন */
+    .footer {
+        background: linear-gradient(180deg, #0a3622 0%, #062215 100%);
+        color: #e9ecef;
+        padding: 60px 0 0 0;
+        font-family: inherit;
+        border-top: 4px solid var(--accent, #FFD700);
+        margin-top: 50px;
+    }
+
+    .footer-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px 50px 20px;
+        display: grid;
+        grid-template-columns: 1.3fr 0.9fr 1fr 0.8fr;
+        gap: 35px;
+    }
+
+    /* ব্র্যান্ড ও লোগো লিংক */
+    .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-decoration: none;
+        margin-bottom: 15px;
+        transition: transform 0.2s ease;
+    }
+
+    .footer-brand:hover {
+        transform: scale(1.02);
+    }
+
+    .footer-logo {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        background: #fff;
+        padding: 4px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        border: 2px solid var(--accent, #FFD700);
+        object-fit: cover;
+    }
+
+    .footer-brand-text h3 {
+        color: #ffffff;
+        font-size: 1.25rem;
+        margin: 0 0 4px 0;
+        border: none;
+        padding: 0;
+    }
+
+    .footer-brand-text span {
+        color: var(--accent, #FFD700);
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: block;
+    }
+
+    .footer-col h4 {
+        color: #ffffff;
+        font-size: 1.15rem;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(255, 215, 0, 0.4);
+        display: inline-block;
+    }
+
+    .footer-col p {
+        color: #adb5bd;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin-bottom: 12px;
+    }
+
+    /* দ্রুত লিংকসমূহ */
+    .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: #ced4da;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: all 0.25s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .footer-links a:hover {
+        color: var(--accent, #FFD700);
+        transform: translateX(6px);
+    }
+
+    /* ক্লিকযোগ্য যোগাযোগ ইনফো */
+    .footer-contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 14px;
+        color: #ced4da;
+        font-size: 0.95rem;
+    }
+
+    .footer-contact-item a {
+        color: #e9ecef;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .footer-contact-item a:hover {
+        color: var(--accent, #FFD700);
+        text-decoration: underline;
+    }
+
+    /* সোশ্যাল মিডিয়া বাটন */
+    .social-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .social-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .social-btn:hover {
+        background: var(--primary-light, #198754);
+        border-color: var(--accent, #FFD700);
+        transform: translateY(-2px);
+    }
+
+    /* ফুটার কপিরাইট বার */
+    .footer-bottom {
+        background: #04180f;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 20px 20px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #8fa097;
+    }
+
+    .footer-bottom a {
+        color: var(--accent, #FFD700);
+        text-decoration: none;
+    }
+
+    /* মোবাইল রেসপন্সিভ */
+    @media (max-width: 900px) {
+        .footer-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .footer-grid {
+            grid-template-columns: 1fr;
+            gap: 35px;
+        }
+
+        .footer {
+            padding-top: 40px;
+        }
+    }
+
+    .footer-links a i {
+        width: 20px;
+        text-align: center;
+        color: var(--accent, #FFD700);
+        font-size: 0.95rem;
+    }
+
+    .footer-contact-item>i {
+        width: 22px;
+        min-width: 22px;
+        text-align: center;
+        color: var(--accent, #FFD700);
+        font-size: 1.05rem;
+        margin-top: 3px;
+    }
+
+    .social-btn i {
+        width: 22px;
+        text-align: center;
+        font-size: 1.1rem;
+    }
+
+    .online-dot {
+        font-size: 7px;
+        color: #28a745;
+        margin-right: 4px;
+        vertical-align: middle;
+    }
