@@ -183,7 +183,21 @@
     border-top: 1px dashed var(--border);
     font-size: 14px;
 }
-.kafela-nav a { font-weight: bold; }
+.kafela-nav a {
+    display: inline-block;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: bold;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.kafela-nav a:hover {
+    background: #F8FBF8;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
 
 @media (max-width: 600px) {
     .ayah .arabic, .hadith .arabic { font-size: 1.3rem; line-height: 2.1; }
