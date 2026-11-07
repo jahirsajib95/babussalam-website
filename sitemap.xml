@@ -66,6 +66,38 @@
         <priority>0.7</priority>
     </url>
 
+    <!-- বাবুস সালাম কাফেলা -->
+    <url>
+        <loc>https://jamiababussalam.com/kafela/kafela.html</loc>
+        <lastmod>2026-11-07</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://jamiababussalam.com/kafela/dalil.html</loc>
+        <lastmod>2026-11-07</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://jamiababussalam.com/kafela/lokkho.html</loc>
+        <lastmod>2026-11-07</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://jamiababussalam.com/kafela/gothon.html</loc>
+        <lastmod>2026-11-07</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://jamiababussalam.com/kafela/shopoth.html</loc>
+        <lastmod>2026-11-07</lastmod>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://jamiababussalam.com/kafela/hawarian.html</loc>
+        <lastmod>2026-11-07</lastmod>
+        <priority>0.6</priority>
+    </url>
+
     <!-- ফলাফল, গ্যালারি, ডাউনলোড -->
     <url>
         <loc>https://jamiababussalam.com/result/result.html</loc>
