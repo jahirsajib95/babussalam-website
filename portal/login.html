@@ -14,135 +14,16 @@
     <!-- কনফিগারেশন ফাইল -->
     <script src="firebase-config.js"></script>
 
-    <style>
-        :root {
-            --primary: #0F5132;
-            --primary-light: #198754;
-            --accent: #FFD700;
-            --dark: #212529;
-            --light: #F8F9FA;
-            --border: #DEE2E6;
-        }
-
-        body {
-            font-family: 'SolaimanLipi', 'Noto Sans Bengali', Arial, sans-serif;
-            margin: 0;
-            background: linear-gradient(135deg, #0a3622 0%, #0F5132 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .login-card {
-            background: #ffffff;
-            border-radius: 12px;
-            max-width: 420px;
-            width: 100%;
-            padding: 35px 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            text-align: center;
-            border-top: 5px solid var(--accent);
-        }
-
-        .logo-icon {
-            font-size: 3.2rem;
-            margin-bottom: 8px;
-            display: inline-block;
-        }
-
-        .login-card h2 {
-            margin: 0 0 6px 0;
-            color: var(--primary);
-            font-size: 1.45rem;
-            font-weight: 700;
-        }
-
-        .login-card p {
-            margin: 0 0 25px 0;
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        .form-group {
-            text-align: left;
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 6px;
-            color: var(--dark);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 1.05rem;
-            box-sizing: border-box;
-            outline: none;
-            font-family: 'SolaimanLipi', sans-serif;
-            transition: border-color 0.2s;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(15, 81, 50, 0.15);
-        }
-
-        .btn-login {
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: 'SolaimanLipi', sans-serif;
-            transition: background 0.2s;
-            margin-top: 10px;
-        }
-
-        .btn-login:hover {
-            background: var(--primary-light);
-        }
-
-        .error-msg {
-            background: #FFEBEE;
-            color: #C62828;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 18px;
-            font-size: 0.95rem;
-            display: none;
-            border: 1px solid #FFCDD2;
-            text-align: left;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 22px;
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-        .back-link:hover { text-decoration: underline; }
-    </style>
+    <link rel="stylesheet" href="../css/portal/login.css">
+    <link rel="icon" type="image/png" href="../images/logo.png">
+    <link rel="apple-touch-icon" href="../images/logo.png">
+    <meta name="theme-color" content="#0F5132">
 </head>
 <body>
 
     <div class="login-card">
         <span class="logo-icon">🕌</span>
-        <h2>জামিয়া বাবুস সালাম</h2>
+        <h1>জামিয়া বাবুস সালাম</h1>
         <p>হিসাব ও বিলিং পোর্টাল — কর্মকর্তা লগইন</p>
 
         <!-- ত্রুটি বার্তা প্রদর্শনের বক্স -->

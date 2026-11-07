@@ -19,7 +19,8 @@ if (!firebase.apps.length) {
 }
 
 const db = firebase.firestore();
-const auth = firebase.auth();
+// পাবলিক পেজে (যেমন portal/pay.html) auth SDK লোড না-ও হতে পারে — তখন যেন বাকি helper গুলো ভেঙে না যায়
+const auth = typeof firebase.auth === 'function' ? firebase.auth() : null;
 
 // সোলায়মান লিপি ফন্ট (বন্ধ থাকলে CSS-এর fallback ফন্ট কাজ করবে)
 (function loadSolaimanLipiFont() {
