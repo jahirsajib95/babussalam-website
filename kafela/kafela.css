@@ -1,0 +1,192 @@
+/* ═══════════════════════════════════════════
+   কাফেলা বিভাগ — কনটেন্ট স্টাইল
+   ═══════════════════════════════════════════ */
+
+.kafela-page { max-width: 880px; }
+
+.kafela-page h2 {
+    color: var(--primary);
+    font-size: 22px;
+    margin: 34px 0 14px;
+    padding: 0 0 8px 12px;
+    border-left: 4px solid var(--accent);
+    border-bottom: 1px solid #E8F5E9;
+    line-height: 1.5;
+}
+.kafela-page h2:first-child { margin-top: 0; }
+.kafela-page h3 { font-size: 18px; }
+.kafela-page p { text-align: justify; }
+.kafela-page .lead { font-size: 16px; color: #33463b; }
+
+/* আরবি টেক্সট */
+.intro-bismillah {
+    text-align: center;
+    font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+    font-size: 24px;
+    line-height: 2;
+    color: var(--primary);
+    margin-bottom: 14px;
+}
+.hamd-arabic {
+    text-align: center;
+    font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+    font-size: 19px;
+    line-height: 2.1;
+    color: #0a3622;
+    margin-bottom: 18px;
+}
+
+.ayah, .hadith {
+    background: #F1F8E9;
+    border-right: 4px solid var(--primary);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 18px 0;
+}
+.hadith {
+    background: #FFFDF3;
+    border-right-color: var(--accent);
+}
+.ayah .arabic, .hadith .arabic {
+    font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+    font-size: 1.55rem;
+    line-height: 2.3;
+    direction: rtl;
+    text-align: right;
+    color: #0a3622;
+    margin-bottom: 10px;
+}
+.ayah .translation, .hadith .translation {
+    color: #2f3f37;
+    margin-bottom: 8px;
+}
+.ayah .ref, .hadith .ref {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--primary);
+    text-align: left;
+    margin: 0;
+}
+
+/* তথ্য কার্ড */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin: 18px 0;
+}
+.info-card {
+    background: #F8FBF8;
+    border: 1px solid #E1EDE4;
+    border-radius: 12px;
+    padding: 18px 20px;
+}
+.info-card h3 {
+    margin: 0 0 10px;
+    padding: 0;
+    border: 0;
+    font-size: 17px;
+    color: var(--primary);
+}
+.info-card p { margin-bottom: 8px; font-size: 14px; }
+.info-card ul, .info-card ol { margin: 0; padding-left: 20px; }
+.info-card li { font-size: 14px; margin-bottom: 5px; }
+
+/* বিভাগীয় লিংক কার্ড */
+.toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+    margin: 18px 0 6px;
+}
+.toc-card {
+    display: block;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    color: var(--dark);
+}
+.toc-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+    color: var(--primary);
+}
+.toc-card strong { display: block; color: var(--primary); margin-bottom: 4px; }
+.toc-card span { font-size: 13px; color: var(--gray); }
+
+/* বিধি-তালিকা */
+.rule-list { counter-reset: rule; list-style: none; padding-left: 0 !important; }
+.rule-list > li {
+    position: relative;
+    padding-left: 36px;
+    margin-bottom: 12px;
+}
+.rule-list > li::before {
+    counter-increment: rule;
+    content: counter(rule);
+    position: absolute;
+    left: 0;
+    top: 3px;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #FFFFFF;
+    font-size: 12px;
+    line-height: 23px;
+    text-align: center;
+}
+
+/* নোট বক্স */
+.note-box {
+    background: #FFF8E1;
+    border: 1px solid #FFE082;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: 14px;
+}
+.note-box strong { color: #8a6d00; }
+.note-box p { font-size: 14px; margin-bottom: 8px; }
+.note-box p:last-child { margin-bottom: 0; }
+
+/* শপথনামা */
+.oath {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #FFFFFF;
+    border-radius: 14px;
+    padding: 26px 22px;
+    margin: 22px 0;
+}
+.oath p, .oath li { color: #EAF3EC; }
+.oath .oath-title {
+    color: var(--accent);
+    font-size: 22px;
+    font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+    text-align: center;
+    margin-bottom: 16px;
+}
+.oath ol { padding-left: 22px; }
+.oath li { margin-bottom: 10px; }
+.oath .oath-name { text-align: center; margin-top: 16px; color: #FFFFFF; }
+
+/* পেজ নেভিগেশন */
+.kafela-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 34px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border);
+    font-size: 14px;
+}
+.kafela-nav a { font-weight: bold; }
+
+@media (max-width: 600px) {
+    .ayah .arabic, .hadith .arabic { font-size: 1.3rem; line-height: 2.1; }
+    .kafela-page h2 { font-size: 19px; }
+    .intro-bismillah { font-size: 21px; }
+}
