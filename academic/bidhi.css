@@ -1,0 +1,178 @@
+/* ============================================================
+   bidhi — পেজ-নির্দিষ্ট স্টাইল
+   মূল ফাইল: pages\bidhi.html
+   ============================================================ */
+
+        :root {
+            --primary: #0F5132;
+            --accent: #FFD700;
+            --primary-dark: #0a3622;
+            --primary-light: #198754;
+            --text-dark: #2d3748;
+            --bg-light: #f8faf9;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: var(--font-bengali);
+            color: var(--text-dark);
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ক্যাটাগরি সেকশন মার্জিন */
+        .policy-category-block {
+            margin-bottom: 35px;
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.35rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .category-title .cat-badge {
+            background-color: var(--primary);
+            color: var(--accent);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* সুন্দর এক্সপ্যান্ডেবল অ্যাকর্ডিয়ন ডিজাইন */
+        .rule-accordion {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .rule-accordion[open] {
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(15, 81, 50, 0.08);
+        }
+
+        /* অ্যাকর্ডিয়ন হেডারের স্টাইল */
+        .rule-summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 1.08rem;
+            color: var(--primary-dark);
+            background-color: var(--bg-light);
+            transition: background-color 0.25s ease, color 0.25s ease;
+            user-select: none;
+        }
+
+        .rule-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .rule-summary:hover {
+            background-color: #eef6f1;
+            color: var(--primary);
+        }
+
+        /* যখন কোনোটি ওপেন থাকবে তখন হেডারের স্টাইল */
+        .rule-accordion[open]>.rule-summary {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        /* ক্লিক ইন্ডিকেটর আইকন (তীর চিহ্ন) */
+        .accordion-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .rule-accordion[open] .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .rule-accordion[open] .accordion-icon svg path {
+            stroke: var(--accent);
+        }
+
+        /* নিয়মের ভেতরের বিস্তারিত কন্টেন্ট */
+        .rule-content {
+            padding: 20px 22px;
+            background-color: #ffffff;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .rule-content p {
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .rule-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .rule-list li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        /* বহিষ্কার সংক্রান্ত লাল সতর্কবার্তা কার্ড */
+        .warning-box {
+            background-color: #fff5f5;
+            border-left: 4px solid #dc3545;
+            padding: 15px 18px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .warning-box p {
+            color: #b02a37;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .warning-list {
+            padding-left: 20px;
+            color: #842029;
+            margin: 0;
+        }
+
+        .warning-list li {
+            margin-bottom: 6px;
+        }
+
+        /* রেসপনসিভ অ্যাডজাস্টমেন্ট */
+        @media (max-width: 768px) {
+            .rule-summary {
+                padding: 12px 15px;
+                font-size: 1rem;
+            }
+
+            .rule-content {
+                padding: 15px;
+            }
+
+            .category-title {
+                font-size: 1.2rem;
+            }
+        }
+    

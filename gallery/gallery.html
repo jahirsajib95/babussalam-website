@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ফটো গ্যালারি — জামিয়া বাবুস সালাম</title>
+    <meta name="description" content="জামিয়া বাবুস সালামের ক্যাম্পাস, কেন্দ্রীয় মসজিদ, ক্লাসরুম ও বিমানবন্দর সংলগ্ন এলাকার ছবির গ্যালারি।">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ফটো গ্যালারি — জামিয়া বাবুস সালাম">
+    <meta property="og:description" content="জামিয়া বাবুস সালামের ক্যাম্পাস, কেন্দ্রীয় মসজিদ, ক্লাসরুম ও বিমানবন্দর সংলগ্ন এলাকার ছবির গ্যালারি।">
+    <meta property="og:image" content="https://jamiababussalam.com/images/gallery/01-campus.jpg">
+    <meta property="og:url" content="https://jamiababussalam.com/gallery/gallery.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://jamiababussalam.com/gallery/gallery.html">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- এই পেজের নিজস্ব স্টাইল -->
+    <link rel="stylesheet" href="gallery.css">
+    <link rel="icon" type="image/png" href="../images/logo.png">
+    <link rel="apple-touch-icon" href="../images/logo.png">
+    <meta name="theme-color" content="#0F5132">
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<!-- ══ পেজ টাইটেল ══ -->
+<section class="page-header">
+    <h1>📸 ফটো গ্যালারি</h1>
+    <p class="breadcrumb"><a href="../index.html">🏠 মূলপাতা</a> / ফটো গ্যালারি</p>
+</section>
+
+<!-- ══ পেজ কন্টেন্ট ══ -->
+<div class="page-content">
+
+    <p style="text-align:center; color:#6C757D;">
+        জামিয়া বাবুস সালামের বিভিন্ন কার্যক্রম, ক্যাম্পাস ও অনুষ্ঠানের মুহূর্তসমূহ
+    </p>
+
+    <!-- ══════════ ক্যাটাগরি ফিল্টার ══════════ -->
+    <div class="gallery-filter">
+        <button class="filter-btn active" onclick="filterGallery('all', this)">সব</button>
+        <button class="filter-btn" onclick="filterGallery('campus', this)">🏛️ ক্যাম্পাস</button>
+        <button class="filter-btn" onclick="filterGallery('class', this)">📚 ক্লাসরুম</button>
+        <button class="filter-btn" onclick="filterGallery('mosque', this)">🕌 মসজিদ</button>
+    </div>
+
+    <!-- ══════════ গ্যালারি ছবিগুলো ══════════ -->
+    <div class="gallery-grid" id="galleryGrid">
+
+        <!-- ═══ ছবি ১ ═══ -->
+        <!-- 👇 নতুন ছবি যোগ করতে এই ব্লক কপি করে নিচে পেস্ট করুন -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(0)">
+            <img src="../images/gallery/01-campus.jpg" alt="ক্যাম্পাস ভিউ" loading="lazy">
+            <div class="caption">
+                জামিয়ার মূল ভবন
+                <small>📅 জানুয়ারি ২০২৫</small>
+            </div>
+        </div>
+
+        <!-- ═══ ছবি ২ ═══ -->
+        <div class="gallery-item" data-category="mosque" onclick="openLightbox(1)">
+            <img src="../images/gallery/02-mosque.jpg" alt="মসজিদ" loading="lazy">
+            <div class="caption">
+                জামিয়ার কেন্দ্রীয় মসজিদ
+                <small>📅 ২০২৪</small>
+            </div>
+        </div>
+
+        <!-- ═══ ছবি ৩ ═══ -->
+        <div class="gallery-item" data-category="class" onclick="openLightbox(2)">
+            <img src="../images/gallery/03-classroom.jpg" alt="ক্লাসরুম" loading="lazy">
+            <div class="caption">
+                কিতাব বিভাগের ক্লাস
+                <small>📅 ডিসেম্বর ২০২৪</small>
+            </div>
+        </div>
+
+        <!-- ═══ ছবি ৪ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(3)">
+            <img src="../images/gallery/04-front-view.jpg" alt="জামিয়ার সম্মুখভাগ" loading="lazy">
+            <div class="caption">
+                ফুলের বাগানসহ জামিয়ার সম্মুখভাগ
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+        <!-- ═══ ছবি ৫ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(4)">
+            <img src="../images/gallery/05-south-building.jpg" alt="জামিয়ার ভবনের দক্ষিণ দিক" loading="lazy">
+            <div class="caption">
+                জামিয়ার ভবনের দক্ষিণ দিক
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+        <!-- ═══ ছবি ৬ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(5)">
+            <img src="../images/gallery/06-main-gate.jpg" alt="জামিয়ার প্রবেশপথ" loading="lazy">
+            <div class="caption">
+                জামিয়ার প্রবেশপথ ও সংলগ্ন সড়ক
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+        <!-- ═══ ছবি ৭ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(6)">
+            <img src="../images/gallery/07-street-view.jpg" alt="বিমানবন্দর সড়ক থেকে জামিয়ার দৃশ্য" loading="lazy">
+            <div class="caption">
+                বিমানবন্দর সড়ক থেকে জামিয়ার দৃশ্য
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+        <!-- ═══ ছবি ৮ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(7)">
+            <img src="../images/gallery/08-monument.jpg" alt="জামিয়ার সম্মুখে ইসলামি নকশা" loading="lazy">
+            <div class="caption">
+                জামিয়ার সম্মুখে ইসলামি নকশা ও ফলক
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+        <!-- ═══ ছবি ৯ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(8)">
+            <img src="../images/gallery/09-aerial.jpg" alt="পাখির চোখে জামিয়া কমপ্লেক্স" loading="lazy">
+            <div class="caption">
+                পাখির চোখে জামিয়া কমপ্লেক্স
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+        <!-- ═══ ছবি ১০ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(9)">
+            <img src="../images/gallery/10-night.jpg" alt="রাতের আলোয় জামিয়া বাবুস সালাম" loading="lazy">
+            <div class="caption">
+                রাতের আলোয় জামিয়া বাবুস সালাম
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+        <!-- ═══ ছবি ১১ ═══ -->
+        <div class="gallery-item" data-category="campus" onclick="openLightbox(10)">
+            <img src="../images/gallery/11-poster.jpg" alt="জামিয়ার পরিচিতিমূলক পোস্টার" loading="lazy">
+            <div class="caption">
+                জামিয়ার পরিচিতিমূলক পোস্টার
+                <small>📅 ২০২৬</small>
+            </div>
+        </div>
+
+        <!-- 👆 এখানে নতুন ছবি যোগ করুন -->
+
+    </div>
+
+</div>
+
+<!-- ══════════ লাইটবক্স (ছবি বড় করে দেখানোর জন্য) ══════════ -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-nav lightbox-prev" onclick="prevImage()">‹</button>
+    <button class="lightbox-nav lightbox-next" onclick="nextImage()">›</button>
+    <div class="lightbox-content">
+        <img id="lightboxImg" src="" alt="">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="../main.js" defer></script>
+
+<!-- ══ গ্যালারি স্ক্রিপ্ট ══ -->
+<script>
+    var currentImageIndex = 0;
+    var allImages = [];
+
+    // পেজ লোড হওয়ার সাথে সাথে সব ছবি লিস্ট বানানো
+    document.addEventListener('DOMContentLoaded', function () {
+        var items = document.querySelectorAll('.gallery-item');
+        for (var i = 0; i < items.length; i++) {
+            var img = items[i].querySelector('img');
+            var caption = items[i].querySelector('.caption');
+            allImages.push({
+                src: img.getAttribute('src'),
+                alt: img.getAttribute('alt'),
+                caption: caption ? caption.innerText : ''
+            });
+        }
+    });
+
+    // ক্যাটাগরি অনুযায়ী ফিল্টার
+    function filterGallery(category, btn) {
+        var btns = document.querySelectorAll('.filter-btn');
+        for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+        btn.classList.add('active');
+
+        var items = document.querySelectorAll('.gallery-item');
+        for (var j = 0; j < items.length; j++) {
+            if (category === 'all' || items[j].getAttribute('data-category') === category) {
+                items[j].style.display = 'block';
+            } else {
+                items[j].style.display = 'none';
+            }
+        }
+    }
+
+    // লাইটবক্স খোলা
+    function openLightbox(index) {
+        currentImageIndex = index;
+        showImage();
+        document.getElementById('lightbox').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // লাইটবক্স বন্ধ
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // ছবি দেখানো
+    function showImage() {
+        var img = allImages[currentImageIndex];
+        if (!img) return;
+        document.getElementById('lightboxImg').src = img.src;
+        document.getElementById('lightboxImg').alt = img.alt;
+        document.getElementById('lightboxCaption').innerText = img.caption;
+    }
+
+    // পরের ছবি
+    function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % allImages.length;
+        showImage();
+    }
+
+    // আগের ছবি
+    function prevImage() {
+        currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+        showImage();
+    }
+
+    // কীবোর্ড দিয়ে কন্ট্রোল
+    document.addEventListener('keydown', function (e) {
+        if (!document.getElementById('lightbox').classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') prevImage();
+    });
+
+    // ব্যাকগ্রাউন্ডে ক্লিক করলে বন্ধ
+    document.getElementById('lightbox').addEventListener('click', function (e) {
+        if (e.target === this) closeLightbox();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+/* ============================================================
+   syllabus — পেজ-নির্দিষ্ট স্টাইল
+   মূল ফাইল: pages\syllabus.html
+   ============================================================ */
+
+        /* চলতি সিলেবাসের হাইলাইট বক্স */
+        .featured-syllabus {
+            background: var(--light);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+
+        .syllabus-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .syllabus-badge {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* গুগল ড্রাইভ প্রিভিউ ফ্রেমের কন্টেইনার */
+        .drive-preview-container {
+            position: relative;
+            width: 100%;
+            height: 650px;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .drive-preview-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* অ্যাকশন বাটন গ্রুপ */
+        .syllabus-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* আর্কাইভ / পূর্ববর্তী বছরের কার্ড স্টাইল */
+        .archive-box {
+            margin-top: 40px;
+        }
+
+        .archive-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .archive-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-light);
+        }
+
+        .archive-info h4 {
+            margin: 0 0 5px 0;
+            color: var(--primary);
+        }
+
+        .archive-info p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* মোবাইলের জন্য প্রিভিউ সাইজ অপ্টিমাইজেশন */
+        @media (max-width: 768px) {
+            .drive-preview-container {
+                height: 420px;
+            }
+            .syllabus-header-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .syllabus-actions {
+                width: 100%;
+            }
+            .syllabus-actions .btn {
+                flex: 1;
+                text-align: center;
+                justify-content: center;
+            }
+            .archive-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    

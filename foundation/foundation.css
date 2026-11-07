@@ -1,0 +1,303 @@
+/* ============================================================
+   foundation — পেজ-নির্দিষ্ট স্টাইল
+   মূল ফাইল: pages\foundation.html
+   ============================================================ */
+
+        /* ১. ঐতিহাসিক পটভূমি ও দর্শন কার্ড */
+        .philosophy-box {
+            background: linear-gradient(135deg, rgba(15, 81, 50, 0.05) 0%, rgba(255, 215, 0, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .philosophy-box p {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: #2c3e50;
+            text-align: justify;
+            margin-bottom: 12px;
+        }
+
+        /* ২. সংকট ও প্রয়োজনীয়তা সেকশন */
+        .crisis-card {
+            background: #FFF9F5;
+            border: 1px solid #FFE4D6;
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 45px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .crisis-icon {
+            font-size: 3rem;
+            background: #FFEFE6;
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .crisis-text h4 {
+            color: #C0392B;
+            margin: 0 0 8px 0;
+            font-size: 1.25rem;
+        }
+
+        .crisis-text p {
+            margin: 0;
+            color: var(--dark);
+            line-height: 1.7;
+        }
+
+        /* ৩. লক্ষ্য ও উদ্দেশ্য গ্রিড */
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .goal-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .goal-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(15, 81, 50, 0.1);
+        }
+
+        .goal-number {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: rgba(15, 81, 50, 0.1);
+        }
+
+        .goal-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .goal-card p {
+            margin: 0;
+            color: var(--dark);
+            font-size: 0.98rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* ৪. মহাপরিকল্পনা স্তরভিত্তিক কার্ড (Tier System) */
+        .tier-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .tier-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-left: 6px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s ease;
+        }
+
+        .tier-card:hover {
+            transform: translateX(6px);
+            border-color: var(--primary-light);
+        }
+
+        .tier-level-badge {
+            background: var(--light);
+            color: var(--primary);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .tier-details {
+            flex-grow: 1;
+        }
+
+        .tier-details h5 {
+            margin: 0 0 4px 0;
+            font-size: 1.15rem;
+            color: var(--primary-dark);
+        }
+
+        .tier-details p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* মসজিদ শাখা গ্রিড */
+        .mosque-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .mosque-card {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+        }
+
+        .mosque-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .mosque-card h5 {
+            color: var(--primary);
+            font-size: 1.15rem;
+            margin: 0 0 8px 0;
+        }
+
+        .mosque-card p {
+            color: var(--dark);
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* সহায়তা ও ডোনেশন ব্যানার */
+        .foundation-cta {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border-radius: var(--radius);
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(15, 81, 50, 0.2);
+        }
+
+        .foundation-cta h3 {
+            color: var(--accent);
+            border: none;
+            padding: 0;
+            margin-bottom: 10px;
+        }
+
+        .foundation-cta p {
+            max-width: 650px;
+            margin: 0 auto 20px auto;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .crisis-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .tier-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .tier-card:hover {
+                transform: none;
+            }
+        }
+    
+
+                .branch-card {
+                    background: var(--white);
+                    border: 1px solid var(--border);
+                    border-radius: var(--radius);
+                    padding: 24px;
+                    margin-bottom: 25px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+                    transition: transform 0.2s ease, border-color 0.2s ease;
+                }
+                .branch-card:hover {
+                    border-color: var(--primary-light);
+                    box-shadow: 0 6px 18px rgba(15, 81, 50, 0.08);
+                }
+                .branch-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    margin-bottom: 16px;
+                    padding-bottom: 12px;
+                    border-bottom: 1px dashed var(--border);
+                }
+                .branch-badge {
+                    background: var(--primary);
+                    color: var(--white);
+                    width: 38px;
+                    height: 38px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    flex-shrink: 0;
+                }
+                .branch-title {
+                    margin: 0;
+                    color: var(--primary-dark);
+                    font-size: 1.25rem;
+                }
+                .branch-list {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                }
+                .branch-list li {
+                    position: relative;
+                    padding-left: 26px;
+                    margin-bottom: 10px;
+                    font-size: 0.98rem;
+                    color: var(--dark);
+                    line-height: 1.65;
+                }
+                .branch-list li::before {
+                    content: "✔";
+                    position: absolute;
+                    left: 0;
+                    color: var(--primary-light);
+                    font-weight: bold;
+                    font-size: 0.9rem;
+                }
+                /* ২ কলাম গ্রিড */
+                .branch-two-col {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                    gap: 20px;
+                }
+            

@@ -1,0 +1,255 @@
+/* ============================================================
+   teachers — পেজ-নির্দিষ্ট স্টাইল
+   মূল ফাইল: pages\teachers.html
+   ============================================================ */
+
+        /* ══ সেক্টর/বিভাগ হেডার ══ */
+        .sector-header {
+            background: linear-gradient(135deg, #0F5132, #0a3622);
+            color: #FFFFFF;
+            padding: 18px 22px;
+            border-radius: 14px;
+            margin: 32px 0 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sector-header:first-of-type {
+            margin-top: 0;
+        }
+        .sector-header .sector-icon {
+            font-size: 30px;
+            background: rgba(255,215,0,0.2);
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .sector-header .sector-info h3 {
+            color: #FFD700;
+            font-size: 19px;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+        .sector-header .sector-info p {
+            font-size: 13px;
+            opacity: 0.85;
+            margin: 2px 0 0;
+            text-align: left;
+        }
+
+        /* ══ শিক্ষক কার্ড গ্রিড ══ */
+        .teachers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* ══ শিক্ষক কার্ড ══ */
+        .teacher-card {
+            background: #FFFFFF;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #DEE2E6;
+            transition: all 0.35s;
+            display: flex;
+            flex-direction: column;
+        }
+        .teacher-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(15,81,50,0.15);
+            border-color: #198754;
+        }
+
+        /* ছবি অংশ */
+        .teacher-photo {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+        }
+        .teacher-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .teacher-card:hover .teacher-photo img {
+            transform: scale(1.08);
+        }
+
+        /* পদবি ব্যাজ (ছবির উপর) */
+        .teacher-badge {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(15,81,50,0.92), transparent);
+            color: #FFD700;
+            padding: 25px 14px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* তথ্য অংশ */
+        .teacher-info {
+            padding: 16px 18px 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .teacher-info h4 {
+            color: #0F5132;
+            font-size: 17px;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .teacher-info .designation {
+            color: #198754;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .teacher-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 7px;
+            font-size: 13px;
+            color: #495057;
+        }
+        .teacher-detail .detail-icon {
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ফোন বাটন */
+        .teacher-phone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 12px;
+        }
+        .phone-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: #E8F5E9;
+            color: #0F5132;
+            padding: 9px 18px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #C8E6C9;
+            width: 100%;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .phone-btn:hover {
+            background: #0F5132;
+            color: #FFFFFF;
+            border-color: #0F5132;
+        }
+
+        /* ══ সার্চ বক্স ══ */
+        .search-box {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            border: 2px solid #DEE2E6;
+            border-radius: 50px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: #0F5132;
+        }
+        .search-box .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        /* ══ মোট সংখ্যা ══ */
+        .total-count {
+            text-align: center;
+            padding: 18px;
+            background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        .total-count .count-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .total-count .count-item {
+            text-align: center;
+        }
+        .total-count .count-item h3 {
+            color: #0F5132;
+            font-size: 26px;
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+        .total-count .count-item p {
+            font-size: 12px;
+            color: #6C757D;
+            margin: 0;
+        }
+
+        /* মোবাইল রেসপন্সিভ */
+        @media (max-width: 600px) {
+            .teachers-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .teacher-card {
+                flex-direction: row;
+                height: auto;
+            }
+            .teacher-photo {
+                width: 110px;
+                height: auto;
+                min-height: 140px;
+                flex-shrink: 0;
+            }
+            .teacher-badge {
+                display: none;
+            }
+            .teacher-info h4 {
+                font-size: 15px;
+            }
+            .sector-header .sector-icon {
+                width: 42px; height: 42px; font-size: 22px;
+            }
+            .sector-header .sector-info h3 {
+                font-size: 16px;
+            }
+        }
+    

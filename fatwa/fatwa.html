@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আপনার জিজ্ঞাসা ও ফতোয়া বিভাগ | জামিয়া বাবুস সালাম</title>
+    <meta name="description" content="মারকাযুল ইফতার শরয়ী ফতোয়া ও মাসআলা — বিভাগভিত্তিক প্রশ্নোত্তর সংগ্রহ।">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="আপনার জিজ্ঞাসা ও ফতোয়া বিভাগ | জামিয়া বাবুস সালাম">
+    <meta property="og:description" content="মারকাযুল ইফতার শরয়ী ফতোয়া ও মাসআলা — বিভাগভিত্তিক প্রশ্নোত্তর সংগ্রহ।">
+    <meta property="og:image" content="https://jamiababussalam.com/images/banner.jpg">
+    <meta property="og:url" content="https://jamiababussalam.com/fatwa/fatwa.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://jamiababussalam.com/fatwa/fatwa.html">
+    <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+
+    <link rel="stylesheet" href="fatwa.css">
+    <link rel="icon" type="image/png" href="../images/logo.png">
+    <link rel="apple-touch-icon" href="../images/logo.png">
+    <meta name="theme-color" content="#0F5132">
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+
+<section class="page-header">
+        <h1>আপনার জিজ্ঞাসা ও ফতোয়া বিভাগ</h1>
+        <div class="breadcrumb">
+            <a href="../index.html">মূলপাতা</a> / <span>ফতোয়া ও জিজ্ঞাসা</span>
+        </div>
+    </section>
+
+<div class="portal-layout">
+    
+    <!-- ══ বামপাশের ক্যাটাগরি ও সাব-ক্যাটাগরি সাইডবার ══ -->
+    <aside class="sidebar">
+        <h4><i class="fa-solid fa-folder-tree"></i> বিষয়সমূহ</h4>
+        <div class="cat-group">
+            <button class="cat-btn active" onclick="filterBySub('all', 'all')">
+                <span>সকল বিষয়</span>
+            </button>
+        </div>
+        <div id="categorySidebar">
+            <!-- জাভাস্ক্রিপ্ট দিয়ে ডায়নামিক লোড হবে -->
+        </div>
+    </aside>
+
+    <!-- ══ ডানপাশের মূল কন্টেন্ট ══ -->
+    <main>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="মাসআলা বা প্রশ্ন লিখে সার্চ করুন..." onkeyup="handleSearch()">
+            <button class="btn-ask-top" onclick="openAskFormModal()">
+                <i class="fa-solid fa-pen-to-square"></i> প্রশ্ন করুন
+            </button>
+        </div>
+
+        <div id="fatwaListContainer">
+            <p style="text-align: center;">ফতোয়া লোড হচ্ছে...</p>
+        </div>
+
+        <!-- পেজিনেশন বাটন -->
+        <div class="pagination" id="pagination"></div>
+    </main>
+
+</div>
+
+<!-- ══ বিস্তারিত উত্তরের পপ-আপ মডাল ══ -->
+<div class="modal-overlay" id="fatwaModal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('fatwaModal')">&times;</span>
+        <div style="font-size: 13px; color:#64748b; margin-bottom: 8px;" id="modalMeta"></div>
+        <h3 id="modalQuestion" style="color:var(--primary-dark); margin:0 0 15px; line-height: 1.5;"></h3>
+        <div class="modal-ans" id="modalAnswer"></div>
+        <div style="margin-top: 15px; text-align: right; font-weight: bold; color: var(--primary);" id="modalMufti"></div>
+    </div>
+</div>
+
+<!-- ══ প্রশ্ন করার ফর্ম মডাল ══ -->
+<div class="modal-overlay" id="askModal">
+    <div class="modal-content" style="max-width: 600px;">
+        <span class="close-modal" onclick="closeModal('askModal')">&times;</span>
+        <h3 style="color:var(--primary); margin-top:0;"><i class="fa-solid fa-paper-plane"></i> আপনার প্রশ্ন জমা দিন</h3>
+        
+        <form id="questionForm" onsubmit="submitQuestion(event)">
+            <label>নাম (বা ছদ্মনাম):</label>
+            <input type="text" id="qName" required style="width:100%; padding:10px; margin:6px 0 14px; border:1px solid #cbd5e1; border-radius:6px;">
+
+            <label>বিষয় / ক্যাটাগরি:</label>
+            <select id="qCategory" style="width:100%; padding:10px; margin:6px 0 14px; border:1px solid #cbd5e1; border-radius:6px;">
+                <!-- ডায়নামিক ক্যাটাগরি -->
+            </select>
+
+            <label>আপনার পূর্ণ প্রশ্ন লিখুন:</label>
+            <textarea id="qText" rows="5" required style="width:100%; padding:10px; margin:6px 0 14px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;"></textarea>
+
+            <button type="submit" class="btn-ask-top" id="submitBtn" style="width:100%; justify-content:center;">
+                প্রশ্ন পাঠান
+            </button>
+        </form>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="../main.js" defer></script>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyL9tx00X3FgXoDYX1KdXScBMERMx696mQjragcxBIQqk92dn2Ob8A0EqZKIGXDq--r/exec"; // গুগল শিটের স্ক্রিপ্ট লিংক
+
+    let allFatwas = [];
+    let filteredFatwas = [];
+    let categoriesData = [];
+    let currentPage = 1;
+    const itemsPerPage = 8; // প্রতি পেজে ৮টি করে ফতোয়া দেখাবে
+
+    fetch('../data.json')
+        .then(res => res.json())
+        .then(data => {
+            categoriesData = data.categories || [];
+            allFatwas = data.fatwas || [];
+            filteredFatwas = [...allFatwas];
+            renderSidebar();
+            populateModalCategories();
+            renderPage(1);
+        });
+
+    // সাইডবার তৈরি (ক্যাটাগরি ও সাব-ক্যাটাগরি)
+    function renderSidebar() {
+        const container = document.getElementById('categorySidebar');
+        container.innerHTML = '';
+
+        categoriesData.forEach((cat, idx) => {
+            const subs = cat.subs || [];
+            let subsHtml = '';
+            subs.forEach(s => {
+                subsHtml += `<span class="sub-cat-item" onclick="filterBySub('${cat.name}', '${s}', this)">▫ ${s}</span>`;
+            });
+
+            container.innerHTML += `
+                <div class="cat-group">
+                    <button class="cat-btn" onclick="toggleSubMenu(${idx})">
+                        <span>${cat.name}</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size:12px;"></i>
+                    </button>
+                    <div class="sub-cat-list" id="sub-menu-${idx}">
+                        <span class="sub-cat-item" onclick="filterBySub('${cat.name}', 'all', this)">সব (${cat.name})</span>
+                        ${subsHtml}
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function toggleSubMenu(idx) {
+        const el = document.getElementById(`sub-menu-${idx}`);
+        el.classList.toggle('open');
+    }
+
+    // ক্যাটাগরি ও সাব-ক্যাটাগরি ফিল্টার
+    function filterBySub(catName, subName, el) {
+        document.querySelectorAll('.cat-btn, .sub-cat-item').forEach(e => e.classList.remove('active'));
+        if(el) el.classList.add('active');
+
+        if(catName === 'all') {
+            filteredFatwas = [...allFatwas];
+        } else if(subName === 'all') {
+            filteredFatwas = allFatwas.filter(f => f.category === catName);
+        } else {
+            filteredFatwas = allFatwas.filter(f => f.category === catName && f.subCategory === subName);
+        }
+        renderPage(1);
+    }
+
+    // সার্চ ফিল্টার
+    function handleSearch() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        filteredFatwas = allFatwas.filter(f => 
+            f.question.toLowerCase().includes(q) || f.answer.toLowerCase().includes(q)
+        );
+        renderPage(1);
+    }
+
+    // পেজিনেশন সহ ফতোয়া রেন্ডার
+    function renderPage(page) {
+        currentPage = page;
+        const container = document.getElementById('fatwaListContainer');
+        container.innerHTML = '';
+
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const pageItems = filteredFatwas.slice(start, end);
+
+        if(pageItems.length === 0) {
+            container.innerHTML = '<p style="text-align:center; padding:30px; color:#64748b;">কোনো ফতোয়া পাওয়া যায়নি।</p>';
+            document.getElementById('pagination').innerHTML = '';
+            return;
+        }
+
+        pageItems.forEach(f => {
+            const shortAns = f.answer.length > 180 ? f.answer.substring(0, 180) + '...' : f.answer;
+            container.innerHTML += `
+                <div class="fatwa-card">
+                    <div class="fatwa-meta">
+                        <span>📁 <strong>${f.category}</strong> ${f.subCategory ? '» ' + f.subCategory : ''}</span>
+                        <span>📅 ${f.date}</span>
+                    </div>
+                    <div class="fatwa-q">প্রশ্ন: ${f.question}</div>
+                    <div class="fatwa-snippet">
+                        <strong>উত্তরঃ</strong> ${shortAns}
+                    </div>
+                    <button class="btn-read-more" onclick="openFatwaModal(${f.id})">
+                        সম্পূর্ণ উত্তর পড়ুন <i class="fa-solid fa-arrow-right-long"></i>
+                    </button>
+                </div>
+            `;
+        });
+
+        renderPaginationControls();
+    }
+
+    function renderPaginationControls() {
+        const totalPages = Math.ceil(filteredFatwas.length / itemsPerPage);
+        const pag = document.getElementById('pagination');
+        pag.innerHTML = '';
+
+        if(totalPages <= 1) return;
+
+        for(let i = 1; i <= totalPages; i++) {
+            pag.innerHTML += `
+                <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="renderPage(${i})">${i}</button>
+            `;
+        }
+    }
+
+    // পপ-আপ খোলা ও বন্ধ করা
+    function openFatwaModal(id) {
+        const f = allFatwas.find(item => item.id == id);
+        if(!f) return;
+
+        document.getElementById('modalMeta').innerText = `বিষয়: ${f.category} | তারিখ: ${f.date}`;
+        document.getElementById('modalQuestion').innerText = `প্রশ্ন: ${f.question}`;
+        document.getElementById('modalAnswer').innerText = f.answer;
+        document.getElementById('modalMufti').innerText = `— ${f.mufti || 'ফতুয়া পরিষদ, জামিয়া বাবুস সালাম'}`;
+
+        document.getElementById('fatwaModal').style.display = 'flex';
+    }
+
+    function openAskFormModal() {
+        document.getElementById('askModal').style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    function populateModalCategories() {
+        const sel = document.getElementById('qCategory');
+        sel.innerHTML = '';
+        categoriesData.forEach(c => sel.innerHTML += `<option value="${c.name}">${c.name}</option>`);
+    }
+
+    // প্রশ্ন জমা দেওয়া
+    async function submitQuestion(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "পাঠানো হচ্ছে...";
+        btn.disabled = true;
+
+        const payload = {
+            name: document.getElementById('qName').value,
+            category: document.getElementById('qCategory').value,
+            question: document.getElementById('qText').value
+        };
+
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(payload)
+            });
+            alert('আপনার প্রশ্নটি জমা নেওয়া হয়েছে। মুফতি সাহেব উত্তর দিলে তা প্রকাশ করা হবে।');
+            closeModal('askModal');
+            document.getElementById('questionForm').reset();
+        } catch(err) {
+            alert('প্রশ্ন পাঠাতে ত্রুটি হয়েছে।');
+        }
+        btn.innerText = "প্রশ্ন পাঠান";
+        btn.disabled = false;
+    }
+</script>
+</body>
+</html>

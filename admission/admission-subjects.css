@@ -1,0 +1,150 @@
+/* ============================================================
+   admission-subjects — পেজ-নির্দিষ্ট স্টাইল
+   মূল ফাইল: pages\admission-subjects.html
+   ============================================================ */
+
+        /* ভর্তি যোগ্যতা সেকশন */
+        .eligibility-section {
+            background: linear-gradient(135deg, rgba(15, 81, 50, 0.04), rgba(255, 215, 0, 0.08));
+            border: 2px dashed var(--primary-light);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+
+        .eligibility-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .eligibility-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .eligibility-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .eligibility-card .percentage {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .eligibility-card .dept-name {
+            font-size: 0.95rem;
+            color: var(--dark);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* মারহালা / বিভাগভিত্তিক হেডিং স্টাইল */
+        .marhala-section {
+            margin-bottom: 35px;
+        }
+
+        .marhala-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--light);
+            padding: 12px 18px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+            color: var(--primary-dark);
+        }
+
+        /* জামাত ও কিতাবের কার্ড ডিজাইন */
+        .subject-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .subject-card:hover {
+            box-shadow: 0 8px 18px rgba(15, 81, 50, 0.12);
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .subject-card h4 {
+            color: var(--primary);
+            margin: 0 0 14px 0;
+            font-size: 1.15rem;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* কিতাবের তালিকা */
+        .kitab-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+            flex-grow: 1;
+        }
+
+        .kitab-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .kitab-list li::before {
+            content: "📖";
+            position: absolute;
+            left: 0;
+            top: 1px;
+            font-size: 0.85rem;
+        }
+
+        /* বাধ্যতামূলক বিষয়ের ব্যাজ (কেরাত ও হাতের লেখা) */
+        .mandatory-subject {
+            background: #E8F5E9;
+            color: var(--primary-dark);
+            border: 1px solid #C8E6C9;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .eligibility-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .eligibility-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    
