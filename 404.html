@@ -7,6 +7,9 @@
     <meta name="robots" content="noindex, follow">
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+    <meta name="theme-color" content="#0F5132">
 </head>
 <body>
 
@@ -31,14 +34,36 @@
     </p>
     <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
         <a href="/index.html" class="btn btn-primary"><i class="fa-solid fa-house"></i> মূলপাতা</a>
-        <a href="/pages/notice.html" class="btn" style="background:#198754;color:#fff;"><i class="fa-solid fa-bullhorn"></i> নোটিশ</a>
-        <a href="/pages/donate.html" class="btn" style="background:#c9933b;color:#000;"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
+        <a href="/notice/notice.html" class="btn" style="background:#198754;color:#fff;"><i class="fa-solid fa-bullhorn"></i> নোটিশ</a>
+        <a href="/donate/donate.html" class="btn" style="background:#c9933b;color:#000;"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
     </div>
 </main>
 
 <footer style="text-align:center; padding:22px; color:#8fa097; background:#062215; font-size:0.9rem;">
     © ২০২৫-২০২৬ <a href="/index.html" style="color:#FFD700; text-decoration:none;">জামিয়া বাবুস সালাম</a>। সর্বস্বত্ব সংরক্ষিত।
 </footer>
+
+<script>
+    // পুরোনো /pages/<name>.html লিংক (বুকমার্ক, সার্চ রেজাল্ট) নতুন ফোল্ডারে পাঠানো
+    (function () {
+        var folders = {
+            notice: 'notice', biggopti: 'notice',
+            bidhi: 'academic', syllabus: 'academic', 'class-schedule': 'academic', calendar: 'academic',
+            porichalona: 'institutional', bibhag: 'institutional', about: 'institutional',
+            teachers: 'institutional', mission: 'institutional', history: 'institutional',
+            admission: 'admission', 'admission-subjects': 'admission', 'admission-fee': 'admission', 'admission-rules': 'admission',
+            foundation: 'foundation', branches: 'foundation',
+            kafela: 'kafela', hawarian: 'kafela', 'kafela-form': 'kafela',
+            fatwa: 'fatwa', 'ifta-admin': 'fatwa',
+            gallery: 'gallery', result: 'result', links: 'links',
+            donate: 'donate', feedback: 'donate', download: 'download'
+        };
+        var match = window.location.pathname.match(/\/pages\/([a-z0-9-]+)\.html$/);
+        if (match && folders[match[1]]) {
+            window.location.replace(window.location.pathname.replace('/pages/', '/' + folders[match[1]] + '/') + window.location.search + window.location.hash);
+        }
+    })();
+</script>
 
 </body>
 </html>
