@@ -341,6 +341,55 @@ img { max-width: 100%; height: auto; }
 .page-content ul, .page-content ol { margin: 12px 0; padding-left: 24px; }
 .page-content li { margin-bottom: 8px; }
 
+/* ═══ সম্পর্কিত পেজ নেভিগেশন ═══ */
+.page-nav {
+    max-width: 900px;
+    margin: 0 auto 40px;
+    padding: 0 22px;
+}
+.page-nav-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    color: var(--primary);
+    margin-bottom: 12px;
+}
+.page-nav-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+.page-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 12px;
+}
+.page-nav-grid a {
+    display: block;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 10px;
+    padding: 13px 16px;
+    color: var(--dark);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.page-nav-grid a:hover {
+    border-color: var(--primary);
+    background: #F8FBF8;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    color: var(--primary);
+}
+.page-nav-grid a strong { display: block; font-size: 14.5px; }
+.page-nav-grid a small { display: block; color: var(--gray); font-size: 12.5px; margin-top: 2px; }
+
+@media (max-width: 600px) {
+    .page-nav { padding: 0 14px; }
+}
+
 /* ═══ টেবিল ═══ */
 .table-wrap { overflow-x: auto; margin: 16px 0; }
 .data-table {
