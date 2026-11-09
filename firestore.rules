@@ -1,0 +1,95 @@
+rules_version = '2';
+// ফাইল লোকেশন: Firebase Console → Firestore → Rules (অথবা firestore.rules)
+// প্রকাশের আগে Rules Playground/Emulator-এ পরীক্ষা করে নিন।
+// ⚠ এই ফাইলটি কনসোলের নিয়মের কপি — কনসোলে বদলালে এখানেও বদলাতে হবে।
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // কর্মকর্তা: শুধু নিজের ডকুমেন্ট পড়বে; নিজের শুধু পিন-সংক্রান্ত ফিল্ড বদলাতে পারবে
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['pin', 'pinHash', 'pinUpdatedAt']);
+    }
+
+    match /academic_years/{id} {
+      allow read: if true;            // pay.html-এর শিক্ষাবর্ষ তালিকা
+      allow write: if isAdmin();
+    }
+
+    match /students/{id} {
+      // ⚠️ pay.html লগইন ছাড়া ছাত্র খোঁজে, তাই পাবলিক read খোলা আছে।
+      // এতে ছাত্রের নাম/ফোন/বকেয়া যে কেউ পড়তে পারে। পূর্ণ সমাধান: Cloud Function (lookupStudent)।
+      allow read: if true;
+      allow write: if isAdmin();
+
+      match /charges/{c} {
+        allow read, write: if isAdmin();
+      }
+    }
+
+    // অভিভাবকের অনলাইন পেমেন্ট আবেদন: যে কেউ শুধু নতুন 'pending' আবেদন বানাতে পারবে
+    match /online_payments/{id} {
+      allow create: if id.matches('TRX_.*')
+        && request.resource.data.keys().hasOnly([
+             'trackingRef', 'studentId', 'dakhelaNum', 'name', 'jamat', 'session',
+             'khorakiAmount', 'electricityAmount', 'amount', 'paymentMethod',
+             'senderPhone', 'trxId', 'status', 'submittedAt', 'dateString'])
+        && request.resource.data.status == 'pending'
+        && request.resource.data.khorakiAmount is number
+        && request.resource.data.electricityAmount is number
+        && request.resource.data.khorakiAmount >= 0
+        && request.resource.data.electricityAmount >= 0
+        && request.resource.data.amount > 0
+        && request.resource.data.amount ==
+             request.resource.data.khorakiAmount + request.resource.data.electricityAmount
+        && request.resource.data.submittedAt == request.time;
+      allow read, update: if isAdmin();
+    }
+
+    // লেনদেন: তৈরি করা যাবে, মুছা যাবে না; বদলানো যাবে শুধু "বাতিল" চিহ্ন (একবারই)
+    match /transactions/{id} {
+      allow read, create: if isAdmin();
+      allow update: if isAdmin()
+        && resource.data.get('voided', false) == false
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['voided', 'voidReason', 'voidedBy', 'voidedByUid', 'voidedAt']);
+    }
+
+    match /counters/{id}      { allow read, write: if isAdmin(); }
+    match /receipt_index/{id} { allow read, create: if isAdmin(); }
+    match /billing_runs/{id}  { allow read, write: if isAdmin(); }
+    match /adjustments/{id}   { allow read, create: if isAdmin(); }
+
+    // ── হোমপেজের ভিজিটর কাউন্টার ───────────────────────────────
+    // নথি: total (সর্বমোট) এবং daily_YYYY-MM-DD (দিনের হিসাব)
+    // নিয়ম: যে কেউ পড়তে পারবে, কিন্তু কেউ এক ধাপে (+১) বেশি বাড়াতে পারবে না
+    // এবং কেবল count / day / updatedAt ফিল্ডই লিখতে পারবে।
+    match /site_stats/{doc} {
+      function validDoc() {
+        return doc == 'total'
+          || doc.matches('daily_[0-9]{4}-[0-9]{2}-[0-9]{2}');
+      }
+
+      allow read: if validDoc();
+
+      allow create: if validDoc()
+        && request.resource.data.keys().hasOnly(['count', 'day', 'updatedAt'])
+        && request.resource.data.count == 1;
+
+      allow update: if validDoc()
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['count', 'day', 'updatedAt'])
+        && request.resource.data.count is number
+        && request.resource.data.count == resource.data.count + 1;
+
+      allow delete: if false;
+    }
+  }
+}
