@@ -1,0 +1,362 @@
+<!-- ফাইল লোকেশন: babussalam-website/portal/admissions.html -->
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অনলাইন ভর্তি আবেদন | জামিয়া বাবুস সালাম পোর্টাল</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- ফায়ারবেস লাইব্রেরি (CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- ফায়ারবেস কনফিগারেশন ও অথ গার্ড -->
+    <script src="firebase-config.js"></script>
+    <script>requireAuth();</script>
+
+    <link rel="stylesheet" href="../css/fonts.css">
+    <link rel="stylesheet" href="../css/portal/admissions.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+    <meta name="theme-color" content="#0F5132">
+</head>
+<body>
+
+    <header class="portal-header no-print">
+        <h1>🕌 জামিয়া বাবুস সালাম — একাউন্টস</h1>
+        <nav class="portal-nav">
+            <span class="user-tag">👤 <span id="activeStaffDisplay">লোড হচ্ছে...</span></span>
+            <a href="students.html">👥 ছাত্র তালিকা</a>
+            <a href="collect.html">💰 বিল উত্তোলন</a>
+            <a href="approvals.html">📲 অনলাইন পেমেন্ট</a>
+            <a href="admissions.html" class="active">📝 ভর্তি আবেদন</a>
+            <a href="reports.html">📊 রিপোর্ট সেন্টার</a>
+            <a href="javascript:void(0)" onclick="logoutPortal()" style="background:#dc3545;">✕ লগআউট</a>
+        </nav>
+    </header>
+
+    <div class="container no-print">
+
+        <!-- ১. সারসংক্ষেপ কার্ড -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <span class="stat-icon">📝</span>
+                <div class="stat-details">
+                    <span>সর্বমোট আবেদন</span>
+                    <strong id="statTotal">০ টি</strong>
+                </div>
+            </div>
+            <div class="stat-card pending">
+                <span class="stat-icon">⏳</span>
+                <div class="stat-details">
+                    <span>নতুন / অপেক্ষমাণ</span>
+                    <strong id="statPending">০ টি</strong>
+                </div>
+            </div>
+            <div class="stat-card selected">
+                <span class="stat-icon">✅</span>
+                <div class="stat-details">
+                    <span>নির্বাচিত</span>
+                    <strong id="statSelected">০ টি</strong>
+                </div>
+            </div>
+            <div class="stat-card rejected">
+                <span class="stat-icon">❌</span>
+                <div class="stat-details">
+                    <span>বাতিল</span>
+                    <strong id="statRejected">০ টি</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- ২. আবেদন তালিকা -->
+        <div class="card">
+            <div class="card-title">
+                <span>📝 অনলাইন ভর্তি আবেদন তালিকা</span>
+                <div class="title-actions">
+                    <button class="btn btn-ghost" onclick="exportCsv()">⬇️ CSV ডাউনলোড</button>
+                    <button class="btn btn-ghost" onclick="loadApplications()">🔄 রিফ্রেশ</button>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <div class="tab-group">
+                    <button class="tab-btn active" data-tab="pending" onclick="switchTab('pending', this)">⏳ অপেক্ষমাণ</button>
+                    <button class="tab-btn" data-tab="selected" onclick="switchTab('selected', this)">✅ নির্বাচিত</button>
+                    <button class="tab-btn" data-tab="waiting" onclick="switchTab('waiting', this)">📋 অপেক্ষমাণ তালিকা</button>
+                    <button class="tab-btn" data-tab="rejected" onclick="switchTab('rejected', this)">❌ বাতিল</button>
+                    <button class="tab-btn" data-tab="all" onclick="switchTab('all', this)">📋 সব আবেদন</button>
+                </div>
+                <input type="text" id="searchBox" class="search-box" oninput="renderTable()" placeholder="🔍 নাম, মোবাইল বা ট্র্যাকিং নম্বর...">
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>জমার তারিখ</th>
+                            <th>ট্র্যাকিং নম্বর</th>
+                            <th>ছাত্রের নাম</th>
+                            <th>জামাত</th>
+                            <th>অভিভাবকের মোবাইল</th>
+                            <th>ঠিকানা</th>
+                            <th>স্ট্যাটাস</th>
+                            <th style="text-align: center;">অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appTableBody">
+                        <tr><td colspan="8" class="empty-row">ডাটাবেজ লোড হচ্ছে...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ৩. বিস্তারিত মোডাল -->
+    <div class="modal" id="detailModal" hidden>
+        <div class="modal-box">
+            <div class="modal-head">
+                <h3 id="mTitle">আবেদনের বিস্তারিত</h3>
+                <button type="button" class="modal-close" onclick="closeDetail()" aria-label="বন্ধ করুন">✕</button>
+            </div>
+
+            <div class="detail-grid" id="mDetails"></div>
+
+            <label class="note-label" for="mNote">অফিসের নোট (শুধু কর্মকর্তারা দেখবেন)</label>
+            <textarea id="mNote" class="note-box" maxlength="500" placeholder="যেমন: ফোনে যোগাযোগ করা হয়েছে, কাগজপত্র যাচাই বাকি..."></textarea>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-danger" onclick="deleteApplication()">🗑️ আবেদন মুছুন</button>
+                <button type="button" class="btn btn-approve" onclick="saveNote()">💾 নোট সংরক্ষণ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ══════════════════════════════════════════════════════════
+        //  ভর্তি আবেদন ব্যবস্থাপনা
+        // ══════════════════════════════════════════════════════════
+        const APPLY_COLLECTION = 'admission_applications';
+
+        const STATUS_META = {
+            pending:  { label: '⏳ অপেক্ষমাণ',       cls: 'badge-pending'  },
+            selected: { label: '✅ নির্বাচিত',        cls: 'badge-selected' },
+            waiting:  { label: '📋 অপেক্ষমাণ তালিকা', cls: 'badge-waiting'  },
+            rejected: { label: '❌ বাতিল',            cls: 'badge-rejected' }
+        };
+
+        let allApplications = [];
+        let activeTab = 'pending';
+        let unsubscribe = null;
+        let openDocId = null;
+
+        function loadApplications() {
+            if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+            unsubscribe = db.collection(APPLY_COLLECTION)
+                .orderBy('submittedAt', 'desc')
+                .limit(500)
+                .onSnapshot(snapshot => {
+                    allApplications = snapshot.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
+                    updateStats();
+                    renderTable();
+                }, err => {
+                    document.getElementById('appTableBody').innerHTML =
+                        `<tr><td colspan="8" class="empty-row">তালিকা লোড করা যায়নি: ${esc(err.message)}</td></tr>`;
+                });
+        }
+
+        function updateStats() {
+            const count = status => allApplications.filter(a => (a.status || 'pending') === status).length;
+            document.getElementById('statTotal').innerText = toBengaliNumber(allApplications.length) + ' টি';
+            document.getElementById('statPending').innerText = toBengaliNumber(count('pending')) + ' টি';
+            document.getElementById('statSelected').innerText = toBengaliNumber(count('selected')) + ' টি';
+            document.getElementById('statRejected').innerText = toBengaliNumber(count('rejected')) + ' টি';
+        }
+
+        function switchTab(tab, btn) {
+            activeTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderTable();
+        }
+
+        function filteredApplications() {
+            const query = document.getElementById('searchBox').value.trim().toLowerCase();
+            return allApplications.filter(app => {
+                const status = app.status || 'pending';
+                if (activeTab !== 'all' && status !== activeTab) return false;
+                if (!query) return true;
+                return [app.name, app.fatherName, app.guardianPhone, app.trackingRef, app.jamat]
+                    .some(v => String(v || '').toLowerCase().includes(query));
+            });
+        }
+
+        function renderTable() {
+            const rows = filteredApplications();
+            const body = document.getElementById('appTableBody');
+
+            if (!rows.length) {
+                body.innerHTML = '<tr><td colspan="8" class="empty-row">এই তালিকায় কোনো আবেদন নেই।</td></tr>';
+                return;
+            }
+
+            body.innerHTML = rows.map(app => {
+                const status = app.status || 'pending';
+                const meta = STATUS_META[status] || STATUS_META.pending;
+                return `
+                    <tr>
+                        <td>${esc(app.dateString || '—')}</td>
+                        <td><strong>${esc(app.trackingRef || '—')}</strong></td>
+                        <td class="cell-name">
+                            <strong>${esc(app.name || '')}</strong>
+                            <small>পিতা: ${esc(app.fatherName || '—')}</small>
+                        </td>
+                        <td>${esc(app.jamat || '—')}<br><span class="cell-sub">${esc(app.session || '')}</span></td>
+                        <td>${esc(app.guardianPhone || '—')}</td>
+                        <td style="white-space: normal; max-width: 220px;">${esc(app.address || '—')}</td>
+                        <td><span class="badge ${meta.cls}">${meta.label}</span></td>
+                        <td style="text-align: center; white-space: nowrap;">
+                            <button class="btn btn-view" onclick="openDetail('${app.docId}')">🔍 বিস্তারিত</button>
+                            <select class="status-select" onchange="setStatus('${app.docId}', this.value, this)">
+                                ${Object.keys(STATUS_META).map(key =>
+                                    `<option value="${key}" ${key === status ? 'selected' : ''}>${STATUS_META[key].label}</option>`
+                                ).join('')}
+                            </select>
+                        </td>
+                    </tr>`;
+            }).join('');
+        }
+
+        async function setStatus(docId, status, selectEl) {
+            if (!STATUS_META[status]) return;
+            const app = allApplications.find(a => a.docId === docId);
+            const name = app ? app.name : 'এই আবেদনটি';
+            if (!confirm(`"${name}"-এর স্ট্যাটাস "${STATUS_META[status].label}" করতে চান?`)) {
+                if (selectEl) selectEl.value = (app && app.status) || 'pending';
+                return;
+            }
+
+            try {
+                await db.collection(APPLY_COLLECTION).doc(docId).update({
+                    status: status,
+                    statusUpdatedBy: cashierName(),
+                    statusUpdatedUid: cashierUid(),
+                    statusUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch (err) {
+                alert('স্ট্যাটাস পরিবর্তন ব্যর্থ: ' + err.message);
+                if (selectEl) selectEl.value = (app && app.status) || 'pending';
+            }
+        }
+
+        function openDetail(docId) {
+            const app = allApplications.find(a => a.docId === docId);
+            if (!app) return;
+            openDocId = docId;
+
+            const status = app.status || 'pending';
+            const meta = STATUS_META[status] || STATUS_META.pending;
+            const row = (label, value) =>
+                `<div class="detail-item"><span>${label}</span><strong>${esc(value || '—')}</strong></div>`;
+
+            document.getElementById('mTitle').innerText = app.name || 'আবেদনের বিস্তারিত';
+            document.getElementById('mDetails').innerHTML = [
+                row('ট্র্যাকিং নম্বর', app.trackingRef),
+                row('স্ট্যাটাস', meta.label.replace(/^[^\s]+\s/, '')),
+                row('পিতার নাম', app.fatherName),
+                row('মাতার নাম', app.motherName),
+                row('জন্মতারিখ', toBengaliNumber(app.dob || '')),
+                row('জামাত', app.jamat),
+                row('শিক্ষাবর্ষ', app.session),
+                row('অভিভাবকের মোবাইল', app.guardianPhone),
+                row('পূর্ববর্তী মাদ্রাসা', app.previousMadrasa),
+                row('জমার সময়', app.dateString),
+                `<div class="detail-item" style="grid-column: 1 / -1;"><span>ঠিকানা</span><strong>${esc(app.address || '—')}</strong></div>`,
+                `<div class="detail-item" style="grid-column: 1 / -1;"><span>আবেদনে লেখা অতিরিক্ত তথ্য</span><strong>${esc(app.notes || '—')}</strong></div>`,
+                app.statusUpdatedBy
+                    ? `<div class="detail-item" style="grid-column: 1 / -1;"><span>সর্বশেষ হালনাগাদ</span><strong>${esc(app.statusUpdatedBy)}</strong></div>`
+                    : ''
+            ].join('');
+
+            document.getElementById('mNote').value = app.adminNote || '';
+            document.getElementById('detailModal').hidden = false;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetail() {
+            document.getElementById('detailModal').hidden = true;
+            document.body.style.overflow = '';
+            openDocId = null;
+        }
+
+        async function saveNote() {
+            if (!openDocId) return;
+            const note = document.getElementById('mNote').value.trim();
+            try {
+                await db.collection(APPLY_COLLECTION).doc(openDocId).update({
+                    adminNote: note,
+                    adminNoteBy: cashierName(),
+                    adminNoteAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert('নোট সংরক্ষণ হয়েছে।');
+                closeDetail();
+            } catch (err) {
+                alert('নোট সংরক্ষণ ব্যর্থ: ' + err.message);
+            }
+        }
+
+        async function deleteApplication() {
+            if (!openDocId) return;
+            const app = allApplications.find(a => a.docId === openDocId);
+            const name = app ? app.name : 'এই আবেদনটি';
+            if (!confirm(`"${name}"-এর আবেদনটি স্থায়ীভাবে মুছে ফেলতে চান? এটি ফেরানো যাবে না।`)) return;
+
+            try {
+                await db.collection(APPLY_COLLECTION).doc(openDocId).delete();
+                closeDetail();
+            } catch (err) {
+                alert('মুছে ফেলা ব্যর্থ: ' + err.message);
+            }
+        }
+
+        function exportCsv() {
+            const rows = filteredApplications();
+            if (!rows.length) { alert('ডাউনলোড করার মতো কোনো আবেদন নেই।'); return; }
+
+            const header = ['ট্র্যাকিং', 'নাম', 'পিতার নাম', 'মাতার নাম', 'জন্মতারিখ', 'জামাত', 'শিক্ষাবর্ষ',
+                'মোবাইল', 'ঠিকানা', 'পূর্ববর্তী মাদ্রাসা', 'অতিরিক্ত তথ্য', 'স্ট্যাটাস', 'জমার সময়', 'অফিসের নোট'];
+
+            const escapeCell = v => '"' + String(v === undefined || v === null ? '' : v).replace(/"/g, '""') + '"';
+
+            const lines = [header.map(escapeCell).join(',')].concat(rows.map(app => [
+                app.trackingRef, app.name, app.fatherName, app.motherName, app.dob, app.jamat, app.session,
+                app.guardianPhone, app.address, app.previousMadrasa, app.notes,
+                (STATUS_META[app.status || 'pending'] || STATUS_META.pending).label.replace(/^[^\s]+\s/, ''),
+                app.dateString, app.adminNote
+            ].map(escapeCell).join(',')));
+
+            // বাংলা লেখা Excel-এ ঠিকভাবে দেখাতে BOM যোগ করা হয়েছে
+            const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'vartti-abedon-' + new Date().toISOString().slice(0, 10) + '.csv';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+        }
+
+        document.getElementById('detailModal').addEventListener('click', e => {
+            if (e.target.id === 'detailModal') closeDetail();
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && !document.getElementById('detailModal').hidden) closeDetail();
+        });
+
+        onStaffReady(() => loadApplications());
+    </script>
+</body>
+</html>

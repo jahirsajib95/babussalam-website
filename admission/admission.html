@@ -438,6 +438,86 @@
             </div>
         </div>
 
+        <!-- ============================================================== -->
+        <!-- 🖥️ সেকশন: অনলাইন ভর্তি আবেদন -->
+        <!-- ============================================================== -->
+        <section id="apply" class="apply-section">
+            <div class="apply-head">
+                <h3>🖥️ অনলাইন ভর্তি আবেদন</h3>
+                <p>নিচের ফর্মটি পূরণ করে পাঠিয়ে দিন — অফিস থেকে যাচাই করে ফোনে যোগাযোগ করা হবে ইনশাআল্লাহ।</p>
+            </div>
+
+            <form id="applyForm" class="apply-form" novalidate>
+                <div class="apply-grid">
+                    <div class="af-group">
+                        <label for="afName">ছাত্রের নাম <b>*</b></label>
+                        <input id="afName" name="name" type="text" maxlength="60" autocomplete="name" placeholder="পূর্ণ নাম লিখুন" required>
+                    </div>
+                    <div class="af-group">
+                        <label for="afFather">পিতার নাম <b>*</b></label>
+                        <input id="afFather" name="father" type="text" maxlength="60" placeholder="পিতার পূর্ণ নাম" required>
+                    </div>
+                    <div class="af-group">
+                        <label for="afMother">মাতার নাম</label>
+                        <input id="afMother" name="mother" type="text" maxlength="60" placeholder="মাতার নাম (ঐচ্ছিক)">
+                    </div>
+                    <div class="af-group">
+                        <label for="afDob">জন্মতারিখ <b>*</b></label>
+                        <input id="afDob" name="dob" type="date" required>
+                    </div>
+                    <div class="af-group">
+                        <label for="afJamat">কোন জামাতে ভর্তি হতে চান <b>*</b></label>
+                        <select id="afJamat" name="jamat" required>
+                            <option value="">নির্বাচন করুন</option>
+                        </select>
+                    </div>
+                    <div class="af-group">
+                        <label for="afSession">শিক্ষাবর্ষ <b>*</b></label>
+                        <select id="afSession" name="session" required></select>
+                    </div>
+                    <div class="af-group">
+                        <label for="afPhone">অভিভাবকের মোবাইল <b>*</b></label>
+                        <input id="afPhone" name="phone" type="tel" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX" required>
+                    </div>
+                    <div class="af-group">
+                        <label for="afPrev">পূর্ববর্তী মাদ্রাসা</label>
+                        <input id="afPrev" name="prev" type="text" maxlength="80" placeholder="আগে যেখানে পড়েছেন (ঐচ্ছিক)">
+                    </div>
+                </div>
+
+                <div class="af-group">
+                    <label for="afAddress">স্থায়ী ঠিকানা <b>*</b></label>
+                    <textarea id="afAddress" name="address" rows="2" maxlength="160" placeholder="গ্রাম/এলাকা, ডাকঘর, থানা, জেলা" required></textarea>
+                </div>
+
+                <div class="af-group">
+                    <label for="afNote">অতিরিক্ত তথ্য (ঐচ্ছিক)</label>
+                    <textarea id="afNote" name="note" rows="2" maxlength="300" placeholder="যেমন: হিফজ কত পারা, বিশেষ প্রয়োজন ইত্যাদি"></textarea>
+                </div>
+
+                <label class="af-consent" for="afConsent">
+                    <input type="checkbox" id="afConsent">
+                    <span>আমি নিশ্চিত করছি যে উপরে দেওয়া তথ্যগুলো সঠিক।</span>
+                </label>
+
+                <div class="af-actions">
+                    <button type="submit" id="afSubmit" class="btn btn-primary">📨 আবেদন জমা দিন</button>
+                    <a href="tel:01816183469" class="af-call">📞 ফোনে আবেদন: ০১৮১৬-১৮৩৪৬৯</a>
+                </div>
+
+                <p class="af-status" id="afStatus" role="status" aria-live="polite"></p>
+            </form>
+
+            <div class="af-success" id="afSuccess" hidden>
+                <div class="af-success-icon">✅</div>
+                <h4>আলহামদুলিল্লাহ, আবেদন জমা হয়েছে!</h4>
+                <p>আপনার ট্র্যাকিং নম্বর</p>
+                <div class="af-ref" id="afRef">—</div>
+                <p class="af-hint">নম্বরটি লিখে রাখুন। অফিস থেকে যাচাই করে ফোনে জানানো হবে ইনশাআল্লাহ।</p>
+                <button type="button" class="btn btn-primary" onclick="resetApplyForm()">আরেকটি আবেদন করুন</button>
+            </div>
+        </section>
+
     </main>
     <!-- মূল কন্টেন্ট শেষ -->
 
@@ -655,5 +735,6 @@
 
     <!-- মূল স্ক্রিপ্ট ফাইল -->
     <script src="../main.js" defer></script>
+    <script src="apply.js" defer></script>
 </body>
 </html>

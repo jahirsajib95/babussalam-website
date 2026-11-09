@@ -67,6 +67,28 @@ service cloud.firestore {
     match /billing_runs/{id}  { allow read, write: if isAdmin(); }
     match /adjustments/{id}   { allow read, create: if isAdmin(); }
 
+    // ── অনলাইন ভর্তি আবেদন ────────────────────────────────────────
+    // যে কেউ নতুন 'pending' আবেদন জমা দিতে পারবে; পড়া/বদল/মুছে ফেলা
+    // শুধু কর্মকর্তারা করতে পারবে (আবেদনে ফোন ও ঠিকানা থাকে)।
+    match /admission_applications/{id} {
+      allow create: if id.matches('APP_[A-Z0-9]{6,40}')
+        && request.resource.data.keys().hasOnly([
+             'trackingRef', 'name', 'fatherName', 'motherName', 'dob', 'jamat',
+             'session', 'guardianPhone', 'address', 'previousMadrasa', 'notes',
+             'status', 'submittedAt', 'dateString'])
+        && request.resource.data.status == 'pending'
+        && request.resource.data.submittedAt == request.time
+        && request.resource.data.guardianPhone.matches('01[3-9][0-9]{8}')
+        && request.resource.data.name.size() >= 3
+        && request.resource.data.name.size() <= 60
+        && request.resource.data.fatherName.size() >= 3
+        && request.resource.data.fatherName.size() <= 60
+        && request.resource.data.address.size() >= 8
+        && request.resource.data.address.size() <= 160;
+
+      allow read, update, delete: if isAdmin();
+    }
+
     // ── হোমপেজের ভিজিটর কাউন্টার ───────────────────────────────
     // নথি: total (সর্বমোট) এবং daily_YYYY-MM-DD (দিনের হিসাব)
     // নিয়ম: যে কেউ পড়তে পারবে, কিন্তু কেউ এক ধাপে (+১) বেশি বাড়াতে পারবে না

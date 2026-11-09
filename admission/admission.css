@@ -208,3 +208,156 @@
             font-size: 0.95rem;
         }
     
+
+/* ============================================================
+   অনলাইন ভর্তি আবেদন ফর্ম
+   ============================================================ */
+.apply-section {
+    margin-top: 45px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.apply-head h3 {
+    margin: 0 0 6px 0;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.apply-head p {
+    margin: 0 0 20px 0;
+    color: var(--gray);
+    font-size: 0.96rem;
+}
+
+.apply-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 4px 16px;
+}
+
+.af-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.af-group label {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.af-group label b { color: #DC3545; }
+
+.af-group input,
+.af-group select,
+.af-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: #fff;
+    color: var(--dark);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.af-group input:focus,
+.af-group select:focus,
+.af-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.12);
+}
+
+.af-group textarea { resize: vertical; }
+
+.af-consent {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 0.92rem;
+    color: var(--dark);
+    margin: 4px 0 18px 0;
+    cursor: pointer;
+}
+
+.af-consent input {
+    width: 17px;
+    height: 17px;
+    margin-top: 3px;
+    flex: 0 0 auto;
+}
+
+.af-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.af-call {
+    font-size: 0.92rem;
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.af-call:hover { text-decoration: underline; }
+
+.af-status {
+    margin: 12px 0 0 0;
+    font-size: 0.92rem;
+    min-height: 1.2em;
+    line-height: 1.6;
+}
+
+.af-status.is-error { color: #B91C1C; font-weight: 600; }
+.af-status.is-ok { color: var(--primary); font-weight: 600; }
+
+.af-success {
+    text-align: center;
+    padding: 14px 6px 6px;
+}
+
+.af-success-icon { font-size: 2.4rem; line-height: 1; }
+
+.af-success h4 {
+    margin: 10px 0 8px 0;
+    color: var(--primary);
+}
+
+.af-success p {
+    margin: 0 0 6px 0;
+    color: var(--gray);
+    font-size: 0.94rem;
+}
+
+.af-ref {
+    display: inline-block;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--primary-dark);
+    background: #E8F5E9;
+    border: 1px dashed var(--primary-light);
+    border-radius: 8px;
+    padding: 8px 20px;
+    margin: 4px 0 12px 0;
+}
+
+.af-hint { font-size: 0.88rem; }
+
+@media (max-width: 600px) {
+    .apply-section { padding: 20px 16px; }
+    .af-actions .btn { width: 100%; justify-content: center; }
+}
