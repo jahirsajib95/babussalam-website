@@ -1082,6 +1082,35 @@
         </div>
     </section>
 
+    <!-- ═══ ভিজিটর পরিসংখ্যান ═══ -->
+    <section class="visitor-stats" id="visitorStats" aria-labelledby="visitorStatsTitle">
+        <div class="visitor-stats-inner">
+            <span class="vs-eyebrow"><span class="vs-dot" aria-hidden="true"></span> লাইভ পরিসংখ্যান</span>
+            <h2 id="visitorStatsTitle">আমাদের ওয়েবসাইটে আসার জন্য শুকরিয়া</h2>
+            <p class="vs-sub">প্রতিদিন কতজন দর্শনার্থী আসছেন আর এখন পর্যন্ত মোট কতজন — সব এক নজরে।</p>
+
+            <div class="vs-cards">
+                <article class="vs-card">
+                    <span class="vs-icon"><i class="fa-regular fa-calendar-days"></i></span>
+                    <span class="vs-body">
+                        <span class="vs-value" id="vsToday">—</span>
+                        <span class="vs-label">আজকের ভিজিটর</span>
+                    </span>
+                </article>
+
+                <article class="vs-card vs-card--total">
+                    <span class="vs-icon"><i class="fa-solid fa-users"></i></span>
+                    <span class="vs-body">
+                        <span class="vs-value" id="vsTotal">—</span>
+                        <span class="vs-label">সর্বমোট ভিজিটর</span>
+                    </span>
+                </article>
+            </div>
+
+            <p class="vs-note" id="vsNote">একই ব্রাউজার দিনে একবার গণনা হয়, তাই সংখ্যা পুনরাবৃত্তি হয় না।</p>
+        </div>
+    </section>
+
     <!-- ═══ ফুটার (অটো লোড) ═══ -->
     <div id="footer-placeholder">
 <!-- inc:start footer-placeholder -->
@@ -1413,6 +1442,7 @@
     </script>
 
     <script src="main.js" defer></script>
+<script src="counter.js" defer></script>
 </body>
 
 </html>

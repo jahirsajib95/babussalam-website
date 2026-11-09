@@ -865,3 +865,161 @@
             .contact-grid,
             .dept-grid.three { grid-template-columns: 1fr; }
         }
+
+/* ============================================================
+   ভিজিটর পরিসংখ্যান সেকশন (পেজের একদম শেষে)
+   ============================================================ */
+.visitor-stats {
+    position: relative;
+    background: linear-gradient(140deg, #062a1a 0%, #0b5335 55%, #128253 100%);
+    padding: 56px 20px 60px;
+    overflow: hidden;
+}
+
+.visitor-stats::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 18% 12%, rgba(201, 147, 59, 0.22), transparent 45%),
+                radial-gradient(circle at 82% 88%, rgba(255, 255, 255, 0.08), transparent 42%);
+    pointer-events: none;
+}
+
+.visitor-stats-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    text-align: center;
+    color: #ffffff;
+}
+
+.vs-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(201, 147, 59, 0.55);
+    background: rgba(255, 255, 255, 0.08);
+    color: #f7e3b5;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+}
+
+.vs-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    animation: vsPulse 2.2s ease-out infinite;
+}
+
+@keyframes vsPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.55); }
+    70%  { box-shadow: 0 0 0 9px rgba(74, 222, 128, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+.visitor-stats h2 {
+    margin: 16px 0 8px;
+    font-size: clamp(1.3rem, 3.4vw, 1.85rem);
+    color: #ffffff;
+}
+
+.vs-sub {
+    margin: 0 auto 26px;
+    max-width: 600px;
+    font-size: 0.98rem;
+    color: rgba(255, 255, 255, 0.76);
+}
+
+.vs-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.vs-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: left;
+    padding: 20px 22px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(6px);
+    transition: var(--transition);
+}
+
+.vs-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(201, 147, 59, 0.5);
+}
+
+.vs-card--total {
+    background: linear-gradient(135deg, rgba(201, 147, 59, 0.95), rgba(163, 112, 32, 0.95));
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.vs-icon {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffd76a;
+    font-size: 1.3rem;
+}
+
+.vs-card--total .vs-icon {
+    background: rgba(255, 255, 255, 0.24);
+    color: #ffffff;
+}
+
+.vs-body { display: block; }
+
+.vs-value {
+    display: block;
+    font-size: clamp(1.55rem, 4vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+}
+
+.vs-label {
+    display: block;
+    margin-top: 3px;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.vs-card--total .vs-label { color: rgba(255, 255, 255, 0.95); }
+
+.vs-note {
+    margin: 22px 0 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.visitor-stats.is-ready .vs-value {
+    animation: vsFade 0.45s ease both;
+}
+
+@keyframes vsFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: none; }
+}
+
+@media (max-width: 560px) {
+    .visitor-stats { padding: 42px 16px 46px; }
+    .vs-cards { grid-template-columns: 1fr; gap: 14px; }
+    .vs-card { padding: 16px 18px; }
+    .vs-icon { width: 46px; height: 46px; font-size: 1.15rem; }
+}
