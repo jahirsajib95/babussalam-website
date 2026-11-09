@@ -11,17 +11,157 @@
     <meta property="og:description" content="বাবুস সালাম কাফেলার ভূমিকা, উদ্দেশ্য এবং লেখক, সম্পাদক ও অনুমোদনকারীদের পরিচিতি।">
     <meta property="og:url" content="https://jamiababussalam.com/kafela/kafela.html">
     <meta property="og:image" content="https://jamiababussalam.com/images/banner.jpg">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+            <link rel="stylesheet" href="../css/footer.css">
+<link rel="stylesheet" href="../css/fonts.css">
+    <link rel="preload" href="../fonts/solaimanlipi-normal-v1.0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/fontawesome-subset.css">
     <link rel="stylesheet" href="kafela.css">
-    <link rel="icon" type="image/png" href="../images/logo.png">
-    <link rel="apple-touch-icon" href="../images/logo.png">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
     <meta name="theme-color" content="#0F5132">
 </head>
 <body>
 
-<div id="header-placeholder"></div>
+<div id="header-placeholder">
+<!-- inc:start header-placeholder -->
+<!-- ⚠ এই হেডার/ফুটার এডিট করার পর অবশ্যই চালান:  node scripts/inline-includes.js
+     (এখন HTML প্রতিটি পেজে ইনলাইন করা থাকে, রানটাইমে fetch হয় না) -->
+
+
+<header class="header">
+    <div class="header-top">
+        <div class="logo-section" onclick="window.location.href='../index.html'" style="cursor: pointer;"> <img
+                src="../images/logo.webp" alt="লোগো" width="45" height="45"
+                decoding="async" fetchpriority="high">
+            <div class="logo-text">
+                <p class="brand-name">জামিয়া বাবুস সালাম</p> <small>Jamia Babus Salam</small>
+            </div>
+        </div> <button class="menu-toggle" id="menuToggle"> ☰ <span>মেনু</span> </button>
+    </div>
+</header>
+
+<!-- ═══ ওভারলে ═══ -->
+<div class="nav-overlay" id="navOverlay"></div>
+
+<!-- ═══ সাইড মেনু ═══ -->
+<nav class="nav-menu" id="navMenu">
+    <div class="nav-header">
+        <h3>🕌 মেনু</h3>
+        <button class="nav-close" id="navClose">✕</button>
+    </div>
+
+    <!-- ══════ নিচ থেকে মেনু এডিট করুন ══════ -->
+
+    <a href="../index.html" class="nav-link-single">
+        <span class="icon">🏠</span> মূলপাতা
+    </a>
+
+    <div class="nav-section">
+        <div class="nav-section-title">
+            <span><span class="icon">📢</span> নোটিশ ও বিজ্ঞপ্তি</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="nav-submenu">
+            <a href="../notice/notice.html">নোটিশ</a>
+            <a href="../notice/biggopti.html">বিজ্ঞপ্তি</a>
+        </div>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">
+            <span><span class="icon">🎓</span> একাডেমিক</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="nav-submenu">
+            <a href="../academic/bidhi.html">বিধি ও আইন</a>
+            <a href="../academic/syllabus.html">সিলেবাস</a>
+            <a href="../academic/class-schedule.html">শ্রেণিসূচি</a>
+            <a href="../academic/calendar.html">একাডেমিক বর্ষপঞ্জি</a>
+        </div>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">
+            <span><span class="icon">🏛️</span> প্রাতিষ্ঠানিক</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="nav-submenu">
+            <a href="../institutional/porichalona.html">পরিচালনা পর্ষদ</a>
+            <a href="../institutional/bibhag.html">বিভাগসমূহ</a>
+            <a href="../institutional/about.html">আমাদের পরিচিতি</a>
+            <a href="../institutional/teachers.html">শিক্ষক, কর্মকর্তা-কর্মচারী</a>
+            <a href="../institutional/mission.html">আদর্শ, লক্ষ্য ও উদ্দেশ্য</a>
+            <a href="../institutional/history.html">সংক্ষিপ্ত ইতিহাস</a>
+        </div>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">
+            <span><span class="icon">📝</span> ভর্তি কার্যক্রম</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="nav-submenu">
+            <a href="../admission/admission.html">ভর্তি তথ্য</a>
+            <a href="../admission/admission-subjects.html">ভর্তি পরীক্ষার কিতাব ও যোগ্যতা</a>
+            <a href="../admission/admission-fee.html">ভর্তি ফি ও খোরাকী</a>
+            <a href="../admission/admission-rules.html">বিধি ও অঙ্গীকারনামা</a>
+        </div>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">
+            <span><span class="icon">🌿</span> বাবুস সালাম ফাউন্ডেশন</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="nav-submenu">
+            <a href="../foundation/foundation.html">কমপ্লেক্স ও ফাউন্ডেশন</a>
+            <a href="../foundation/branches.html">অধীনস্থ মাদরাসাসমূহ</a>
+        </div>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">
+            <span><span class="icon">🚩</span> বাবুস সালাম কাফেলা</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="nav-submenu">
+            <a href="../kafela/kafela.html">কাফেলা পরিচিতি</a>
+            <a href="../kafela/dalil.html">কুরআন ও হাদিসের দিকনির্দেশনা</a>
+            <a href="../kafela/lokkho.html">লক্ষ্য, কর্মসূচি ও বাস্তবায়ন</a>
+            <a href="../kafela/gothon.html">গঠন ও যোগ্যতা</a>
+            <a href="../kafela/shopoth.html">সাথীদের বৈশিষ্ট্য ও শপথনামা</a>
+            <a href="../kafela/hawarian.html">হাওয়ারিয়ান কাফেলা</a>
+            <a href="../kafela/kafela-form.html">কাফেলা সদস্য ফরম</a>
+        </div>
+    </div>
+
+
+    <a href="../fatwa/fatwa.html" class="nav-link-single">
+        <span class="icon">❓</span> ফতোয়া ও জিজ্ঞাসা
+    </a>
+
+    <a href="../gallery/gallery.html" class="nav-link-single">
+        <span class="icon">📸</span> ফটো গ্যালারি
+    </a>
+
+    <a href="../result/result.html" class="nav-link-single">
+        <span class="icon">📊</span> ফলাফল
+    </a>
+    <a href="../links/links.html" class="nav-link-single">
+        <span class="icon">🔗</span> প্রয়োজনীয় লিংকসমূহ
+    </a>
+    <a href="../donate/donate.html" class="nav-link-single">
+        <span class="icon">💰</span> অনুদান ও যোগাযোগ
+    </a>
+    <a href="../download/download.html" class="nav-link-single">
+        <span class="icon">📥</span> ডাউনলোড
+    </a>
+
+    <!-- ══════ উপরে মেনু যোগ করুন ══════ -->
+</nav>
+<!-- inc:end header-placeholder -->
+</div>
 
 <section class="page-header">
     <h1>কাফেলা পরিচিতি</h1>
@@ -99,7 +239,198 @@
 
 </main>
 
-<div id="footer-placeholder"></div>
+<div id="footer-placeholder">
+<!-- inc:start footer-placeholder -->
+<!-- ⚠ এই হেডার/ফুটার এডিট করার পর অবশ্যই চালান:  node scripts/inline-includes.js
+     (এখন HTML প্রতিটি পেজে ইনলাইন করা থাকে, রানটাইমে fetch হয় না) -->
+<!-- ═══════════════════════════════════════════════════════════════
+     🕌 জামিয়া বাবুস সালাম — প্রিমিয়াম ফুটার
+     ═══════════════════════════════════════════════════════════════ -->
+
+
+<footer class="footer">
+    <div class="footer-grid">
+
+        <!-- ১. মাদরাসা পরিচিতি ও লোগো -->
+        <div class="footer-col">
+            <!-- 👇 লোগো ও নামের ওপর ক্লিক করলে মূলপাতায় চলে যাবে -->
+            <a href="../index.html" class="footer-brand" title="মূলপাতায় যান">
+                <img src="../images/logo.webp" alt="জামিয়া বাবুস সালাম লোগো" class="footer-logo"
+                    width="65" height="65" loading="lazy" decoding="async">
+                <div class="footer-brand-text">
+                    <h3>জামিয়া বাবুস সালাম</h3>
+                    <span>দারুল উলুম দেওবন্দের আদর্শ শিক্ষালয়</span>
+                </div>
+            </a>
+            <p>
+                রাজধানী ঢাকার বিমানবন্দর সংলগ্ন একটি ঐতিহ্যবাহী দ্বীনি শিক্ষা প্রতিষ্ঠান। ১৯৯৬ সাল থেকে দারুল উলুম
+                দেওবন্দের মহান আদর্শে বিশুদ্ধ ইলমে ওহীর খেদমতে নিবেদিত।
+            </p>
+        </div>
+
+        <!-- ২. দ্রুত লিংকসমূহ -->
+        <div class="footer-col">
+            <h4>দ্রুত লিংক</h4>
+            <ul class="footer-links">
+                <li><a href="../institutional/about.html">
+                        <i class="fa-solid fa-circle-info"></i> আমাদের পরিচিতি
+                    </a></li>
+
+                <li><a href="../admission/admission.html">
+                        <i class="fa-solid fa-user-plus"></i> ভর্তি তথ্য ও ফি
+                    </a></li>
+
+                <li><a href="../admission/admission-subjects.html">
+                        <i class="fa-solid fa-book-open"></i> ভর্তি পরীক্ষার সিলেবাস
+                    </a></li>
+
+                <li><a href="../academic/syllabus.html">
+                        <i class="fa-solid fa-book"></i> একাডেমিক সিলেবাস
+                    </a></li>
+
+                <li><a href="../result/result.html">
+                        <i class="fa-solid fa-square-poll-vertical"></i> পরীক্ষার ফলাফল
+                    </a></li>
+
+                <li><a href="../donate/donate.html">
+                        <i class="fa-solid fa-hand-holding-heart"></i> দান ও সদকা ফান্ড
+                    </a></li>
+            </ul>
+        </div>
+
+        <!-- ৩. যোগাযোগ (ক্লিকযোগ্য ফোন ও ইমেইল) -->
+        <div class="footer-col">
+    <h4>যোগাযোগ</h4>
+
+    <!-- ঠিকানা -->
+    <div class="footer-contact-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>হজ ক্যাম্প ও র‍্যাব হেডকোয়ার্টার সংলগ্ন, বিমানবন্দর, ঢাকা-১২৩০</span>
+    </div>
+
+    <!-- ফোন (সরাসরি কলে যাবে) -->
+    <div class="footer-contact-item">
+        <i class="fa-solid fa-phone"></i>
+        <div>
+            <div>অফিস: <a href="tel:01973827881">01973-827881</a></div>
+            <div>তালিমাত: <a href="tel:01816183488">01816-183488</a></div>
+        </div>
+    </div>
+
+    <!-- ইমেইল (সরাসরি মেইল অ্যাপ খুলবে) -->
+    <div class="footer-contact-item">
+        <i class="fa-solid fa-envelope"></i>
+        <a href="mailto:bsoffice1979@gmail.com">bsoffice1979@gmail.com</a>
+    </div>
+
+    <!-- মন্তব্য, পরামর্শ ও অভিযোগ (feedback.html লিংক) -->
+    <div class="footer-contact-item" style="margin-top: 14px;">
+        <i class="fa-solid fa-comment-dots" style="color: #c9933b;"></i>
+        <a href="../donate/feedback.html" style="color: #c9933b; font-weight: 600; text-decoration: underline;">
+            মন্তব্য, পরামর্শ ও অভিযোগ জানান →
+        </a>
+    </div>
+
+    <a href="../portal/login.html" target="_blank" style="color: var(--accent); font-weight: bold; text-decoration: none;">
+    🔒 স্টাফ ও হিসাব পোর্টাল
+</a>
+
+</div>
+
+        <!-- ৪. সোশ্যাল মিডিয়া বাটন -->
+        <div class="footer-col">
+            <h4>যুক্ত থাকুন</h4>
+            <div class="social-links">
+
+                <a href="https://wa.me/8801816183488" target="_blank" class="social-btn">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>অফিসিয়াল হোয়াটসঅ্যাপ</span>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- সর্বস্বত্ব ও কপিরাইট -->
+    <div class="footer-bottom">
+        <p style="margin: 0;">
+            © ২০২৫-২০২৬ <a href="../index.html">জামিয়া বাবুস সালাম</a>। সর্বস্বত্ব সংরক্ষিত।
+        </p>
+    </div>
+</footer>
+
+<!-- উপরে ওঠার ব্যাক টু টপ বাটন -->
+<button class="back-to-top" id="backToTop" title="উপরে যান">↑</button>
+
+<!-- ═══════════════════════════════════════════════
+     🤖 এআই সহকারী উইজেট (Floating AI Chatbot)
+     ═══════════════════════════════════════════════ -->
+
+<!-- ভাসমান গোল চ্যাট বাটন -->
+<button class="ai-float-btn" id="aiChatBtn" onclick="toggleAIChat()" title="জামিয়া এআই সহকারী">
+    <span class="ai-btn-icon">
+        <i class="fa-solid fa-robot"></i>
+    </span>
+    <span class="ai-btn-text">Ask Ai</span>
+</button>
+
+<!-- চ্যাটবক্স পপআপ উইন্ডো -->
+<div class="ai-chat-box" id="aiChatBox">
+    <!-- চ্যাট হেডার -->
+    <div class="ai-chat-header">
+        <div class="ai-header-title">
+            <span class="ai-avatar"><i class="fa-solid fa-mosque"></i></span>
+            <div>
+                <h4>আস-সালাম এআই</h4>
+                <small> <i class="fa-solid fa-circle online-dot"></i> অনলাইন সহায়ত (Active) </small>
+            </div>
+        </div>
+        <button class="ai-close-btn" onclick="toggleAIChat()">✕</button>
+    </div>
+
+    <!-- দ্রুত সাজেশন প্রশ্নসমূহ -->
+    <div class="ai-quick-suggestions">
+        <button onclick="askQuickQuestion('মাদরাসা কোথায় অবস্থিত?')">
+            <i class="fa-solid fa-location-dot"></i>
+            মাদরাসা কোথায়?
+        </button>
+
+        <button onclick="askQuickQuestion('মুহতামিম সাহেবের নাম কি?')">
+            <i class="fa-solid fa-user-tie"></i>
+            প্রিন্সিপাল কে?
+        </button>
+
+        <button onclick="askQuickQuestion('ভর্তির ফি কত?')">
+            <i class="fa-solid fa-money-bill-wave"></i>
+            ভর্তি ফি কত?
+        </button>
+
+        <button onclick="askQuickQuestion('নাজেমে তালিমাত সাহেবের মোবাইল নম্বর দিন')">
+            <i class="fa-solid fa-phone"></i>
+            তালিমাত নম্বর
+        </button>
+    </div>
+
+    <!-- চ্যাট মেসেজ হিস্ট্রি -->
+    <div class="ai-chat-messages" id="aiChatMessages">
+        <div class="ai-msg bot-msg">
+            <div class="msg-bubble">
+                আসসালামু আলাইকুম! আমি <b>জামিয়া বাবুস সালামের</b> ভার্চুয়াল এআই সহকারী। জামিয়া বা ভর্তি সম্পর্কিত
+                যেকোনো বিষয়ে আমাকে প্রশ্ন করতে পারেন।
+            </div>
+        </div>
+    </div>
+
+    <!-- ইনপুট বক্স -->
+    <div class="ai-chat-input-area">
+        <input type="text" id="aiChatInput" placeholder="আপনার প্রশ্নটি বাংলায় লিখুন..."
+            onkeypress="handleChatKeyPress(event)" autocomplete="off" />
+        <button id="aiSendBtn" onclick="sendAIMessage()">➤</button>
+    </div>
+</div>
+<!-- inc:end footer-placeholder -->
+</div>
 <script src="../main.js" defer></script>
 
 </body>

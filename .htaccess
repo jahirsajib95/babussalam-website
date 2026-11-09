@@ -1,0 +1,48 @@
+# ═══════════════════════════════════════════════════════════════
+#  জামিয়া বাবুস সালাম — পারফরম্যান্স কনফিগ (Apache / cPanel hosting)
+#  কম্প্রেশন + ক্যাশ হেডার। nginx হলে এই ফাইল কাজ করবে না —
+#  সার্ভার প্যানেলে gzip আর expires সেট করতে হবে।
+# ═══════════════════════════════════════════════════════════════
+
+# ── ১. কম্প্রেশন (gzip + brotli, দুটোই থাকলে দুটোই) ─────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/xml
+    AddOutputFilterByType BROTLI_COMPRESS application/javascript application/json
+    AddOutputFilterByType BROTLI_COMPRESS image/svg+xml
+</IfModule>
+
+# ── ২. ক্যাশের মেয়াদ ────────────────────────────────────────────
+# ছবি/ফন্ট/সিএসএস/জেএস ক্যাশ হবে, HTML ক্যাশ হবে না (তাই নতুন
+# পরিবর্তন সাথে সাথে দেখা যাবে)।
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/webp                 "access plus 30 days"
+    ExpiresByType image/jpeg                 "access plus 30 days"
+    ExpiresByType image/png                  "access plus 30 days"
+    ExpiresByType image/svg+xml              "access plus 30 days"
+    ExpiresByType font/woff2                 "access plus 1 year"
+    ExpiresByType text/css                   "access plus 7 days"
+    ExpiresByType application/javascript     "access plus 7 days"
+    ExpiresByType text/html                  "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(webp|jpg|jpeg|png|gif|svg|woff2)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+    # পুরোনো ব্রাউজারের MIME সমস্যা এড়াতে
+    AddType font/woff2 .woff2
+    AddType image/webp .webp
+</IfModule>

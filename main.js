@@ -33,15 +33,24 @@ function setAutoFavicon() {
     }
     favicon.setAttribute('type', 'image/png');
     // BASE পাথ অনুযায়ী অটোমেটিক সঠিক লোগো নিয়ে নেবে (যেমন: ./images/logo.png বা ../images/logo.png)
-    favicon.setAttribute('href', BASE + 'images/logo.png'); 
+    // ছোট ৬৪px ফেভিকন (আগে এখানে ৬৬ KB-র মূল লোগো সেট হতো)
+    favicon.setAttribute('href', BASE + 'images/favicon.png');
 }
 
 // হেডার/ফুটার লোড করার ফাংশন
+// হেডার ও ফুটার এখন বিল্ড-টাইমে প্রতিটি পেজে ইনলাইন করা থাকে
+// (scripts/inline-includes.js) — তাই সাধারণত কোনো fetch লাগে না।
+// ইনলাইন না করা নতুন পেজের জন্য পুরোনো fetch পথটা ব্যাকআপ হিসেবে থাকল।
 function loadPart(id, file, callback) {
     var box = document.getElementById(id);
     if (!box) return;
 
-    fetch(file, { cache: 'no-cache' })
+    if (box.firstElementChild) {
+        if (callback) callback();
+        return;
+    }
+
+    fetch(file)
         .then(function (res) {
             if (!res.ok) throw new Error('not found');
             return res.text();

@@ -22,17 +22,10 @@ const db = firebase.firestore();
 // পাবলিক পেজে (যেমন portal/pay.html) auth SDK লোড না-ও হতে পারে — তখন যেন বাকি helper গুলো ভেঙে না যায়
 const auth = typeof firebase.auth === 'function' ? firebase.auth() : null;
 
-// সোলায়মান লিপি ফন্ট (বন্ধ থাকলে CSS-এর fallback ফন্ট কাজ করবে)
-(function loadSolaimanLipiFont() {
-    const fontId = 'solaiman-lipi-font-loader';
-    if (!document.getElementById(fontId)) {
-        const link = document.createElement('link');
-        link.id = fontId;
-        link.rel = 'stylesheet';
-        link.href = 'https://fonts.maateen.me/solaiman-lipi/font.css';
-        document.head.appendChild(link);
-    }
-})();
+// সোলায়মান লিপি ফন্ট
+// আগে এখানে ডাইনামিকভাবে fonts.maateen.me থেকে CSS লোড হতো (বাড়তি রাউন্ড ট্রিপ)।
+// এখন ফন্ট সাইটেই আছে — প্রতিটি পেজের <head>-এ css/fonts.css লিংক করা,
+// তাই এখানে আর কিছু করতে হবে না।
 
 /* ---------------- সাধারণ হেল্পার ---------------- */
 function toBengaliNumber(num) {

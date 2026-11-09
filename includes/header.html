@@ -1,9 +1,12 @@
+<!-- ⚠ এই হেডার/ফুটার এডিট করার পর অবশ্যই চালান:  node scripts/inline-includes.js
+     (এখন HTML প্রতিটি পেজে ইনলাইন করা থাকে, রানটাইমে fetch হয় না) -->
 
 
 <header class="header">
     <div class="header-top">
         <div class="logo-section" onclick="window.location.href='{{BASE}}index.html'" style="cursor: pointer;"> <img
-                src="{{BASE}}images/logo.png" alt="লোগো">
+                src="{{BASE}}images/logo.webp" alt="লোগো" width="45" height="45"
+                decoding="async" fetchpriority="high">
             <div class="logo-text">
                 <p class="brand-name">জামিয়া বাবুস সালাম</p> <small>Jamia Babus Salam</small>
             </div>

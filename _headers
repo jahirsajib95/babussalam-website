@@ -1,0 +1,20 @@
+# ═══════════════════════════════════════════════════════════════
+#  জামিয়া বাবুস সালাম — ক্যাশ হেডার
+#  Netlify / Cloudflare Pages-এ এই ফাইল স্বয়ংক্রিয়ভাবে পড়া হয়
+#  (কম্প্রেশন ওখানে নিজে থেকেই হয় — আলাদা কিছু লাগে না)।
+# ═══════════════════════════════════════════════════════════════
+
+/images/*
+  Cache-Control: public, max-age=2592000
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=604800
+
+/*.js
+  Cache-Control: public, max-age=604800
+
+/*.html
+  Cache-Control: no-cache
