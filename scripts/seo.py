@@ -49,6 +49,8 @@ STRIP = [
     r"<!-- seo:start -->.*?<!-- seo:end -->\s*",
     r'<meta\s+name="description"[^>]*>\s*',
     r'<meta\s+name="robots"[^>]*>\s*',
+    r'<meta\s+name="geo\.[^"]*"[^>]*>\s*',
+    r'<meta\s+name="ICBM"[^>]*>\s*',
     r'<meta\s+property="og:[^"]*"[^>]*>\s*',
     r'<meta\s+name="twitter:[^"]*"[^>]*>\s*',
     r'<link\s+rel="canonical"[^>]*>\s*',
@@ -94,6 +96,10 @@ def build_block(rel, info, body):
     lines.append('    <meta name="description" content="%s">' % esc(desc))
     lines.append('    <meta name="robots" content="%s">'
                  % ("noindex, follow" if noindex else "index, follow, max-image-preview:large, max-snippet:-1"))
+    lines.append('    <meta name="geo.region" content="BD-13">')
+    lines.append('    <meta name="geo.placename" content="ঢাকা">')
+    lines.append('    <meta name="geo.position" content="23.8505;90.4065">')
+    lines.append('    <meta name="ICBM" content="23.8505, 90.4065">')
     lines.append('    <link rel="canonical" href="%s">' % url)
     lines.append('    <link rel="alternate" hreflang="bn-BD" href="%s">' % url)
     lines.append('    <link rel="alternate" hreflang="x-default" href="%s">' % url)
