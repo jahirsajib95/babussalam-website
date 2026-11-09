@@ -34,9 +34,9 @@ BASE_CSS = """/* ═════════════════════
 @font-face{font-family:"Font Awesome 6 Brands";font-style:normal;font-weight:400;font-display:block;src:__FA_BRANDS__}
 .fa{font-family:var(--fa-style-family,"Font Awesome 6 Free");font-weight:var(--fa-style,900)}
 .fa,.fa-brands,.fa-regular,.fa-solid,.fab,.far,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:var(--fa-display,inline-block);font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
-.fa-regular,.fa-solid,.far,.fas{font-family:"Font Awesome 6 Free"}
+.fa-solid,.fas{font-family:"Font Awesome 6 Free";font-weight:900}
+.fa-regular,.far{font-family:"Font Awesome 6 Free";font-weight:400}
 .fa-brands,.fab{font-family:"Font Awesome 6 Brands";font-weight:400}
-.fa-regular,.far{font-weight:400}
 /* ---- ইউটিলিটি ---- */
 .fa-fw{text-align:center;width:1.25em}
 .fa-lg{font-size:1.25em;line-height:.05em;vertical-align:-.075em}
